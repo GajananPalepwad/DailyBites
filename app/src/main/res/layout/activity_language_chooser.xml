@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEBEB"
+    tools:context=".LanguageChooser">
+
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:autoStart="true"
+        android:flipInterval="2000"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="Choose\nYour Language"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="अपनी \nभाषा चुनें"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="तुमची \nभाषा निवडा "
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="உங்கள் மொழிய த் தேர்ந்தெடு க்கவும்"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="మీ భాషను \nఎంచుకోండి"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="আপনার ভাষা \nনির্বাচন করুন"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆರಿಸಿ"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya_sc_black"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="ਆਪਣੀ \nਭਾਸ਼ਾ ਚੁਣੋ"
+            android:textColor="#191B1A"
+            android:textSize="30dp" />
+
+
+    </ViewFlipper>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFlipper">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/english"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="English"
+                android:textSize="17dp"
+                android:fontFamily="@font/alegreya_sc_black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/hindi"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="हिंदी"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/marathi"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="मराठी"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/kannada"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="ಕನ್ನಡ"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/telugu"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="తెలుగు"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tamil"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="தமிழ்"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/punjabi"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="ਪੰਜਾਬੀ"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bengali"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_boarder"
+                android:text="বাংলা"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

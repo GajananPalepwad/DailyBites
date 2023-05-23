@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "999976072576",
+    "project_id": "daily-bites-576c3",
+    "storage_bucket": "daily-bites-576c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999976072576:android:d634f249b516860bb0bd65",
+        "android_client_info": {
+          "package_name": "com.gn4k.dailybites"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999976072576-5krbj0d8ifti79o5328k9ppmnbsnba06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHus-EBHFfffaPUeZ9mMYkQn_DzCKrbTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999976072576-5krbj0d8ifti79o5328k9ppmnbsnba06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

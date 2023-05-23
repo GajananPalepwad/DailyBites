@@ -2,8 +2,12 @@ package com.gn4k.dailybites;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -15,14 +19,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
-public class MapActivityToChooseLocation extends AppCompatActivity {
+public class MapActivityToChooseLocation extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private MapView mapView;
     private GoogleMap googleMap;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +50,42 @@ public class MapActivityToChooseLocation extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        mapView.getMapAsync(this);
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap map) {
-                googleMap = map;
-                // Call a method to request and handle location updates
-                requestLocationUpdates();
-            }
-        });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        googleMap.setOnMapClickListener(this);
+        // Call a method to request and handle location updates
+        requestLocationUpdates();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        double latitude = latLng.latitude;
+        double longitude = latLng.longitude;
+
+        // Remove existing marker if it exists
+        if (marker != null) {
+            marker.remove();
+        }
+
+        // Create a new marker at the clicked location
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title("Clicked location")
+                .snippet("Latitude: " + latitude + ", Longitude: " + longitude);
+        marker = googleMap.addMarker(markerOptions);
+
+        // Move the camera to the clicked location
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Display a Toast message
+        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
+        Toast.makeText(MapActivityToChooseLocation.this, message, Toast.LENGTH_SHORT).show();
+        getAddressFromLatLng(latLng);
     }
 
     @Override
@@ -87,9 +125,12 @@ public class MapActivityToChooseLocation extends AppCompatActivity {
             return;
         }
 
-
         // Enable location layer on the map
         googleMap.setMyLocationEnabled(true);
+
+        // Set the initial camera position to India
+        LatLng indiaLatLng = new LatLng(20.5937, 78.9629); // Latitude and longitude of India
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indiaLatLng, 5f));
 
         // Get the last known location
         FusedLocationProviderClient fusedLocationClient =
@@ -109,7 +150,20 @@ public class MapActivityToChooseLocation extends AppCompatActivity {
                         }
                     }
                 });
+    }
 
+    private void getAddressFromLatLng(LatLng latLng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                String fullAddress = address.getAddressLine(0); // Get the full address including street, city, etc.
+                Toast.makeText(this, fullAddress, Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -127,5 +181,4 @@ public class MapActivityToChooseLocation extends AppCompatActivity {
             }
         }
     }
-
 }

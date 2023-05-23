@@ -23,7 +23,6 @@ public class ChooseMessOrUser extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseMessOrUser.this,UserLoginPage.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -32,7 +31,6 @@ public class ChooseMessOrUser extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseMessOrUser.this,MessOnwnerLoginPage.class);
                 startActivity(intent);
-                finish();
             }
         });
 

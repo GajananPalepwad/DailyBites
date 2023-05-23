@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,14 +88,17 @@ public class UserRegistration extends AppCompatActivity {
         BTNregistor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 getRegister();
-
             }
         });
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        signOut();
+    }
 
     private void getRegister(){
 
@@ -136,6 +140,17 @@ public class UserRegistration extends AppCompatActivity {
                         userInfo.put(KEY_MOBILE_NO, getMobileNo);
                         userInfo.put(KEY_PASSWORD, getPassword);
 
+
+                        //Saving the data to SharedPreference so we will not get data from Firestore.
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+                        preferences.putString("UserEmail",getEmail);
+                        preferences.putString("UserPassword",getPassword);
+                        preferences.putString("UserMobileNo",getMobileNo);
+                        preferences.putString("UserName",getName);
+                        preferences.apply();
+
                         db.collection("User").document(getEmail).set(userInfo).
 
                                 addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -154,6 +169,10 @@ public class UserRegistration extends AppCompatActivity {
                                     }
                                 });
 
+                        Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
+                        startActivity(intent);
+                        finish();
+
                     }else{
                         Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
                     }
@@ -170,4 +189,14 @@ public class UserRegistration extends AppCompatActivity {
             Toast.makeText(this, "Please agree to all the terms and conditions before Registration", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                finish();
+            }
+        });
+    }
+
 }

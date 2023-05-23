@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +18,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserLoginPage extends AppCompatActivity {
 
+
+    private static final String KEY_NAME = "name";
+    private static final String KEY_MOBILE_NO = "mobile no";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_PASSWORD = "password";
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button login;
     TextView pass, email, registration;
     private GoogleSignInClient client;
@@ -47,9 +61,7 @@ public class UserLoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(UserLoginPage.this,Home.class);
-                startActivity(intent);
-                finish();
+                checkValidationToLogin();
 
             }
         });
@@ -99,6 +111,43 @@ public class UserLoginPage extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void checkValidationToLogin(){
+
+        String getEmail = email.getText().toString();
+        String getPassword = pass.getText().toString();
+
+        Map<String, Object> userInfo = new HashMap<>();
+        DocumentReference emailRef = db.collection("User").document(getEmail);
+        emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+                        preferences.putString("UserEmail",getEmail);
+                        preferences.putString("UserPassword",getPassword);
+                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO));
+                        preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                        preferences.apply();
+
+                        Intent intent = new Intent(UserLoginPage.this,Home.class);
+                        startActivity(intent);
+                        finish();
+
+                    }else{
+                        Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(UserLoginPage.this, "Account not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
 }

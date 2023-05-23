@@ -24,7 +24,6 @@ public class LanguageChooser extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LanguageChooser.this,ChooseMessOrUser.class);
                 startActivity(intent);
-                finish();
             }
         });
 

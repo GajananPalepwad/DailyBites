@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Email/Mobile No"
+                android:text="Email"
                 app:layout_constraintBottom_toTopOf="@+id/email"
                 app:layout_constraintStart_toStartOf="@+id/email" />
 

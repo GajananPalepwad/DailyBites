@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
+    private EditText addressT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         setContentView(R.layout.activity_map_to_choose_location);
 
         mapView = findViewById(R.id.mapView);
+        addressT = findViewById(R.id.address);
+
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
 
@@ -128,10 +132,6 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         // Enable location layer on the map
         googleMap.setMyLocationEnabled(true);
 
-        // Set the initial camera position to India
-        LatLng indiaLatLng = new LatLng(20.5937, 78.9629); // Latitude and longitude of India
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indiaLatLng, 5f));
-
         // Get the last known location
         FusedLocationProviderClient fusedLocationClient =
                 LocationServices.getFusedLocationProviderClient(MapActivityToChooseLocation.this);
@@ -147,10 +147,15 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
 
                             // Move the camera to the user's location
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                        } else {
+                            // If the user's location is not available, set a default location
+                            LatLng defaultLatLng = new LatLng(20.5937, 78.9629); // Default location (India)
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 5f));
                         }
                     }
                 });
     }
+
 
     private void getAddressFromLatLng(LatLng latLng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -159,7 +164,8 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
                 String fullAddress = address.getAddressLine(0); // Get the full address including street, city, etc.
-                Toast.makeText(this, fullAddress, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, fullAddress, Toast.LENGTH_SHORT).show();
+                addressT.setText(fullAddress);
             }
         } catch (IOException e) {
             e.printStackTrace();

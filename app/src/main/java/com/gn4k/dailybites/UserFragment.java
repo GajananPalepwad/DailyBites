@@ -71,11 +71,13 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         Button logout = view.findViewById(R.id.LogOut);
         TextView name = view.findViewById(R.id.name);
+        TextView address = view.findViewById(R.id.address);
 
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
 
         name.setText(sharedPreferences.getString("UserName",""));
+        address.setText(sharedPreferences.getString("UserAddress",""));
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +89,9 @@ public class UserFragment extends Fragment {
                 preferences.putString("UserPassword","");
                 preferences.putString("UserMobileNo","");
                 preferences.putString("UserName","");
+                preferences.putString("UserLatitude","");
+                preferences.putString("UserLongitude","");
+                preferences.putString("UserAddress","");
                 preferences.apply();
 
                 Intent intent = new Intent(getActivity(),LanguageChooser.class);

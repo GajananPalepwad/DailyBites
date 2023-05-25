@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +31,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class UserLoginPage extends AppCompatActivity {
@@ -38,10 +44,13 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_MOBILE_NO = "mobile no";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_LATITUDE = "latitude";
+    private static final String KEY_LONGITUDE = "longitude";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button login;
     TextView pass, email, registration;
     private GoogleSignInClient client;
+    LatLng latLng ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +62,12 @@ public class UserLoginPage extends AppCompatActivity {
         email = findViewById(R.id.email);
         registration = findViewById(R.id.reg);
 
+
+
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         client = GoogleSignIn.getClient(this, options);
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +87,6 @@ public class UserLoginPage extends AppCompatActivity {
     }
 
     public void setRegistration(View view){
-//        Intent intent = new Intent(UserLoginPage.this,UserRegistration.class);
-//        startActivity(intent);
         Intent i = client.getSignInIntent();
         startActivityForResult(i, 1234);
     }
@@ -95,7 +105,7 @@ public class UserLoginPage extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // progressBar.setVisibility(View.GONE);
+
                                 if (task.isSuccessful()) {
                                     Intent intent = new Intent(getApplicationContext(), UserRegistration.class);
                                     startActivity(intent);
@@ -126,13 +136,18 @@ public class UserLoginPage extends AppCompatActivity {
                 if(documentSnapshot.exists()){
                     if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
 
+                        latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
+
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
                         preferences.putString("UserEmail",getEmail);
                         preferences.putString("UserPassword",getPassword);
-                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO));
+                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
                         preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                        preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
+                        preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
+                        preferences.putString("UserAddress",getAddressFromLatLng(latLng));
                         preferences.apply();
 
                         Intent intent = new Intent(UserLoginPage.this,Home.class);
@@ -140,6 +155,7 @@ public class UserLoginPage extends AppCompatActivity {
                         finish();
 
                     }else{
+
                         Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                     }
                 }else{
@@ -149,5 +165,22 @@ public class UserLoginPage extends AppCompatActivity {
         });
 
     }
+
+    private String getAddressFromLatLng(LatLng latLng) {
+        String addressReturn = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                String fullAddress = address.getAddressLine(0); // Get the full address including street, city, etc.
+                addressReturn = fullAddress;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return addressReturn;
+    }
+
 
 }

@@ -4,20 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FDFCFC"
     tools:context=".MapActivityToChooseLocation">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="@color/brandcolor"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addressSearch">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="3dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        android:outlineAmbientShadowColor="#00FDD500">
+
+            <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+         </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView6"
+        android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
         app:cardCornerRadius="20dp"
+        app:cardElevation="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -49,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="YOUR LOCATION"
+                android:text="Your Address"
                 app:layout_constraintStart_toStartOf="@+id/address"
                 app:layout_constraintTop_toBottomOf="@id/textView" />
 
@@ -72,8 +100,9 @@
             <ImageView
                 android:id="@+id/imageView9"
                 android:layout_width="45dp"
-                android:background="@drawable/button_boarder"
                 android:layout_height="45dp"
+                android:background="@drawable/button_boarder"
+                android:padding="6dp"
                 app:layout_constraintBottom_toBottomOf="@+id/address"
                 app:layout_constraintStart_toEndOf="@+id/address"
                 app:layout_constraintTop_toTopOf="@+id/address"
@@ -83,10 +112,10 @@
                 android:id="@+id/checkout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
                 android:background="@drawable/button_shape"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Confirm Location"
-                android:layout_marginHorizontal="20dp"
                 android:textAllCaps="false"
                 android:textColor="#191B1A"
                 android:textSize="19dp"
@@ -100,6 +129,22 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/addressSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:iconifiedByDefault="false"
+        android:closeIcon="@null"
+        android:background="@drawable/textviewyellowboarder"
+        android:drawableRight="?android:attr/actionModeWebSearchDrawable"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

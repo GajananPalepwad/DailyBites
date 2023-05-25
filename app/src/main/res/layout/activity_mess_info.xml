@@ -134,13 +134,15 @@
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="9dp"
-                        android:layout_height="9dp"
+                    <ImageView
+                        android:id="@+id/isvegimage"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
                         app:cardCornerRadius="30dp"
                         android:layout_marginRight="3dp"
-                        android:backgroundTint="#FF0000"/>
+                        android:background= "@drawable/non_veg"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,10 +151,6 @@
                         android:textColor="@color/black"
                         android:layout_gravity="center"
                         android:text="non-veg"/>
-
-
-
-
 
                 </LinearLayout>
 

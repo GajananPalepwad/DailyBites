@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,18 +104,18 @@ public class UserRegistration extends AppCompatActivity {
 
     private void getRegister(){
 
-        String getEmail = email.getText().toString();
-        DocumentReference emailRef = db.collection("User").document(getEmail);
-        emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(!documentSnapshot.exists()){
-                    checkAllParametersToRegistration();
-                }else{
-                    Toast.makeText(UserRegistration.this, "Account already exist.", Toast.LENGTH_SHORT).show();
+            String getEmail = email.getText().toString();
+            DocumentReference emailRef = db.collection("User").document(getEmail);
+            emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (!documentSnapshot.exists()) {
+                        checkAllParametersToRegistration();
+                    } else {
+                        Toast.makeText(UserRegistration.this, "Account already exists.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
     }
 
     private void checkAllParametersToRegistration(){ //method to save data in database after checking of all parameters
@@ -159,19 +161,19 @@ public class UserRegistration extends AppCompatActivity {
 
                                         Toast.makeText(UserRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
+                                        Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
+                                        startActivity(intent);
+                                        finish();
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
 
-                                        Toast.makeText(UserRegistration.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(UserRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
-
-                        Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
-                        startActivity(intent);
-                        finish();
 
                     }else{
                         Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
@@ -189,6 +191,7 @@ public class UserRegistration extends AppCompatActivity {
             Toast.makeText(this, "Please agree to all the terms and conditions before Registration", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     public void signOut(){
         gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {

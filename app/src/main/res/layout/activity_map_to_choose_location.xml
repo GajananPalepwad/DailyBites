@@ -7,6 +7,11 @@
     android:background="#FDFCFC"
     tools:context=".MapActivityToChooseLocation">
 
+<!--    This map is for user only-->
+<!--    This map is for user only-->
+<!--    This map is for user only-->
+<!--    This map is for user only-->
+
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"

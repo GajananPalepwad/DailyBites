@@ -26,19 +26,39 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                    SharedPreferences sharedPreferencesUser = getSharedPreferences("UserData",MODE_PRIVATE);
+                    SharedPreferences sharedPreferencesMess = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
 
-                    if(sharedPreferences.getString("UserEmail","").isEmpty() ||
-                            sharedPreferences.getString("UserName","").isEmpty() ||
-                            sharedPreferences.getString("UserPassword","").isEmpty() ||
-                            sharedPreferences.getString("UserMobileNo","").isEmpty()) {
-                        Intent intent = new Intent(MainActivity.this, LanguageChooser.class);
-                        startActivity(intent);
-                        finish();
+                    if(sharedPreferencesUser.getString("UserEmail","").isEmpty() ||
+                            sharedPreferencesUser.getString("UserName","").isEmpty() ||
+                            sharedPreferencesUser.getString("UserPassword","").isEmpty() ||
+                            sharedPreferencesUser.getString("UserMobileNo","").isEmpty()) {
+                        
+                        if(sharedPreferencesMess.getString("MessName","").isEmpty() ||
+                                sharedPreferencesMess.getString("MessOwnerPassword","").isEmpty() ||
+                                sharedPreferencesMess.getString("MessOwnerName","").isEmpty() ||
+                                sharedPreferencesMess.getString("MessOwnerMobileNo","").isEmpty() ||
+                                sharedPreferencesMess.getString("MessOwnerEmail","").isEmpty()) {
 
-                    } else if (sharedPreferences.getString("UserLatitude","").isEmpty() ||
-                            sharedPreferences.getString("UserLongitude","").isEmpty() ||
-                            sharedPreferences.getString("UserAddress","").isEmpty()) {
+                            Intent intent = new Intent(MainActivity.this, LanguageChooser.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            if (sharedPreferencesMess.getString("MessOwnerAddress","").isEmpty() ||
+                                    sharedPreferencesMess.getString("MessOwnerLongitude","").isEmpty() ||
+                                    sharedPreferencesMess.getString("MessOwnerLatitude","").isEmpty()) {
+
+                                Intent intent = new Intent(MainActivity.this,MapToLocateMess.class);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        }
+
+                    } else if (sharedPreferencesUser.getString("UserLatitude","").isEmpty() ||
+                            sharedPreferencesUser.getString("UserLongitude","").isEmpty() ||
+                            sharedPreferencesUser.getString("UserAddress","").isEmpty()) {
 
                             Intent intent = new Intent(MainActivity.this, MapActivityToChooseLocation.class);
                             startActivity(intent);

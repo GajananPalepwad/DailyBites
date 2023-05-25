@@ -182,6 +182,7 @@
                 android:id="@+id/reg2"
                 android:layout_width="19dp"
                 android:layout_height="16dp"
+                android:onClick="setRegistration"
                 app:layout_constraintBottom_toBottomOf="@+id/reg"
                 app:layout_constraintStart_toEndOf="@+id/reg"
                 app:layout_constraintTop_toTopOf="@+id/reg"

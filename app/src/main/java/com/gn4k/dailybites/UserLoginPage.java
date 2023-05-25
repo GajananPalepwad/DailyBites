@@ -48,7 +48,8 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_LONGITUDE = "longitude";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button login;
-    TextView pass, email, registration;
+    private TextView pass;
+    private TextView email;
     private GoogleSignInClient client;
     LatLng latLng ;
 
@@ -60,7 +61,7 @@ public class UserLoginPage extends AppCompatActivity {
         login = findViewById(R.id.login);
         pass = findViewById(R.id.password);
         email = findViewById(R.id.email);
-        registration = findViewById(R.id.reg);
+        TextView registration = findViewById(R.id.reg);
 
 
 

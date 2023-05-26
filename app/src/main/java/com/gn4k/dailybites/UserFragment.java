@@ -94,6 +94,11 @@ public class UserFragment extends Fragment {
                 preferences.putString("UserAddress","");
                 preferences.apply();
 
+                SharedPreferences sharedPreferencesChoose = getActivity().getSharedPreferences("Choose", MODE_PRIVATE);
+                SharedPreferences.Editor preferences2 = sharedPreferences.edit();
+                preferences2.putString("MessOrUser","");
+                preferences2.apply();
+
                 Intent intent = new Intent(getActivity(),LanguageChooser.class);
                 startActivity(intent);
                 getActivity().finish();

@@ -109,12 +109,11 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
-
                 Map<String, Object> data = new HashMap<>();
                 data.put("latitude", latitude);
                 data.put("longitude", longitude);
 
-                dataRef.setValue(data)
+                dataRef.updateChildren(data)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -128,11 +127,9 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Error occurred while saving data
-                                Toast.makeText(getApplicationContext(), "Something went wrong" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
             }
         });
 

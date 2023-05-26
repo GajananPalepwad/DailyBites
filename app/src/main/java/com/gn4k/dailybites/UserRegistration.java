@@ -131,56 +131,61 @@ public class UserRegistration extends AppCompatActivity {
 
             if(!getName.isEmpty() && !getEmail.isEmpty() && !getMobileNo.isEmpty() && !getPassword.isEmpty() && !getConfirmPassword.isEmpty()){
 
-                if(getPassword.equals(getConfirmPassword)){
+                if(getMobileNo.length()==10){
 
-                    if(getMobileNo.length()==10){
+                    if(getPassword.equals(getConfirmPassword)){
 
-                        Map<String, Object> userInfo = new HashMap<>();
+                        if (getPassword.length() >= 8 && isPasswordValid(getPassword)) {
 
-                        userInfo.put(KEY_NAME, getName);
-                        userInfo.put(KEY_EMAIL, getEmail);
-                        userInfo.put(KEY_MOBILE_NO, getMobileNo);
-                        userInfo.put(KEY_PASSWORD, getPassword);
+                            Map<String, Object> userInfo = new HashMap<>();
+
+                            userInfo.put(KEY_NAME, getName);
+                            userInfo.put(KEY_EMAIL, getEmail);
+                            userInfo.put(KEY_MOBILE_NO, getMobileNo);
+                            userInfo.put(KEY_PASSWORD, getPassword);
 
 
-                        //Saving the data to SharedPreference so we will not get data from Firestore.
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+                            //Saving the data to SharedPreference so we will not get data from Firestore.
+                            SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                            SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("UserEmail",getEmail);
-                        preferences.putString("UserPassword",getPassword);
-                        preferences.putString("UserMobileNo",getMobileNo);
-                        preferences.putString("UserName",getName);
-                        preferences.apply();
+                            preferences.putString("UserEmail",getEmail);
+                            preferences.putString("UserPassword",getPassword);
+                            preferences.putString("UserMobileNo",getMobileNo);
+                            preferences.putString("UserName",getName);
+                            preferences.apply();
 
-                        db.collection("User").document(getEmail).set(userInfo).
+                            db.collection("User").document(getEmail).set(userInfo).
 
-                                addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
 
-                                        Toast.makeText(UserRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(UserRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                                        Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
-                                        startActivity(intent);
-                                        finish();
+                                            Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
+                                            startActivity(intent);
+                                            finish();
 
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                                        Toast.makeText(UserRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(UserRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
+                                        }
+                                    });
+                        } else {
+                            passwordDoNotMatch.setText("Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character");
+                        }
 
                     }else{
-                        Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
+                        passwordDoNotMatch.setText("Passwords do not match.");
                     }
                 }
                 else{
-                    passwordDoNotMatch.setText("Passwords do not match.");
+                    Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
                 }
 
             }else{
@@ -190,6 +195,12 @@ public class UserRegistration extends AppCompatActivity {
         }else {
             Toast.makeText(this, "Please agree to all the terms and conditions before Registration", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isPasswordValid(String password) {
+        // Password validation regex pattern
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password.matches(passwordPattern);
     }
 
 

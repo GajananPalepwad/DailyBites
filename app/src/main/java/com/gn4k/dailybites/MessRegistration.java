@@ -116,10 +116,11 @@ public class MessRegistration extends AppCompatActivity {
 
             if(!getName.isEmpty() && !getEmail.isEmpty() && !getMobileNo.isEmpty() && !getPassword.isEmpty() && !getConfirmPassword.isEmpty()){
 
-                if(getPassword.equals(getConfirmPassword)){
+                if(getMobileNo.length()==10){
 
-                    if(getMobileNo.length()==10){
+                    if(getPassword.equals(getConfirmPassword)){
 
+                        if (getPassword.length() >= 8 && isPasswordValid(getPassword)) {
 
                         //Saving the data to SharedPreference so we will not need to get data from Firestore.
                         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
@@ -161,13 +162,16 @@ public class MessRegistration extends AppCompatActivity {
                                         Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    }
                                 });
 
-
+                        } else {
+                            passwordDoNotMatch.setText("Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character");
+                        }
                     }else{
-                        Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
+                        passwordDoNotMatch.setText("Passwords do not match.");
                     }
                 }
                 else{
-                    passwordDoNotMatch.setText("Passwords do not match.");
+                    Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
+
                 }
 
             }else{
@@ -185,6 +189,12 @@ public class MessRegistration extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         signOut();
+    }
+
+    private boolean isPasswordValid(String password) {
+        // Password validation regex pattern
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password.matches(passwordPattern);
     }
 
     public void signOut(){

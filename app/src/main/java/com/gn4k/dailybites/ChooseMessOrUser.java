@@ -3,6 +3,7 @@ package com.gn4k.dailybites;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ public class ChooseMessOrUser extends AppCompatActivity {
         user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(ChooseMessOrUser.this,UserLoginPage.class);
                 startActivity(intent);
             }
@@ -29,6 +31,7 @@ public class ChooseMessOrUser extends AppCompatActivity {
         messOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(ChooseMessOrUser.this,MessOnwnerLoginPage.class);
                 startActivity(intent);
             }

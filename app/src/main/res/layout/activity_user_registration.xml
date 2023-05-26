@@ -202,13 +202,13 @@
                         android:id="@+id/checkBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="I agree to "
                         app:layout_constraintStart_toStartOf="@+id/passwordConfi"
-                        app:layout_constraintTop_toBottomOf="@+id/passwordConfi" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwarning" />
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/tos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alegreya_sc_black"
@@ -220,11 +220,13 @@
 
                     <TextView
                         android:id="@+id/passwarning"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="10dp"
                         android:text=""
                         android:textColor="#FD0000"
+                        android:layout_marginHorizontal="35dp"
+                        android:textSize="10dp"
+                        android:textAlignment="viewEnd"
                         app:layout_constraintEnd_toEndOf="@+id/passwordConfi"
                         app:layout_constraintTop_toBottomOf="@+id/passwordConfi" />
 

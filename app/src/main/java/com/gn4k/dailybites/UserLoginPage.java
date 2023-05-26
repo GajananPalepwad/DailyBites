@@ -87,6 +87,14 @@ public class UserLoginPage extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(UserLoginPage.this,LanguageChooser.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void setRegistration(View view){
         Intent i = client.getSignInIntent();
         startActivityForResult(i, 1234);

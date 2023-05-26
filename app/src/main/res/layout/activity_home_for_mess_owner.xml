@@ -4,6 +4,207 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FDFCFC"
     tools:context=".HomeForMessOwner">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/sendNotification"
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView10"
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView9" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView11"
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView10" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView13"
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView11" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView12" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView12"
+                    android:layout_width="140dp"
+                    android:layout_height="90dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sendNotification" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView13">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/silverPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginTop="25dp"
+                        android:foreground="@drawable/silver"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/goldPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginTop="25dp"
+                        android:foreground="@drawable/gold"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/diamondPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginVertical="25dp"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="20dp"
+                        android:foreground="@drawable/diamond"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView9"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:cardCornerRadius="13dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" >
+
+
+                    <ImageView
+                        android:id="@+id/imageView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="9dp"
+                        app:srcCompat="@drawable/language" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/notification"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:cardCornerRadius="13dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView9"
+                    app:layout_constraintTop_toTopOf="parent" >
+
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="9dp"
+                        app:srcCompat="@drawable/gridicons_bell__1_" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    app:cardCornerRadius="13dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" >
+
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3dp"
+                        app:srcCompat="@drawable/cooking" />
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

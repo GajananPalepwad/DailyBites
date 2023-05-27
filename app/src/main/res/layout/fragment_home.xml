@@ -10,7 +10,8 @@
         android:id="@+id/tooltext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:textAlignment="textStart"
+        android:paddingLeft="20dp"
         android:textSize="20dp"
         android:textColor="#191B1A"
         android:background="@color/brandcolor"
@@ -29,7 +30,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/tooltext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tooltext"
-        app:srcCompat="@drawable/fa6_solid_coins" />
+        app:srcCompat="@drawable/wallet_alt_fill" />
+
+    <ImageView
+        android:id="@+id/notification"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/wallet"
+        app:layout_constraintEnd_toStartOf="@+id/wallet"
+        app:layout_constraintTop_toTopOf="@+id/wallet"
+        app:srcCompat="@drawable/bell_pin_fill" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"

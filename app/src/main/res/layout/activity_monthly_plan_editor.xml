@@ -6,4 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".MonthlyPlanEditor">
 
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#77040404"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_planName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textviewyellowboarder"
+        android:fontFamily="@font/alegreya_sc_black"
+        android:paddingHorizontal="15dp"
+        android:text="Plan Name"
+        android:textColor="@color/black"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+    <EditText
+        android:id="@+id/prize"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/button_boarder"
+        android:ems="10"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:hint="Price"
+        android:inputType="number"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_planName"/>
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/alegreya_sc_black"
+        android:inputType="number"
+        android:text="Rs"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/prize"
+        app:layout_constraintEnd_toStartOf="@+id/prize"
+        app:layout_constraintTop_toTopOf="@+id/prize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:fontFamily="@font/alegreya_sc_black"
+        android:inputType="number"
+        android:text="Plan price is"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/prize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/prize" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

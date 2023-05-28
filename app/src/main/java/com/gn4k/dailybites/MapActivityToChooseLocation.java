@@ -171,8 +171,8 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         // Display a Toast message
-        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
-        Toast.makeText(MapActivityToChooseLocation.this, message, Toast.LENGTH_SHORT).show();
+//        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
+//        Toast.makeText(MapActivityToChooseLocation.this, message, Toast.LENGTH_SHORT).show();
 
         // Get the address from the clicked location
         getAddressFromLatLng(latLng);

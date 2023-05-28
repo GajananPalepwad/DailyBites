@@ -167,8 +167,8 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         // Display a Toast message
-        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
-        Toast.makeText(MapToLocateMess.this, message, Toast.LENGTH_SHORT).show();
+//        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
+//        Toast.makeText(MapToLocateMess.this, message, Toast.LENGTH_SHORT).show();
 
         // Get the address from the clicked location
         getAddressFromLatLng(latLng);

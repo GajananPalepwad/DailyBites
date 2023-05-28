@@ -171,7 +171,6 @@ public class MessRegistration extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
-
                 }
 
             }else{
@@ -180,6 +179,7 @@ public class MessRegistration extends AppCompatActivity {
 
         }else {
             Toast.makeText(this, "Please agree to all the terms and conditions before Registration", Toast.LENGTH_SHORT).show();
+
         }
 
 

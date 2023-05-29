@@ -1,6 +1,7 @@
 package com.gn4k.dailybites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,25 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
 
         MessModel messmodel = list.get(position);
         holder.messName.setText(messmodel.getMessName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle card click event
+                // You can start a new activity or perform any desired action here
+                // Convert latitude and longitude to strings before setting them
+                String latitude = String.valueOf(messmodel.getLatitude());
+                String longitude = String.valueOf(messmodel.getLongitude());
+
+                // Set the converted latitude and longitude strings to the intent extras
+                Intent intent = new Intent(context, MessInfo.class);
+                intent.putExtra("messMobile", messmodel.getMobileNo());
+                intent.putExtra("messName", messmodel.getMessName());
+                intent.putExtra("messLatitude", latitude);
+                intent.putExtra("messLongitude", longitude);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

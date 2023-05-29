@@ -113,6 +113,7 @@
 
 
                     <TextView
+                        android:id="@+id/ratings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
@@ -145,6 +146,7 @@
                         android:background= "@drawable/non_veg"/>
 
                     <TextView
+                        android:id="@+id/isVegAvailable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"

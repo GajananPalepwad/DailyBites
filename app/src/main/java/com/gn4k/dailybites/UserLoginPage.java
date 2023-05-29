@@ -145,11 +145,7 @@ public class UserLoginPage extends AppCompatActivity {
                 if(documentSnapshot.exists()){
                     if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
 
-                        if(documentSnapshot.getDouble(KEY_LATITUDE)== null){
-                            Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
-                            startActivity(intent);
-                            return;
-                        }
+
                         latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
 
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
@@ -159,6 +155,12 @@ public class UserLoginPage extends AppCompatActivity {
                         preferences.putString("UserPassword",getPassword);
                         preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
                         preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                        preferences.apply();
+                        if(documentSnapshot.getDouble(KEY_LATITUDE)== null){
+                            Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
+                            startActivity(intent);
+                            return;
+                        }
                         preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
                         preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
                         preferences.putString("UserAddress",getAddressFromLatLng(latLng));

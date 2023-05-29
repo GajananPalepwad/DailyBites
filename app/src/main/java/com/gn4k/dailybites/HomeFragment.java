@@ -64,10 +64,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    RecyclerView recyclerView;
-    DatabaseReference database;
-    MyMessAdapterForHome myAdapter;
-    ArrayList<MessModel> list;
 
 
     @Override
@@ -84,6 +80,11 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
 
     private int previousScrollY = 0;
+    RecyclerView recyclerView;
+    DatabaseReference database;
+    MyMessAdapterForHome myAdapter;
+    ArrayList<MessModel> list;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

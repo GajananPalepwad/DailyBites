@@ -4,9 +4,12 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +63,13 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+
+    RecyclerView recyclerView;
+    DatabaseReference database;
+    MyMessAdapterForHome myAdapter;
+    ArrayList<MessModel> list;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +78,11 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     private BottomNavigationView bottomNavigationView;
-    private ImageView mess;
+
     private int previousScrollY = 0;
 
     @Override
@@ -72,7 +90,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
-        mess = view.findViewById(R.id.testcard);
 
 
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
@@ -91,16 +108,34 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mess.setOnClickListener(new View.OnClickListener() {
+        recyclerView = view.findViewById(R.id.recyclerViewMess);
+        database = FirebaseDatabase.getInstance().getReference("mess");
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        list = new ArrayList<>();
+        myAdapter = new MyMessAdapterForHome(container.getContext(),list);
+        recyclerView.setAdapter(myAdapter);
+
+        database.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),MessInfo.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                    MessModel user = dataSnapshot.getValue(MessModel.class);
+                    list.add(user);
+                }
+                myAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-
-
-
 
 
         return view;

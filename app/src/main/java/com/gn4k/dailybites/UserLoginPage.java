@@ -145,6 +145,11 @@ public class UserLoginPage extends AppCompatActivity {
                 if(documentSnapshot.exists()){
                     if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
 
+                        if(documentSnapshot.getDouble(KEY_LATITUDE)== null){
+                            Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
+                            startActivity(intent);
+                            return;
+                        }
                         latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
 
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);

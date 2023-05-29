@@ -7,10 +7,13 @@
     tools:context=".MonthlyPlanEditor">
 
     <ImageView
-        android:id="@+id/imageView14"
+        android:id="@+id/planImage"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#77040404"
+        android:layout_height="180dp"
+        android:background="@drawable/bottom_rounded_corners"
+        android:clipToOutline="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,58 +25,255 @@
         android:background="@drawable/textviewyellowboarder"
         android:fontFamily="@font/alegreya_sc_black"
         android:paddingHorizontal="15dp"
+        android:elevation="10dp"
         android:text="Plan Name"
         android:textColor="@color/black"
         android:textSize="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView14"
+        app:layout_constraintBottom_toBottomOf="@+id/planImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+        app:layout_constraintTop_toBottomOf="@+id/planImage" />
 
-    <EditText
-        android:id="@+id/prize"
-        android:layout_width="100dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView17"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="35dp"
-        android:background="@drawable/button_boarder"
-        android:ems="10"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:hint="Price"
-        android:inputType="number"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_planName"/>
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:fontFamily="@font/alegreya_sc_black"
-        android:inputType="number"
-        android:text="Rs"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/prize"
-        app:layout_constraintEnd_toStartOf="@+id/prize"
-        app:layout_constraintTop_toTopOf="@+id/prize" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:fontFamily="@font/alegreya_sc_black"
-        android:inputType="number"
-        android:text="Plan price is"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/prize"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/prize" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_planName">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/prize"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/button_boarder"
+                android:ems="10"
+                android:hint="0000"
+                android:textAlignment="center"
+                android:inputType="number"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:inputType="number"
+                android:text="Rs "
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/prize"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:inputType="number"
+                android:text="Rate  of  plan"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView18"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView17">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/isNonVeg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:inputType="number"
+                android:text="Non-veg  include"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/isNonVegBTN"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                app:checkedButton="@id/btn_noNonveg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/btn_yesNonveg"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="YES" />
+
+                <Button
+                    android:id="@+id/btn_noNonveg"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="NO" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView19"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView18">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/isHD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:inputType="number"
+                android:text="Home delivery"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/isHDBTN"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                app:checkedButton="@id/btn_noHD"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleSelection="true">
+
+                <Button
+                    android:id="@+id/btn_yesHD"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="YES" />
+
+                <Button
+                    android:id="@+id/btn_noHD"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="NO" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView20"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView19">
+
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_boarder"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:padding="10dp"
+            android:hint="Add Description...."
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/button_shape"
+        android:fontFamily="@font/alegreya_sc_black"
+        android:text="Update"
+        android:textAllCaps="false"
+        android:textColor="#191B1A"
+        android:textSize="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

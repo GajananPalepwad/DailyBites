@@ -2,24 +2,38 @@ package com.gn4k.dailybites;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MessInfo extends AppCompatActivity {
+public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
-    private CardView back;
+    private CardView back, infoCard;
     TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable;
     String messName, address, ratings, isVegAvailable, messLatitude, messLongitude, messMobile;
+    NestedScrollView nestedScrollView;
+    private int previousScrollY = 0;
+    private GoogleMap googleMap;
+    private MapView mapView;
+    private double mlatitude;  // Your latitude value
+    private double mlongitude; // Your longitude value
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +43,30 @@ public class MessInfo extends AppCompatActivity {
         tvMessName = findViewById(R.id.MessName);
         tvAddress = findViewById(R.id.address);
         tvRatings = findViewById(R.id.ratings);
+        infoCard = findViewById(R.id.InfoCardView);
         tvIsVegAvailable = findViewById(R.id.isVegAvailable);
         updateAccordingToFirebase();
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
+        nestedScrollView = findViewById(R.id.nestedScrollView);
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY+1 > previousScrollY) {
+                    // Scrolling down
+                    slideUp(infoCard);
+
+                } else if (scrollY-1 < previousScrollY) {
+                    // Scrolling up
+                    slideDown(infoCard);
+                }
+                previousScrollY = scrollY;
+            }
+        });
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,9 +83,16 @@ public class MessInfo extends AppCompatActivity {
             messLongitude = bundle.getString("messLongitude");
             messLatitude = bundle.getString("messLatitude");
             messMobile = bundle.getString("messMobile");
+            if (messLatitude != null && messLongitude != null) {
 
-            LatLng latLng = new LatLng(Double.parseDouble(messLatitude), Double.parseDouble(messLongitude));
-            getAddressFromLatLng(latLng);
+                mlatitude = Double.parseDouble(messLatitude);
+                mlongitude = Double.parseDouble(messLongitude);
+
+                LatLng latLng = new LatLng(mlatitude, mlongitude);
+                getAddressFromLatLng(latLng);
+            }else{
+                tvAddress.setText("Mess Contact no: "+messMobile);
+            }
 
         }
     }
@@ -69,5 +112,56 @@ public class MessInfo extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+
+        // Move the camera to the specified location
+        LatLng location = new LatLng(mlatitude, mlongitude);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
+
+        // Add a marker at the specified location
+        googleMap.addMarker(new MarkerOptions().position(location));
+    }
+
+
+    private void slideDown(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 0);
+        animator.setDuration(50);
+        animator.start();
+    }
+
+    // Method to show the bottom navigation bar with animation
+    private void slideUp(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", -view.getHeight()+(view.getHeight()/2));
+        animator.setDuration(50);
+        animator.start();
+    }
+
+
+
+}

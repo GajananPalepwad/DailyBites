@@ -6,45 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".MessInfo">
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
-        android:layout_width="425dp"
-        android:layout_height="328dp"
-        app:cardCornerRadius="90dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+    <ImageView
+        android:id="@+id/imageMessFood"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_gravity="center_horizontal"
+        android:clipToOutline="true"
+        android:elevation="4dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bottom_rounded_corners"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/foodcover" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="470dp"
-            android:layout_height="390dp"
-            android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/foodcover" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="252dp" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
+        android:id="@+id/InfoCardView"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_margin="30dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageMessFood"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+        app:layout_constraintTop_toBottomOf="@+id/imageMessFood">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -90,8 +79,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,15 +89,15 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="3dp"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="3dp"
                         android:src="@android:drawable/btn_star_big_on" />
 
 
@@ -117,13 +106,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
-                        android:textColor="@color/black"
-                        android:text="4.8"/>
+                        android:text="4.8"
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(334)"/>
+                        android:text="(334)" />
 
                 </LinearLayout>
 
@@ -131,8 +120,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -141,18 +130,18 @@
                         android:layout_height="15dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
-                        app:cardCornerRadius="30dp"
                         android:layout_marginRight="3dp"
-                        android:background= "@drawable/non_veg"/>
+                        android:background="@drawable/non_veg"
+                        app:cardCornerRadius="30dp" />
 
                     <TextView
                         android:id="@+id/isVegAvailable"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
-                        android:textColor="@color/black"
                         android:layout_gravity="center"
-                        android:text="non-veg"/>
+                        android:fontFamily="sans-serif-black"
+                        android:text="non-veg"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
@@ -167,24 +156,22 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_gravity="center"
-                        app:cardCornerRadius="30dp"
+                        android:layout_marginRight="3dp"
                         android:src="@drawable/_595571"
-                        android:layout_marginRight="3dp"/>
+                        app:cardCornerRadius="30dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-black"
-                        android:textColor="#000000"
                         android:layout_gravity="center"
-                        android:text="Verified"/>
+                        android:fontFamily="sans-serif-black"
+                        android:text="Verified"
+                        android:textColor="#000000" />
 
 
                 </LinearLayout>
 
             </LinearLayout>
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -249,19 +236,26 @@
             app:srcCompat="@drawable/system_uicons_wrap_back" />
     </androidx.cardview.widget.CardView>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="417dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+        app:layout_constraintTop_toBottomOf="@+id/imageMessFood">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
 
             <TextView
                 android:id="@+id/Plan"
@@ -327,6 +321,48 @@
             </HorizontalScrollView>
 
             <TextView
+                android:id="@+id/Location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:paddingHorizontal="15dp"
+                android:text="Location  ->"
+                android:textColor="#191B1A"
+                android:textSize="20dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/brandcolor"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="30dp"
+                app:layout_constraintBottom_toTopOf="@+id/cardView6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addressSearch">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:outlineAmbientShadowColor="#00FDD500"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp">
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:liteMode="false"/>
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
                 android:id="@+id/Photos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -336,8 +372,24 @@
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#909090"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="30dp"
+                app:layout_constraintBottom_toTopOf="@+id/cardView6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addressSearch"/>
+
+
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

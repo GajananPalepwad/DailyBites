@@ -1,5 +1,6 @@
 package com.gn4k.dailybites;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
@@ -10,16 +11,25 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +37,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
     private CardView back, infoCard;
     TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable;
+    ImageView cover;
     String messName, address, ratings, isVegAvailable, messLatitude, messLongitude, messMobile;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
@@ -40,6 +51,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         setContentView(R.layout.activity_mess_info);
 
         back = findViewById(R.id.back);
+        cover = findViewById(R.id.imageMessFood);
         tvMessName = findViewById(R.id.MessName);
         tvAddress = findViewById(R.id.address);
         tvRatings = findViewById(R.id.ratings);
@@ -83,6 +95,26 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
             messLongitude = bundle.getString("messLongitude");
             messLatitude = bundle.getString("messLatitude");
             messMobile = bundle.getString("messMobile");
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpath = db.child("mess").child(messMobile);
+            dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        String url = (String) data.get("coverImage");
+                        Glide.with(MessInfo.this).load(url).centerCrop().placeholder(R.drawable.silver).into(cover);
+                    } else {
+                        Toast.makeText(MessInfo.this, "Account not found", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
             if (messLatitude != null && messLongitude != null) {
 
                 mlatitude = Double.parseDouble(messLatitude);

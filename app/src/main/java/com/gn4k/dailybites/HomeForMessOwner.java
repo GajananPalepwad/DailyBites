@@ -1,6 +1,7 @@
 package com.gn4k.dailybites;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,10 +20,21 @@ public class HomeForMessOwner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
         Button silver, gold, diamond;
+        CardView profile = findViewById(R.id.profile);
         silver=findViewById(R.id.silver);
         gold=findViewById(R.id.gold);
         diamond=findViewById(R.id.diamond);
 
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
+                intent.putExtra("planName", "Silver");
+                startActivity(intent);
+            }
+        });
 
         silver.setOnClickListener(new View.OnClickListener() {
             @Override

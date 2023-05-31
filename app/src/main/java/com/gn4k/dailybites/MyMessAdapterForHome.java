@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -37,6 +40,8 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
 
         MessModel messmodel = list.get(position);
         holder.messName.setText(messmodel.getMessName());
+        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,10 +84,12 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView messName;
+        ImageView coverImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             messName = itemView.findViewById(R.id.messName);
+            coverImg = itemView.findViewById(R.id.coverImg);
 
 
         }

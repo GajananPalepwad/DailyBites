@@ -23,14 +23,21 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +50,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -56,6 +65,14 @@ public class ProfilePageForMess extends AppCompatActivity {
     Bitmap bitmap;
     SharedPreferences sharedPreferences;
 
+    Button uploadDoc, updatePDbtn, updateLocation;
+    EditText  addharNo;
+    EditText  bankHolderName;
+    EditText  ifsc;
+    EditText  accountNo;
+    EditText  bankName;
+
+    EditText ownerName, messName, number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +80,43 @@ public class ProfilePageForMess extends AppCompatActivity {
         setContentView(R.layout.activity_profile_page_for_mess);
 
         CardView imagePicker = findViewById(R.id.addImg);
+
+        uploadDoc = findViewById(R.id.uploadDoc);
+        addharNo = findViewById(R.id.addhar);
+        bankHolderName = findViewById(R.id.AHname);
+        ifsc = findViewById(R.id.ifsc);
+        accountNo = findViewById(R.id.BAnumber);
+        bankName = findViewById(R.id.bankName);
+        ownerName = findViewById(R.id.ownerName);
+        messName = findViewById(R.id.messName);
+        number = findViewById(R.id.number);
+        updatePDbtn = findViewById(R.id.uploadpd);
+        updateLocation = findViewById(R.id.updatelocation);
+
+        uploadDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bankVerify();
+            }
+        });
+
+        updateLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePageForMess.this, MapToLocateMess.class);
+                startActivity(intent);
+            }
+        });
+
+        updatePDbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePD();
+            }
+        });
+
+
+
         sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -87,14 +141,44 @@ public class ProfilePageForMess extends AppCompatActivity {
                 photoPicker.setAction(Intent.ACTION_GET_CONTENT);
                 photoPicker.setType("image/*");
                 activityResultLauncher.launch(photoPicker);
-                uploadtofirebase();
             }
         });
 
-
+        updateAccordingtofirebase();
 
     }
 
+
+    private void updateAccordingtofirebase(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbpath = db.child("mess")
+                .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+
+        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                    ownerName.setText((String) data.get("ownerName"));
+                    messName.setText(String.valueOf(data.get("messName")));
+                    number.setText(String.valueOf(data.get("mobileNo")));
+                    bankName.setText((String) data.get("bankName"));
+                    bankHolderName.setText(String.valueOf(data.get("bankHolderName")));
+                    accountNo.setText(String.valueOf(data.get("accountNo")));
+                    addharNo.setText(String.valueOf(data.get("addharNo")));
+                    ifsc.setText(String.valueOf(data.get("ifsc")));
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
@@ -112,7 +196,7 @@ public class ProfilePageForMess extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-
+        uploadtofirebase();
     }
 
 
@@ -123,6 +207,7 @@ public class ProfilePageForMess extends AppCompatActivity {
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
+
 
             // Get a reference to the Firebase Storage location
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -145,6 +230,7 @@ public class ProfilePageForMess extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // Get the download URL of the uploaded image
+
                     imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -154,7 +240,9 @@ public class ProfilePageForMess extends AppCompatActivity {
                             databaseRef.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", "")).child("coverImage").setValue(uri.toString());
 
                             progressDialog.dismiss();
-                            Toast.makeText(ProfilePageForMess.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(ProfilePageForMess.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                            ImageView sign = findViewById(R.id.sign);
+                            sign.setImageResource(R.drawable.correct);
                         }
                     });
                 }
@@ -167,66 +255,66 @@ public class ProfilePageForMess extends AppCompatActivity {
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                    double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                    progressDialog.setMessage("Progress: " + (int) progressPercent + "%");
+
                 }
             });
-        } else {
-            Toast.makeText(ProfilePageForMess.this, "No Image Selected", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void updatePD(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
 
+        Map<String, Object> data = new HashMap<>();
 
+        data.put("messName", messName.getText().toString());
+        data.put("ownerName", ownerName.getText().toString());
+        dataRef.updateChildren(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Data saved successfully
+                        Toast.makeText(ProfilePageForMess.this, "SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Error occurred while saving data
+                        Toast.makeText(ProfilePageForMess.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    }
+                });
 
-
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-        return result;
     }
 
+    private void bankVerify(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
 
+        Map<String, Object> data = new HashMap<>();
 
-    private void uploadImageToFirebase(File imageFile) {
-        // Create a reference to the Firebase Storage
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        data.put("addharNo", addharNo.getText().toString());
+        data.put("bankHolderName", bankHolderName.getText().toString());
+        data.put("ifsc", ifsc.getText().toString());
+        data.put("accountNo", accountNo.getText().toString());
+        data.put("bankName", bankName.getText().toString());
 
-        // Generate a unique file name for the image
-        String fileName = UUID.randomUUID().toString();
+        dataRef.updateChildren(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Data saved successfully
+                        Toast.makeText(ProfilePageForMess.this, "SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Error occurred while saving data
+                        Toast.makeText(ProfilePageForMess.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    }
+                });
 
-        // Create a reference to the file in Firebase Storage
-        StorageReference imageRef = storageRef.child("images/" + fileName);
-
-        // Upload the file to Firebase Storage
-        UploadTask uploadTask = imageRef.putFile(Uri.fromFile(imageFile));
-
-        // Register a listener to track the upload progress
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            // Get the download URL of the uploaded image
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                String imageUrl = uri.toString();
-
-                // Save the image URL to the Realtime Database
-                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("mess");
-                databaseRef.child("7757085531").setValue(imageUrl);
-
-                // Display a success message or perform any additional actions
-                Toast.makeText(getApplicationContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
-            });
-        }).addOnFailureListener(e -> {
-            // Handle any errors that occurred during the upload
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Image upload failed", Toast.LENGTH_SHORT).show();
-        });
     }
 
 }

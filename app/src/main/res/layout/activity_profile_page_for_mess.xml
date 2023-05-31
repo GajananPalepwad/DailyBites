@@ -89,6 +89,165 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp" />
 
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="30dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/textView61"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/alegreya_sc_black"
+                        android:text="Mess  Name"
+                        app:layout_constraintStart_toStartOf="@+id/messName"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <EditText
+                        android:id="@+id/messName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="35dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginEnd="35dp"
+                        android:inputType="textPersonName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView61" />
+
+                    <TextView
+                        android:id="@+id/textView71"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/alegreya_sc_black"
+                        android:text="Mess  owner  name"
+                        app:layout_constraintStart_toStartOf="@+id/ownerName"
+                        app:layout_constraintTop_toBottomOf="@id/messName" />
+
+
+                    <EditText
+                        android:id="@+id/ownerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="35dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginEnd="35dp"
+                        android:inputType="textPersonName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView71" />
+
+                    <EditText
+                        android:id="@+id/number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="35dp"
+                        android:focusable="false"
+                        android:inputType="number"
+                        app:layout_constraintTop_toBottomOf="@+id/textView721" />
+
+
+                    <TextView
+                        android:id="@+id/textView721"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/alegreya_sc_black"
+                        android:text="Number"
+                        app:layout_constraintStart_toStartOf="@+id/number"
+                        app:layout_constraintTop_toBottomOf="@+id/ownerName" />
+
+                    <Button
+                        android:id="@+id/uploadpd"
+                        android:layout_width="210dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_shape"
+                        android:fontFamily="@font/alegreya_sc_black"
+                        android:text="Update"
+                        android:textAllCaps="false"
+                        android:textColor="#191B1A"
+                        android:textSize="19dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.496"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/number" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="30dp"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="30dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/textView611"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="40dp"
+                        android:text="Click below button to updated your location"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <Button
+                        android:id="@+id/updatelocation"
+                        android:layout_width="210dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/button_shape"
+                        android:fontFamily="@font/alegreya_sc_black"
+                        android:text="Location"
+                        android:textAllCaps="false"
+                        android:textColor="#191B1A"
+                        android:textSize="19dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.496"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView611" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,6 +275,7 @@
 
 
                         <ImageView
+                            android:id="@+id/sign"
                             android:layout_width="27dp"
                             android:layout_height="27dp"
                             android:layout_gravity="center"
@@ -135,12 +295,14 @@
                         app:layout_constraintTop_toTopOf="@+id/addImg" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/textView21"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Add jpeg/png only"
+                        android:text="Click the yellow button to upload"
                         android:textColor="@color/black"
                         android:textSize="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/addImg"
                         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
@@ -153,7 +315,7 @@
                         android:fontFamily="@font/alegreya_sc_black"
                         android:text="Addhar  Number"
                         app:layout_constraintStart_toStartOf="@+id/addhar"
-                        app:layout_constraintTop_toBottomOf="@+id/addImg" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
 
                     <EditText
@@ -209,9 +371,9 @@
                         android:layout_marginHorizontal="35dp"
                         android:layout_marginStart="35dp"
                         android:layout_marginEnd="35dp"
-                        android:focusable="false"
                         android:inputType="textCapCharacters"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -243,12 +405,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="GST   Number(optional)"
-                        app:layout_constraintStart_toStartOf="@+id/gst"
+                        android:text="Bank  Name"
+                        app:layout_constraintStart_toStartOf="@+id/bankName"
                         app:layout_constraintTop_toBottomOf="@id/AHname" />
 
                     <EditText
-                        android:id="@+id/gst"
+                        android:id="@+id/bankName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="35dp"
@@ -259,54 +421,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-                    <CheckBox
-                        android:id="@+id/checkBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="I agree to "
-                        app:layout_constraintStart_toStartOf="@+id/gst"
-                        app:layout_constraintTop_toBottomOf="@+id/passwarning" />
-
-                    <TextView
-                        android:id="@+id/tos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Term of Service"
-                        android:textColor="@color/brandcolor"
-                        app:layout_constraintBottom_toBottomOf="@+id/checkBox"
-                        app:layout_constraintStart_toEndOf="@+id/checkBox"
-                        app:layout_constraintTop_toTopOf="@+id/checkBox" />
-
-                    <TextView
-                        android:id="@+id/passwarning"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="35dp"
-                        android:text=""
-                        android:textAlignment="viewEnd"
-                        android:textColor="#FD0000"
-                        android:textSize="10dp"
-                        app:layout_constraintEnd_toEndOf="@+id/gst"
-                        app:layout_constraintTop_toBottomOf="@+id/gst" />
 
                     <Button
-                        android:id="@+id/upload"
+                        android:id="@+id/uploadDoc"
                         android:layout_width="210dp"
                         android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Upload"
+                        android:text="Update"
                         android:textAllCaps="false"
                         android:textColor="#191B1A"
                         android:textSize="19dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/gst"
-                        app:layout_constraintStart_toStartOf="@+id/gst"
-                        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+                        app:layout_constraintEnd_toEndOf="@+id/bankName"
+                        app:layout_constraintHorizontal_bias="0.633"
+                        app:layout_constraintStart_toStartOf="@+id/bankName"
+                        app:layout_constraintTop_toBottomOf="@+id/bankName" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

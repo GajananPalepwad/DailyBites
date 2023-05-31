@@ -410,22 +410,27 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="25dp"
-                    app:cardCornerRadius="13dp"
+                    app:cardCornerRadius="17dp"
                     app:cardElevation="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
 
                     <ImageView
-                        android:id="@+id/imageView10"
+                        android:id="@+id/profileimg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="3dp"
+                        android:background="@drawable/button_shape"
+                        android:clipToOutline="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/cooking" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/messName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:elevation="5dp"
@@ -434,6 +439,7 @@
                     android:textColor="@color/white"
                     android:textSize="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/profile"
+                    app:layout_constraintEnd_toStartOf="@+id/notification"
                     app:layout_constraintStart_toEndOf="@+id/profile"
                     app:layout_constraintTop_toTopOf="@+id/profile" />
 

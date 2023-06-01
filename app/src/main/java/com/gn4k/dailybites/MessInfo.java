@@ -36,7 +36,7 @@ import java.util.Locale;
 public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
     private CardView back, infoCard;
-    TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable;
+    TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable, tvIsVerified, priseD, priseG, priseS;
     ImageView cover;
     String messName, address, ratings, isVegAvailable, messLatitude, messLongitude, messMobile;
     NestedScrollView nestedScrollView;
@@ -55,8 +55,12 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         tvMessName = findViewById(R.id.MessName);
         tvAddress = findViewById(R.id.address);
         tvRatings = findViewById(R.id.ratings);
+        tvIsVerified = findViewById(R.id.isVerified);
         infoCard = findViewById(R.id.InfoCardView);
         tvIsVegAvailable = findViewById(R.id.isVegAvailable);
+        priseD = findViewById(R.id.priceD);
+        priseG = findViewById(R.id.priceG);
+        priseS = findViewById(R.id.priceS);
         updateAccordingToFirebase();
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -87,6 +91,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         });
     }
 
+    int i=0;
     private void updateAccordingToFirebase(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -105,12 +110,14 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         String url = (String) data.get("coverImage");
                         Glide.with(MessInfo.this).load(url).centerCrop().placeholder(R.drawable.silver).into(cover);
+                        tvRatings.setText((String) data.get("ratings"));
+                        if((String) data.get("ifsc")==null && (String) data.get("accountNo")==null && (String) data.get("addharNo")==null){
+                            tvIsVerified.setText("Not verified");
+                        }
                     } else {
                         Toast.makeText(MessInfo.this, "Account not found", Toast.LENGTH_LONG).show();
                     }
                 }
-
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -122,10 +129,72 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
                 LatLng latLng = new LatLng(mlatitude, mlongitude);
                 getAddressFromLatLng(latLng);
-            }else{
-                tvAddress.setText("Mess Contact no: "+messMobile);
             }
 
+
+
+
+            DatabaseReference dbd = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpathd = dbd.child("mess").child(messMobile).child("Diamondplan");
+
+            dbpathd.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        if (i==0){
+                            priseD.setText(String.valueOf(data.get("price")));
+                        }
+                    } else {
+                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+
+            DatabaseReference dbg = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpathg = dbg.child("mess").child(messMobile).child("Goldplan");
+
+            dbpathg.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        if (i==0){
+                            priseG.setText(String.valueOf(data.get("price")));
+                        }
+                    } else {
+                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });DatabaseReference dbs = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpaths = dbs.child("mess").child(messMobile).child("Silverplan");
+
+            dbpaths.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        if (i==0){
+                            priseS.setText(String.valueOf(data.get("price")));
+                        }
+                    } else {
+                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
         }
     }
 

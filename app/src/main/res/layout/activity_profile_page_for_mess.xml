@@ -157,6 +157,8 @@
                         android:layout_marginHorizontal="35dp"
                         android:focusable="false"
                         android:inputType="number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView721" />
 
 
@@ -169,6 +171,9 @@
                         android:text="Number"
                         app:layout_constraintStart_toStartOf="@+id/number"
                         app:layout_constraintTop_toBottomOf="@+id/ownerName" />
+
+
+
 
                     <Button
                         android:id="@+id/uploadpd"

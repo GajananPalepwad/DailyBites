@@ -74,6 +74,8 @@ public class ProfilePageForMess extends AppCompatActivity {
 
     EditText ownerName, messName, number;
 
+    CardView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +92,10 @@ public class ProfilePageForMess extends AppCompatActivity {
         ownerName = findViewById(R.id.ownerName);
         messName = findViewById(R.id.messName);
         number = findViewById(R.id.number);
+
         updatePDbtn = findViewById(R.id.uploadpd);
         updateLocation = findViewById(R.id.updatelocation);
+        back = findViewById(R.id.back);
 
         uploadDoc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,9 +119,15 @@ public class ProfilePageForMess extends AppCompatActivity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
-        sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {

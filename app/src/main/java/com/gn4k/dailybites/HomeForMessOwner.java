@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class HomeForMessOwner extends AppCompatActivity {
 
 
-TextView messName;
+TextView messName, subscribers;
     ImageView profileImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ TextView messName;
         diamond = findViewById(R.id.diamond);
         profileImg  = findViewById(R.id.profileimg);
         messName  = findViewById(R.id.messName);
+        subscribers = findViewById(R.id.subscribers);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -53,6 +54,7 @@ TextView messName;
                         String url = (String) data.get("coverImage");
                         Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
                         messName.setText((String) data.get("messName"));
+                        messName.setText((String) data.get("ratings"));
                     }
 
 

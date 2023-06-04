@@ -137,9 +137,11 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
                                 }
                             });
             }else {
+                        showInstructionDialogBox();
                 Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
             }
         }else {
+                    showInstructionDialogBox();
             Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
         }
             }

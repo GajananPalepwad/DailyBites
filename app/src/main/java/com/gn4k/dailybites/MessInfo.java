@@ -41,9 +41,10 @@ import java.util.Locale;
 public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
     private CardView back, infoCard,  diamondCard, goldCard, silverCard;
-    TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable, tvIsVerified, priseD, priseG, priseS;
+    TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS;
+    boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true, isVegOrNot = false;
     ImageView cover, isVeg;
-    String messName, address, ratings, isVegAvailable, messLatitude, messLongitude, messMobile;
+    String messName, address, ratings,messLatitude, messLongitude, messMobile;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
     private GoogleMap googleMap;
@@ -66,7 +67,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         tvRatings = findViewById(R.id.ratings);
         tvIsVerified = findViewById(R.id.isVerified);
         infoCard = findViewById(R.id.InfoCardView);
-        tvIsVegAvailable = findViewById(R.id.isVegAvailable);
+        tvIsNonVegAvailable = findViewById(R.id.isVegAvailable);
         priseD = findViewById(R.id.priceD);
         priseG = findViewById(R.id.priceG);
         priseS = findViewById(R.id.priceS);
@@ -94,30 +95,39 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         diamondCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                intent.putExtra("plan", "Diamond");
-                intent.putExtra("mobileNo", messMobile);
-                startActivity(intent);
+                if(isDPlanPresent) {
+                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                    intent.putExtra("plan", "Diamond");
+                    intent.putExtra("mobileNo", messMobile);
+                    intent.putExtra("messName", messName);
+                    startActivity(intent);
+                }
             }
         });
 
         goldCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                intent.putExtra("plan", "Gold");
-                intent.putExtra("mobileNo", messMobile);
-                startActivity(intent);
+                if(isGPlanPresent) {
+                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                    intent.putExtra("plan", "Gold");
+                    intent.putExtra("mobileNo", messMobile);
+                    intent.putExtra("messName", messName);
+                    startActivity(intent);
+                }
             }
         });
 
         silverCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                intent.putExtra("plan", "Silver");
-                intent.putExtra("mobileNo", messMobile);
-                startActivity(intent);
+                if(isSPlanPresent) {
+                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                    intent.putExtra("plan", "Silver");
+                    intent.putExtra("mobileNo", messMobile);
+                    intent.putExtra("messName", messName);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -149,10 +159,13 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         String url = (String) data.get("coverImage");
                         Glide.with(MessInfo.this).load(url).centerCrop().placeholder(R.drawable.silver).into(cover);
+
                         tvRatings.setText((String) data.get("ratings"));
-                        if((String) data.get("ifsc")==null && (String) data.get("accountNo")==null && (String) data.get("addharNo")==null){
-                            tvIsVerified.setText("Not verified");
+
+                        if(((String) data.get("isVerified")).equals("yes")){
+                                tvIsVerified.setText("Verified");
                         }
+
                     } else {
                         Toast.makeText(MessInfo.this, "Account not found", Toast.LENGTH_LONG).show();
                     }
@@ -181,11 +194,15 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                        if (i==0){
-                            priseD.setText("₹"+String.valueOf(data.get("price")));
+
+                        priseD.setText("₹"+String.valueOf(data.get("price")));
+                        if((String.valueOf(data.get("isNonVegInclude"))).equals("yes")){
+                            isVeg.setImageResource(R.drawable.nonveg);
+                            tvIsNonVegAvailable.setText("Non-Veg Available");
                         }
                     } else {
-                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                        priseD.setText("Not Available");
+                        isDPlanPresent = false;
                     }
                 }
 
@@ -203,11 +220,17 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                        if (i==0){
-                            priseG.setText("₹"+String.valueOf(data.get("price")));
+
+                        priseG.setText("₹"+String.valueOf(data.get("price")));
+                        if(String.valueOf(data.get("isNonVegInclude")).equals("yes")){
+
+                            isVeg.setImageResource(R.drawable.nonveg);
+                            tvIsNonVegAvailable.setText("Non-Veg Available");
                         }
+
                     } else {
-                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                        priseG.setText("Not Available");
+                        isGPlanPresent = false;
                     }
                 }
 
@@ -222,11 +245,17 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                        if (i==0){
-                            priseS.setText("₹"+String.valueOf(data.get("price")));
+
+                        priseS.setText("₹"+String.valueOf(data.get("price")));
+                        if(String.valueOf(data.get("isNonVegInclude")).equals("yes")){
+
+                            isVeg.setImageResource(R.drawable.nonveg);
+                            tvIsNonVegAvailable.setText("Non-Veg Available");
                         }
+
                     } else {
-                        Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
+                        priseS.setText("Not Available");
+                        isSPlanPresent = false;
                     }
                 }
 
@@ -234,6 +263,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
+
+
         }
     }
 

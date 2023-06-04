@@ -39,9 +39,10 @@ public class MonthlyPlanEditor extends AppCompatActivity {
 
     private String isNonVegInclude = "no";
     private String isHomeDeliveryAvailable = "no";
+    private String isBreakFastAvailable = "no";
     private String planName;
     private Button updateBTN;
-    MaterialButtonToggleGroup toggleDelivery, toggleNonVeg;
+    MaterialButtonToggleGroup toggleDelivery, toggleNonVeg, toggleBreakFast;
 
 
     @Override
@@ -57,6 +58,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
         updateBTN = findViewById(R.id.update);
         toggleNonVeg = findViewById(R.id.isNonVegBTN);
         toggleDelivery = findViewById(R.id.isHDBTN);
+        toggleBreakFast = findViewById(R.id.isBrkFastBTN);
 
         toggleNonVeg.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
@@ -81,6 +83,31 @@ public class MonthlyPlanEditor extends AppCompatActivity {
                 }
             }
         });
+
+        toggleBreakFast.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                // Handle the button checked event
+                if (isChecked) {
+                    // Button is checked
+                    switch (checkedId) {
+                        case R.id.btn_yesbrkFast:
+                            // YES button is checked
+                            isBreakFastAvailable = "yes";
+
+                            break;
+                        case R.id.btn_nobrkFast:
+                            // NO button is checked
+                            isBreakFastAvailable = "no";
+
+                            break;
+                    }
+                } else {
+//                    Toast.makeText(MonthlyPlanEditor.this, "Please select one option in Non-Veg", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         toggleDelivery.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
@@ -147,6 +174,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
         data.put("price", price);
         data.put("isNonVegInclude", isNonVegInclude);
         data.put("isHomeDeliveryAvailable", isHomeDeliveryAvailable);
+        data.put("isBreakFastAvailable", isBreakFastAvailable);
         data.put("description", description);
 
         dataRef.updateChildren(data)
@@ -214,6 +242,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
                     evprice.setText(String.valueOf(data.get("price")));
                     isNonVegInclude=(String) data.get("isNonVegInclude");
                     isHomeDeliveryAvailable=(String) data.get("isHomeDeliveryAvailable");
+                    isBreakFastAvailable = (String) data.get("isBreakFastAvailable");
 
                     if(isNonVegInclude.equals("yes")){
                         toggleNonVeg.check(R.id.btn_yesNonveg);
@@ -226,6 +255,13 @@ public class MonthlyPlanEditor extends AppCompatActivity {
                     }else {
                         toggleDelivery.check(R.id.btn_noHD);
                     }
+
+                    if(isBreakFastAvailable.equals("yes")){
+                        toggleBreakFast.check(R.id.btn_yesbrkFast);
+                    }else {
+                        toggleDelivery.check(R.id.btn_nobrkFast);
+                    }
+
                     updateBTN.setText("Update");
                 } else {
                         updateBTN.setText("Upload");

@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif-black"
-                        android:text="Veg"
+                        android:text="Only Pure Veg"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -167,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif-black"
-                        android:text="Verified"
+                        android:text="Not Verified"
                         android:textColor="#000000" />
 
 

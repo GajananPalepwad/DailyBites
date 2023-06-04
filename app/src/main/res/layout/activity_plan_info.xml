@@ -295,7 +295,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:inputType="number"
-            android:text="Breakfast Available"
+            android:text="Breakfast Not Available"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold" />

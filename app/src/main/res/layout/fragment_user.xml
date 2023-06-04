@@ -134,8 +134,8 @@
                 android:src="@drawable/line_38__1_" />
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:id="@+id/messNameU"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:layout_gravity="center"

@@ -51,8 +51,8 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
 
     private SearchView searchView;
 
-    private double latitude;
-    private double longitude;
+    private double latitude = 0;
+    private double longitude = 0;
     private String addressPreference;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 

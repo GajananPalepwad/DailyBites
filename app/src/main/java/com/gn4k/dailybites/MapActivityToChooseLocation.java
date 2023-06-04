@@ -105,34 +105,43 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
             @Override
             public void onClick(View v) {
                 // Save user location and address to shared preferences
-                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                preferences.putString("UserLatitude", latitude + "");
-                preferences.putString("UserLongitude", longitude + "");
-                preferences.putString("UserAddress", addressPreference);
-                preferences.apply();
+                if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
+                    if(latitude !=0 && longitude !=0) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                    SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                // Update user information in Firestore database
-                Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put(KEY_LATITUDE, latitude);
-                userInfo.put(KEY_LONGITUDE, longitude);
+                    preferences.putString("UserLatitude", latitude + "");
+                    preferences.putString("UserLongitude", longitude + "");
+                    preferences.putString("UserAddress", addressPreference);
+                    preferences.apply();
 
-                db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
-                        addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                // Move to the home screen
-                                Intent intent = new Intent(MapActivityToChooseLocation.this, Home.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MapActivityToChooseLocation.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    // Update user information in Firestore database
+                    Map<String, Object> userInfo = new HashMap<>();
+                    userInfo.put(KEY_LATITUDE, latitude);
+                    userInfo.put(KEY_LONGITUDE, longitude);
+
+                    db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
+                            addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    // Move to the home screen
+                                    Intent intent = new Intent(MapActivityToChooseLocation.this, Home.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MapActivityToChooseLocation.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+            }else {
+                Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
+        }
             }
         });
 

@@ -31,8 +31,8 @@ import java.util.Map;
 
 public class MonthlyPlanEditor extends AppCompatActivity {
 
-    private TextView TVplanName, evdescription;
-    private EditText evprice;
+    private TextView TVplanName;
+    private EditText evprice, evdescription;
     private ImageView planImage;
     private CardView back;
 

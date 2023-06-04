@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,9 +40,9 @@ import java.util.Locale;
 
 public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
-    private CardView back, infoCard;
+    private CardView back, infoCard,  diamondCard, goldCard, silverCard;
     TextView tvMessName, tvAddress, tvRatings, tvIsVegAvailable, tvIsVerified, priseD, priseG, priseS;
-    ImageView cover;
+    ImageView cover, isVeg;
     String messName, address, ratings, isVegAvailable, messLatitude, messLongitude, messMobile;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
@@ -51,7 +56,11 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         setContentView(R.layout.activity_mess_info);
 
         back = findViewById(R.id.back);
+        diamondCard = findViewById(R.id.diamond);
+        goldCard = findViewById(R.id.gold);
+        silverCard = findViewById(R.id.silver);
         cover = findViewById(R.id.imageMessFood);
+        isVeg = findViewById(R.id.isvegimage);
         tvMessName = findViewById(R.id.MessName);
         tvAddress = findViewById(R.id.address);
         tvRatings = findViewById(R.id.ratings);
@@ -79,6 +88,36 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     slideDown(infoCard);
                 }
                 previousScrollY = scrollY;
+            }
+        });
+
+        diamondCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Diamond");
+                intent.putExtra("mobileNo", messMobile);
+                startActivity(intent);
+            }
+        });
+
+        goldCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Gold");
+                intent.putExtra("mobileNo", messMobile);
+                startActivity(intent);
+            }
+        });
+
+        silverCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Silver");
+                intent.putExtra("mobileNo", messMobile);
+                startActivity(intent);
             }
         });
 
@@ -143,7 +182,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         if (i==0){
-                            priseD.setText(String.valueOf(data.get("price")));
+                            priseD.setText("₹"+String.valueOf(data.get("price")));
                         }
                     } else {
                         Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
@@ -165,7 +204,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         if (i==0){
-                            priseG.setText(String.valueOf(data.get("price")));
+                            priseG.setText("₹"+String.valueOf(data.get("price")));
                         }
                     } else {
                         Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();
@@ -184,7 +223,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         if (i==0){
-                            priseS.setText(String.valueOf(data.get("price")));
+                            priseS.setText("₹"+String.valueOf(data.get("price")));
                         }
                     } else {
                         Toast.makeText(MessInfo.this, "Something wrong", Toast.LENGTH_LONG).show();

@@ -138,17 +138,31 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                     String firepass = (String) data.get("password");
                     if (pass.getText().toString().equals(firepass)) {
 
-                        latLng = new LatLng((double)data.get("latitude"), (double)data.get("longitude"));
+
 
 
                         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("MessOwnerEmail",mobile_No.getText().toString());
+                        preferences.putString("MessOwnerEmail",(String) data.get("email"));
                         preferences.putString("MessName",(String) data.get("messName"));
                         preferences.putString("MessOwnerPassword",pass.getText().toString());
-                        preferences.putString("MessOwnerMobileNo",(String) data.get("mobileNo"));
+                        preferences.putString("MessOwnerMobileNo",mobile_No.getText().toString());
                         preferences.putString("MessOwnerName",(String) data.get("ownerName"));
+                        preferences.apply();
+                        if (!snapshot.hasChild("latitude")){
+                            Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
+                            startActivity(intent);
+                            return;
+                        }
+                        else{
+                            if(String.valueOf(data.get("latitude")).equals("0")){
+                                Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
+                                startActivity(intent);
+                                return;
+                            }
+                        }
+                        latLng = new LatLng((double)data.get("latitude"), (double)data.get("longitude"));
                         preferences.putString("MessOwnerLatitude", String.valueOf(data.get("latitude")));
                         preferences.putString("MessOwnerLongitude", String.valueOf(data.get("longitude")));
                         preferences.putString("MessOwnerAddress", getAddressFromLatLng(latLng));

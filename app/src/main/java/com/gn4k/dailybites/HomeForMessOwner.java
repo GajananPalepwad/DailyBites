@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,47 +26,54 @@ import java.util.HashMap;
 public class HomeForMessOwner extends AppCompatActivity {
 
 
-TextView messName, subscribers;
+    TextView messName, subscribers, ratings;
     ImageView profileImg;
+    String mobileNo;
+    int countD =0, countS = 0, countG =0, totalUsers = 0;
+    RatingBar myRatingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
-        Button silver, gold, diamond;
-        CardView profile = findViewById(R.id.profile);
-        silver = findViewById(R.id.silver);
-        gold = findViewById(R.id.gold);
-        diamond = findViewById(R.id.diamond);
-        profileImg  = findViewById(R.id.profileimg);
-        messName  = findViewById(R.id.messName);
-        subscribers = findViewById(R.id.subscribers);
+            Button silver, gold, diamond;
+            CardView profile = findViewById(R.id.profile);
+            silver = findViewById(R.id.silver);
+            gold = findViewById(R.id.gold);
+            diamond = findViewById(R.id.diamond);
+            profileImg  = findViewById(R.id.profileimg);
+            messName  = findViewById(R.id.messName);
+            subscribers = findViewById(R.id.subscribers);
+            ratings = findViewById(R.id.ratingInNumber);
+            myRatingBar = findViewById(R.id.myRatingBar);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference dbpath = db.child("mess")
-                .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+            SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpath = db.child("mess")
+                    .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
-        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                    if ((String) data.get("coverImage") != null || (String) data.get("messName")!= null) {
-                        String url = (String) data.get("coverImage");
-                        Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
-                        messName.setText((String) data.get("messName"));
-                        messName.setText((String) data.get("ratings"));
+            dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        if ((String) data.get("coverImage") != null || (String) data.get("messName")!= null) {
+                            String url = (String) data.get("coverImage");
+                            Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
+                            messName.setText((String) data.get("messName"));
+                            ratings.setText((String) data.get("ratings"));
+                            myRatingBar.setRating(Float. parseFloat((String) data.get("ratings")) );
+                        }
+
                     }
-
-
                 }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
+        });
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-        }
-    });
-
+            mobileNo = sharedPreferences.getString("MessOwnerMobileNo", "");
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +111,84 @@ TextView messName, subscribers;
             }
         });
 
+        getCountOfUsers();
+
+    }
+
+
+
+    private void getCountOfUsers(){
+
+        DatabaseReference databaseRefD = FirebaseDatabase.getInstance().getReference().
+                child("mess").
+                child(mobileNo).
+                child("Diamondplan").
+                child("Users");
+        databaseRefD.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    countD = (int) dataSnapshot.getChildrenCount();
+                    totalUsers = totalUsers + countD;
+                    subscribers.setText(""+totalUsers);
+                    // Use the 'count' variable containing the number of child nodes
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle potential errors here
+            }
+        });
+
+        DatabaseReference databaseRefG = FirebaseDatabase.getInstance().getReference().
+                child("mess").
+                child(mobileNo).
+                child("Goldplan").
+                child("Users");
+        databaseRefG.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    countG = (int) dataSnapshot.getChildrenCount();
+                    totalUsers = totalUsers + countG;
+                    subscribers.setText(""+totalUsers);
+                    // Use the 'count' variable containing the number of child nodes
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle potential errors here
+            }
+        });
+
+        DatabaseReference databaseRefS = FirebaseDatabase.getInstance().getReference().
+                child("mess").
+                child(mobileNo).
+                child("Silverplan").
+                child("Users");
+        databaseRefS.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    countS = (int) dataSnapshot.getChildrenCount();
+                    totalUsers = totalUsers + countS;
+                    subscribers.setText(""+totalUsers);
+
+                    // Use the 'count' variable containing the number of child nodes
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle potential errors here
+            }
+        });
 
 
     }
+
+
+
 }

@@ -259,7 +259,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
                     if(isBreakFastAvailable.equals("yes")){
                         toggleBreakFast.check(R.id.btn_yesbrkFast);
                     }else {
-                        toggleDelivery.check(R.id.btn_nobrkFast);
+                        toggleBreakFast.check(R.id.btn_nobrkFast);
                     }
 
                     updateBTN.setText("Update");

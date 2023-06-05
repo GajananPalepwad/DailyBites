@@ -52,9 +52,7 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
     private GoogleMap googleMap;
     private Marker marker;
     private EditText addressT;
-
     private SearchView searchView;
-
     private double latitude;
     private double longitude;
     private String addressPreference;

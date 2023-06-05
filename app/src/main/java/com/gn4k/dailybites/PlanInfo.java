@@ -176,8 +176,6 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             options.put("description", "For "+planName+" Plan of "+messName);
             options.put("send_sms_hash", true);
             options.put("allow_rotation", false);
-
-
             options.put("currency", "INR");
             options.put("amount", planPrize);
 
@@ -251,16 +249,6 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 preferences.putString("toDate", nextMonthDateString);
                 preferences.apply();
 
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference dataRef = ref.child("mess").child(mobileNo).child(planName + "plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
-
-                Map<String, Object> data = new HashMap<>();
-                data.put("name", sharedPreferences.getString("UserName", ""));
-                data.put("email", sharedPreferences.getString("UserEmail", ""));
-                data.put("plan", planName + " Plan");
-                data.put("fromDate", date);
-                data.put("toDate", nextMonthDateString);
-
                 db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
                         .update(userInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -276,6 +264,17 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                                 showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
                             }
                         });
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference dataRef = ref.child("mess").child(mobileNo).child(planName + "plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("name", sharedPreferences.getString("UserName", ""));
+                data.put("email", sharedPreferences.getString("UserEmail", ""));
+                data.put("plan", planName + " Plan");
+                data.put("fromDate", date);
+                data.put("toDate", nextMonthDateString);
+
 
                 dataRef.updateChildren(data)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

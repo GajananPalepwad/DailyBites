@@ -323,7 +323,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:inputType="number"
-        android:text="Plan Includes"
+        android:text="Plan Description"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"

@@ -1,10 +1,12 @@
 package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -271,7 +273,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(PlanInfo.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
                             }
                         });
 
@@ -287,7 +289,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Error occurred while saving data
-                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
                             }
                         });
             }
@@ -297,7 +299,26 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
     @Override
     public void onPaymentError(int i, String s) {
-        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
+        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
 
     }
+
+    private void showInstructionDialogBox(String title, String mbody) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
 }

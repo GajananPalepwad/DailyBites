@@ -16,6 +16,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 
 public class UserFragment extends Fragment {
 
@@ -27,19 +34,51 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         Button logout = view.findViewById(R.id.LogOut);
         TextView name = view.findViewById(R.id.name);
         TextView address = view.findViewById(R.id.address);
         TextView MessName = view.findViewById(R.id.messNameU);
-
+        TextView daysRemain = view.findViewById(R.id.daysRemain);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
 
         name.setText(sharedPreferences.getString("UserName",""));
         address.setText(sharedPreferences.getString("UserAddress",""));
         MessName.setText(sharedPreferences.getString("messName",""));
+
+
+
+        GetDateTime getDateTime = new GetDateTime(getActivity());
+        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+            @Override
+            public void onGetDateTime(String date, String time) {
+
+                String givenDateStr = sharedPreferences.getString("toDate","");
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                // Parse the current date string to a LocalDate object
+                Date currentDate = null;
+                Date givenDate = null;
+                try {
+                    currentDate = formatter.parse(date);
+                    givenDate = formatter.parse(givenDateStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // Calculate the number of days between the given date and the current date
+                long remainingDays = -1;
+                if (currentDate != null && givenDate != null) {
+                    long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
+                    remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
+                }
+                daysRemain.setText(remainingDays+ " Days Left");
+
+            }
+        });
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

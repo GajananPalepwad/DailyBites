@@ -57,14 +57,140 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/Subscribed"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp"
-                android:elevation="70dp"
-                app:cardCornerRadius="25dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/Subscribed"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="14dp"
+                    android:elevation="70dp"
+                    android:foreground="@drawable/cardback"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/messNameH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:elevation="20dp"
+                    android:text="Mess Name"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/Subscribed"
+                    app:layout_constraintTop_toTopOf="@+id/Subscribed" />
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:elevation="20dp"
+                    android:src="@drawable/logowhite"
+                    app:layout_constraintEnd_toEndOf="@+id/Subscribed"
+                    app:layout_constraintTop_toTopOf="@+id/Subscribed" />
+
+
+                <ImageView
+                    android:id="@+id/planImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="1dp"
+                    android:elevation="20dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_boarder"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/diamond"
+                    app:layout_constraintBottom_toTopOf="@+id/VT"
+                    app:layout_constraintEnd_toEndOf="@+id/logo"
+                    app:layout_constraintStart_toStartOf="@+id/endDate"
+                    app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+
+                <TextView
+                    android:id="@+id/planName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="20dp"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="10dp"
+                    android:text="P L A N  N A M E"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="@+id/messNameH"
+                    app:layout_constraintTop_toBottomOf="@+id/messNameH" />
+
+
+                <TextView
+                    android:id="@+id/NoSerial"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="20dp"
+                    android:fontFamily="sans-serif"
+                    android:text="0000000000000000"
+                    android:textColor="@color/white"
+                    android:textSize="23dp"
+                    app:layout_constraintEnd_toStartOf="@+id/planImg"
+                    app:layout_constraintStart_toStartOf="@+id/planName"
+                    app:layout_constraintTop_toBottomOf="@+id/planName" />
+
+
+                <TextView
+                    android:id="@+id/nameH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="20dp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:text="P L A N  H O L D E R  N A M E"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/Subscribed"
+                    app:layout_constraintStart_toStartOf="@+id/Subscribed" />
+
+                <TextView
+                    android:id="@+id/endDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="20dp"
+                    android:text="DD/MM"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/Subscribed"
+                    app:layout_constraintEnd_toEndOf="@+id/Subscribed" />
+
+                <TextView
+                    android:id="@+id/VT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:elevation="20dp"
+                    android:text="valid thru"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/endDate"
+                    app:layout_constraintEnd_toEndOf="@+id/endDate" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/Messlist"

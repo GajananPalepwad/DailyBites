@@ -57,7 +57,7 @@ public class ProfileForUsers extends AppCompatActivity {
                 Map<String, Object> userInfo = new HashMap<>();
 
                 userInfo.put(KEY_NAME, Name.getText().toString());
-                db.collection("User").document(email.getText().toString()).set(userInfo).
+                db.collection("User").document(email.getText().toString()).update(userInfo).
 
                         addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

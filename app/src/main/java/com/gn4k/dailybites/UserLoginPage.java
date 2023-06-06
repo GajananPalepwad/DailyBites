@@ -145,9 +145,8 @@ public class UserLoginPage extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
+
                     if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
-
-
 
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
                         SharedPreferences.Editor preferences = sharedPreferences.edit();

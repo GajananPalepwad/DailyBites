@@ -8,7 +8,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/like"
+        android:id="@+id/wallet"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
@@ -29,16 +29,16 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/share"
+        android:id="@+id/notification"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="35dp"
         app:cardElevation="18dp"
         android:backgroundTint="@color/brandcolor"
-        app:layout_constraintBottom_toBottomOf="@+id/like"
-        app:layout_constraintEnd_toStartOf="@id/like"
-        app:layout_constraintTop_toTopOf="@+id/like">
+        app:layout_constraintBottom_toBottomOf="@+id/wallet"
+        app:layout_constraintEnd_toStartOf="@id/wallet"
+        app:layout_constraintTop_toTopOf="@+id/wallet">
 
 
         <ImageView
@@ -57,9 +57,9 @@
         app:cardCornerRadius="35dp"
         android:backgroundTint="@color/brandcolor"
         app:cardElevation="18dp"
-        app:layout_constraintBottom_toBottomOf="@+id/share"
+        app:layout_constraintBottom_toBottomOf="@+id/notification"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/share">
+        app:layout_constraintTop_toTopOf="@+id/notification">
 
 
         <ImageView
@@ -87,7 +87,8 @@
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="100dp"
+                android:elevation="0dp"/>
 
 
             <androidx.cardview.widget.CardView
@@ -249,8 +250,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-
-
 
 
             <androidx.cardview.widget.CardView

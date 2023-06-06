@@ -38,6 +38,7 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         Button logout = view.findViewById(R.id.LogOut);
+        Button persnolInfo = view.findViewById(R.id.persnolI);
         TextView name = view.findViewById(R.id.name);
         TextView address = view.findViewById(R.id.address);
         TextView MessName = view.findViewById(R.id.messNameU);
@@ -78,7 +79,14 @@ public class UserFragment extends Fragment {
             }
         });
 
-
+        persnolInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ProfileForUsers.class);
+                startActivity(intent);
+                getActivity();
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

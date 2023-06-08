@@ -104,7 +104,7 @@
 
                     <TextView
                         android:id="@+id/ratings"
-                        android:layout_width="wrap_content"
+                        android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:text="4.8"

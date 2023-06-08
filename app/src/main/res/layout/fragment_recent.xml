@@ -51,7 +51,7 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/alegreya_sc_black"
         android:paddingHorizontal="15dp"
-        android:text="Mess List  ->"
+        android:text="Recently  Visited  ->"
         android:textColor="#191B1A"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"

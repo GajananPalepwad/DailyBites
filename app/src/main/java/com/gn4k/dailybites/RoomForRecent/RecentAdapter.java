@@ -3,55 +3,60 @@ package com.gn4k.dailybites.RoomForRecent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.R;
 
 import java.util.List;
 
 // MessAdapter class
-public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
-    private List<Mess> messList;
+public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyRecentViewHolder> {
 
-    public void setData(List<Mess> messList) {
+
+    List<Mess> messList;
+    ViewGroup parent;
+    public RecentAdapter(List<Mess> messList) {
         this.messList = messList;
-        notifyDataSetChanged();
     }
+
+
+
+    static class MyRecentViewHolder extends RecyclerView.ViewHolder{
+
+        TextView messName;
+        ImageView cover;
+        public MyRecentViewHolder(@NonNull View itemView) {
+            super(itemView);
+            messName = itemView.findViewById(R.id.messName);
+            cover = itemView.findViewById(R.id.coverImg);
+        }
+
+
+    }
+
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.messlistcards, parent, false);
-        return new ViewHolder(view);
+    public MyRecentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.messlistcards, parent,false);
+        this.parent = parent;
+        return new MyRecentViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Mess mess = messList.get(position);
-        holder.bind(mess);
+    public void onBindViewHolder(@NonNull MyRecentViewHolder holder, int position) {
+        holder.messName.setText(messList.get(position).getMessNameR());
+        Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.silver).into(holder.cover);
     }
 
     @Override
     public int getItemCount() {
-        return messList != null ? messList.size() : 0;
+        return messList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView messNameTextView;
-        private TextView messNoTextView;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-//            messNameTextView = itemView.findViewById(R.id.messNameTextView);
-//            messNoTextView = itemView.findViewById(R.id.messNoTextView);
-        }
-
-        public void bind(Mess mess) {
-//            messNameTextView.setText(mess.getMessNameR());
-//            messNoTextView.setText(mess.getMessNoR());
-        }
-    }
 }

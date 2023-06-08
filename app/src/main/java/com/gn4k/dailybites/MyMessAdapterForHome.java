@@ -65,6 +65,8 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
                     // For example, display a toast message indicating the unavailability of location information
                     Toast.makeText(context, "Location not available for " + messmodel.messName, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, MessInfo.class);
+                    intent.putExtra("messLatitude", "");
+                    intent.putExtra("messLongitude", "");
                     intent.putExtra("messMobile", messmodel.getMobileNo());
                     intent.putExtra("messName", messmodel.getMessName());
                     context.startActivity(intent);

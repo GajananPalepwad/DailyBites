@@ -25,8 +25,6 @@ public interface MessDao {
     void update(Mess mess);
 
 
-
-
     @Query("SELECT * FROM Mess WHERE uid = :userid")
     Mess getMessByUid(long userid);
 

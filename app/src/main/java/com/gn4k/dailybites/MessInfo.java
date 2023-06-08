@@ -194,6 +194,12 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
                         if (data.containsKey("coverImage")) {
                             urlCover = (String) data.get("coverImage");
+
+                            if(messLatitude.equals("") || messLongitude.equals("")){
+                                messLatitude = String.valueOf(data.get("latitude"));
+                                messLongitude = String.valueOf(data.get("longitude"));
+                            }
+
                             if (urlCover != null) {
                                 Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.silver).into(cover);
 

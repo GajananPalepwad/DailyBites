@@ -45,14 +45,31 @@
         app:srcCompat="@drawable/bell_pin_fill" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/Messlist"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/alegreya_sc_black"
-        android:text="RECENT"
-        android:textSize="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingHorizontal="15dp"
+        android:text="Mess List  ->"
+        android:textColor="#191B1A"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tooltext" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRecent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:divider="@null"
+        android:foregroundGravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Messlist" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

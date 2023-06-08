@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import com.gn4k.dailybites.RoomForRecent.Mess;
+import com.gn4k.dailybites.RoomForRecent.MessDao;
+import com.gn4k.dailybites.RoomForRecent.MessDatabase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -47,6 +53,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     String messName, address, ratings,messLatitude, messLongitude, messMobile;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
+    private long num;
     private GoogleMap googleMap;
     private MapView mapView;
     private double mlatitude;  // Your latitude value
@@ -138,9 +145,32 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 onBackPressed();
             }
         });
+
+
+        num = Long.parseLong(messMobile);
+        new Bgthread().start();
     }
 
-    int i=0;
+    class Bgthread extends Thread{
+
+        public void run(){
+            super.run();
+
+            MessDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    MessDatabase.class, "Recent_DB").build();
+
+            MessDao messDao = messdb.userDao();
+
+            if(!messDao.is_exist(num)) {
+                messDao.insert(new Mess(num, messName, messMobile));
+            }
+        }
+
+    }
+
+
+
+
     private void updateAccordingToFirebase(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

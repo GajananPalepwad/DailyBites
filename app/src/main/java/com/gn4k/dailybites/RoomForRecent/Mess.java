@@ -12,10 +12,21 @@ public class Mess {
         @PrimaryKey(autoGenerate = true)
         public long uid;
 
-        public Mess(long uid, String messNameR, String messNoR) {
+        public String getUrlCover() {
+                return urlCover;
+        }
+
+        public void setUrlCover(String urlCover) {
+                this.urlCover = urlCover;
+        }
+
+        public String urlCover;
+
+        public Mess(long uid, String messNameR, String messNoR, String urlCover) {
                 this.uid = uid;
                 this.messNameR = messNameR;
                 this.messNoR = messNoR;
+                this.urlCover = urlCover;
         }
 
         @ColumnInfo(name = "Mess_Name")

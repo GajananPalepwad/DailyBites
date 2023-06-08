@@ -50,7 +50,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS;
     boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true, isVegOrNot = false;
     ImageView cover, isVeg;
-    String messName, address, ratings,messLatitude, messLongitude, messMobile;
+    String messName, address, ratings,messLatitude, messLongitude, messMobile, urlCover;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
     private long num;
@@ -78,7 +78,9 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         priseD = findViewById(R.id.priceD);
         priseG = findViewById(R.id.priceG);
         priseS = findViewById(R.id.priceS);
+
         updateAccordingToFirebase();
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -147,8 +149,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         });
 
 
-        num = Long.parseLong(messMobile);
-        new Bgthread().start();
+//        num = Long.parseLong(messMobile);
+//        new Bgthread().start();
     }
 
     class Bgthread extends Thread{
@@ -157,13 +159,15 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
             super.run();
 
             MessDatabase messdb = Room.databaseBuilder(getApplicationContext(),
-                    MessDatabase.class, "Recent_DB").build();
+                    MessDatabase.class, "RecentView_DB").build();
 
             MessDao messDao = messdb.userDao();
 
-            if(!messDao.is_exist(num)) {
-                messDao.insert(new Mess(num, messName, messMobile));
+            if(messDao.is_exist(num)) {
+                Mess existingMess = messDao.getMessByUid(num);
+                messDao.delete(existingMess);
             }
+            messDao.insert(new Mess(num, messName, messMobile, urlCover));
         }
 
     }
@@ -187,8 +191,17 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                        String url = (String) data.get("coverImage");
-                        Glide.with(MessInfo.this).load(url).centerCrop().placeholder(R.drawable.silver).into(cover);
+
+                        if (data.containsKey("coverImage")) {
+                            urlCover = (String) data.get("coverImage");
+                            if (urlCover != null) {
+                                Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.silver).into(cover);
+
+                                //sending data to room database for recent
+                                num = Long.parseLong(messMobile);
+                                new Bgthread().start();
+                            }
+                        }
 
                         tvRatings.setText((String) data.get("ratings"));
 

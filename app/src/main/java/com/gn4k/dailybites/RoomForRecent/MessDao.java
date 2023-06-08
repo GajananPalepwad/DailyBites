@@ -25,15 +25,22 @@ public interface MessDao {
     void update(Mess mess);
 
 
-    @Query("SELECT * FROM Mess WHERE uid = :userid")
-    Mess getMessByUid(long userid);
+    @Query("SELECT * FROM Mess WHERE Mess_no = :messNo")
+    Mess getMessByUid(String messNo);
 
-    @Query("SELECT EXISTS(SELECT * FROM Mess WHERE uid = :userid)")
-    Boolean is_exist(long userid);
+
+    @Query("SELECT EXISTS(SELECT * FROM Mess WHERE Mess_no = :messNo)")
+    Boolean isExistByMessNo(String messNo);
+
+
 
     @Insert
     void insert(Mess messs);
 
     @Delete
     void delete(Mess mess);
+
+    @Query("SELECT uid FROM Mess ORDER BY uid DESC LIMIT 1")
+    long getLastMessUid();
+
 }

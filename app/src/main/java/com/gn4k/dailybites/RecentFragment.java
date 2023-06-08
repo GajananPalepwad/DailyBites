@@ -1,5 +1,6 @@
 package com.gn4k.dailybites;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +13,14 @@ import androidx.room.Room;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.gn4k.dailybites.RoomForRecent.Mess;
 import com.gn4k.dailybites.RoomForRecent.MessDao;
 import com.gn4k.dailybites.RoomForRecent.MessDatabase;
 import com.gn4k.dailybites.RoomForRecent.RecentAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -49,10 +52,8 @@ private RecyclerView recyclerView;
         return view;
     }
 
-    private void getRoomData(){
-
+    private void getRoomData() {
         new Bgthread(recyclerView).start();
-
     }
 
     class Bgthread extends Thread {
@@ -63,23 +64,25 @@ private RecyclerView recyclerView;
         }
 
         public void run() {
-            MessDatabase messdb = Room.databaseBuilder(getActivity(),
-                    MessDatabase.class, "RecentView_DB").build();
+            super.run();
 
+            MessDatabase messdb = Room.databaseBuilder(getActivity(), MessDatabase.class, "RecentView_DB").build();
             MessDao messDao = messdb.userDao();
             List<Mess> mess = messDao.getAllMess();
+            Collections.reverse(mess);
 
-            // Update UI on the main thread
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                    RecentAdapter recentAdapter = new RecentAdapter(mess);
+                    RecentAdapter recentAdapter = new RecentAdapter(getActivity(),mess);
                     recyclerView.setAdapter(recentAdapter);
+
                 }
             });
         }
     }
+
 
 
 

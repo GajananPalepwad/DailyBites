@@ -153,9 +153,28 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 //        new Bgthread().start();
     }
 
-    class Bgthread extends Thread{
+//    class Bgthread extends Thread{
+//
+//        public void run(){
+//            super.run();
+//
+//            MessDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+//                    MessDatabase.class, "RecentView_DB").build();
+//
+//            MessDao messDao = messdb.userDao();
+//
+//            if(messDao.is_exist(num)) {
+//                Mess existingMess = messDao.getMessByUid(num);
+//                messDao.delete(existingMess);
+//            }
+//            messDao.insert(new Mess(num, messName, messMobile, urlCover));
+//        }
+//
+//    }
 
-        public void run(){
+
+    class Bgthread extends Thread {
+        public void run() {
             super.run();
 
             MessDatabase messdb = Room.databaseBuilder(getApplicationContext(),
@@ -163,14 +182,25 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
             MessDao messDao = messdb.userDao();
 
-            if(messDao.is_exist(num)) {
-                Mess existingMess = messDao.getMessByUid(num);
-                messDao.delete(existingMess);
-            }
-            messDao.insert(new Mess(num, messName, messMobile, urlCover));
-        }
+            long lastUid = messDao.getLastMessUid();
 
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                messDao.insert(new Mess(initialUid, messName, messMobile, urlCover));
+            } else {
+                long nextUid = lastUid + 1;
+
+                if (messDao.isExistByMessNo(messMobile)) {
+                    Mess existingMess = messDao.getMessByUid(messMobile);
+                    messDao.delete(existingMess);
+                }
+
+                messDao.insert(new Mess(nextUid, messName, messMobile, urlCover));
+            }
+        }
     }
+
 
 
 
@@ -198,7 +228,18 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                             if(messLatitude.equals("") || messLongitude.equals("")){
                                 messLatitude = String.valueOf(data.get("latitude"));
                                 messLongitude = String.valueOf(data.get("longitude"));
+
                             }
+
+                            if (messLatitude != null && messLongitude != null) {
+
+                                mlatitude = Double.parseDouble(messLatitude);
+                                mlongitude = Double.parseDouble(messLongitude);
+
+                                LatLng latLng = new LatLng(mlatitude, mlongitude);
+                                getAddressFromLatLng(latLng);
+                            }
+
 
                             if (urlCover != null) {
                                 Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.silver).into(cover);
@@ -223,14 +264,6 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
-            if (messLatitude != null && messLongitude != null) {
-
-                mlatitude = Double.parseDouble(messLatitude);
-                mlongitude = Double.parseDouble(messLongitude);
-
-                LatLng latLng = new LatLng(mlatitude, mlongitude);
-                getAddressFromLatLng(latLng);
-            }
 
 
 

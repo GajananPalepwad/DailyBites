@@ -4,14 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,16 +18,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.RoomForRecent.Mess;
 import com.gn4k.dailybites.RoomForRecent.MessDao;
 import com.gn4k.dailybites.RoomForRecent.MessDatabase;
+import com.gn4k.dailybites.RoomForWhishList.Wishlist;
+import com.gn4k.dailybites.RoomForWhishList.WishlistDao;
+import com.gn4k.dailybites.RoomForWhishList.WishlistDatabase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,11 +44,11 @@ import java.util.Locale;
 
 public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
-    private CardView back, infoCard,  diamondCard, goldCard, silverCard;
+    private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList;
     TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS;
-    boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true, isVegOrNot = false;
+    boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true;
     ImageView cover, isVeg;
-    String messName, address, ratings,messLatitude, messLongitude, messMobile, urlCover;
+    String messName, address, ratings,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
     private long num;
@@ -58,12 +56,17 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     private MapView mapView;
     private double mlatitude;  // Your latitude value
     private double mlongitude; // Your longitude value
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mess_info);
 
+//        loadingDialog  = new LoadingDialog(this);
+//        loadingDialog.startLoading();
+
         back = findViewById(R.id.back);
+        addToWishList = findViewById(R.id.like);
         diamondCard = findViewById(R.id.diamond);
         goldCard = findViewById(R.id.gold);
         silverCard = findViewById(R.id.silver);
@@ -148,7 +151,16 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
             }
         });
 
+        addToWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new BgThreadWishlist().start();
+                Toast.makeText(MessInfo.this, "Added in wishlist", Toast.LENGTH_SHORT).show();
+            }
 
+        });
+
+//        loadingDialog.stopLoading();
     }
 
 
@@ -174,9 +186,39 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 if (messDao.isExistByMessNo(messMobile)) {
                     Mess existingMess = messDao.getMessByUid(messMobile);
                     messDao.delete(existingMess);
+                    messDao.insert(new Mess(nextUid, messName, messMobile, urlCover));
+                }else{
+                    messDao.insert(new Mess(nextUid, messName, messMobile, urlCover));
                 }
 
-                messDao.insert(new Mess(nextUid, messName, messMobile, urlCover));
+            }
+        }
+    }
+
+
+    class BgThreadWishlist extends Thread { // to add a mess in Wishlist list in room database
+        public void run() {
+            super.run();
+
+            WishlistDatabase wishlistViewDb = Room.databaseBuilder(getApplicationContext(),
+                    WishlistDatabase.class, "WishlistView_DB").build();
+
+            WishlistDao wishlistDao = wishlistViewDb.userDao();
+
+            long lastUid = wishlistDao.getLastWishlistUid();
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                wishlistDao.insert(new Wishlist(initialUid, messName, messMobile, urlCover, verifyString));
+            } else {
+                long nextUid = lastUid + 1;
+
+                if (!wishlistDao.isExistByWishlistNo(messMobile)) {
+                    wishlistDao.insert(new Wishlist(nextUid, messName, messMobile, urlCover, verifyString));
+                }
+
+
             }
         }
     }
@@ -233,7 +275,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         tvRatings.setText((String) data.get("ratings"));
 
                         if(((String) data.get("isVerified")).equals("yes")){
-                                tvIsVerified.setText("Verified");
+                            verifyString = "Verified";
+                            tvIsVerified.setText("Verified");
                         }
 
                     } else {

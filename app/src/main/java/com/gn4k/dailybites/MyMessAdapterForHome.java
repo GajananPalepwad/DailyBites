@@ -50,7 +50,6 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.startLoading();
 
                 // Handle card click event
                 // You can start a new activity or perform any desired action here

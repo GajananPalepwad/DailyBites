@@ -1,9 +1,11 @@
 package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -11,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
+    private static final int YOUR_REQUEST_CODE = 123;
     BottomNavigationView bottomNavigationView;
 
     @Override

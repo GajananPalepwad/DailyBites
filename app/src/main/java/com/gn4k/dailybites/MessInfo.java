@@ -149,31 +149,11 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         });
 
 
-//        num = Long.parseLong(messMobile);
-//        new Bgthread().start();
     }
 
-//    class Bgthread extends Thread{
-//
-//        public void run(){
-//            super.run();
-//
-//            MessDatabase messdb = Room.databaseBuilder(getApplicationContext(),
-//                    MessDatabase.class, "RecentView_DB").build();
-//
-//            MessDao messDao = messdb.userDao();
-//
-//            if(messDao.is_exist(num)) {
-//                Mess existingMess = messDao.getMessByUid(num);
-//                messDao.delete(existingMess);
-//            }
-//            messDao.insert(new Mess(num, messName, messMobile, urlCover));
-//        }
-//
-//    }
 
 
-    class Bgthread extends Thread {
+    class Bgthread extends Thread { // to add a mess in recent list in room database
         public void run() {
             super.run();
 

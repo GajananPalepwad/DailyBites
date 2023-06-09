@@ -1,5 +1,6 @@
 package com.gn4k.dailybites;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,18 +14,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 
 import java.util.ArrayList;
 
 public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForHome.MyViewHolder>  {
 
     Context context;
-
+    private Activity activity;
+    private LoadingDialog loadingDialog;
     ArrayList<MessModel> list;
 
-    public MyMessAdapterForHome(Context context, ArrayList<MessModel> list) {
+    public MyMessAdapterForHome(Context context, Activity activity, LoadingDialog loadingDialog, ArrayList<MessModel> list) {
         this.context = context;
+        this.activity = activity;
         this.list = list;
+
     }
 
 
@@ -41,14 +46,16 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
         MessModel messmodel = list.get(position);
         holder.messName.setText(messmodel.getMessName());
         Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
-
-
+        loadingDialog = new LoadingDialog(activity);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoading();
+
                 // Handle card click event
                 // You can start a new activity or perform any desired action here
                 if (messmodel.getLatitude() != null && messmodel.getLongitude() != null) {
+
                     // Convert latitude and longitude to strings before setting them
                     String latitude = String.valueOf(messmodel.getLatitude());
                     String longitude = String.valueOf(messmodel.getLongitude());
@@ -60,7 +67,9 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
                     intent.putExtra("messLatitude", latitude);
                     intent.putExtra("messLongitude", longitude);
                     context.startActivity(intent);
+
                 } else {
+
                     // Handle the scenario when latitude and longitude are not found
                     // For example, display a toast message indicating the unavailability of location information
                     Toast.makeText(context, "Location not available for " + messmodel.messName, Toast.LENGTH_SHORT).show();
@@ -71,9 +80,10 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
                     intent.putExtra("messName", messmodel.getMessName());
                     context.startActivity(intent);
 
-
                 }
+
             }
+
         });
 
     }

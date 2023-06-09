@@ -77,7 +77,6 @@ private RecyclerView recyclerView;
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                     RecentAdapter recentAdapter = new RecentAdapter(getActivity(),mess);
                     recyclerView.setAdapter(recentAdapter);
-
                 }
             });
         }

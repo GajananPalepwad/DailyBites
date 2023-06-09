@@ -22,7 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -46,8 +49,8 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private BottomNavigationView bottomNavigationView;
 
+    private BottomNavigationView bottomNavigationView;
     private int previousScrollY = 0;
     RecyclerView recyclerView;
     DatabaseReference database;
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment {
     private TextView messName, planName, name, no, endDate;
     private ImageView planImg;
     private String EndDate="";
+    LoadingDialog loadingDialog;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -70,11 +74,17 @@ public class HomeFragment extends Fragment {
 
         setSubscriptionCard();
         endSubcription();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loadingDialog  = new LoadingDialog(getActivity());
+        loadingDialog.startLoading();
+
+
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
 
@@ -96,16 +106,18 @@ public class HomeFragment extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.recyclerViewMess);
+
         database = FirebaseDatabase.getInstance().getReference("mess");
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         list = new ArrayList<>();
-        myAdapter = new MyMessAdapterForHome(container.getContext(),list);
+        myAdapter = new MyMessAdapterForHome(container.getContext(), getActivity(), loadingDialog,list);
         recyclerView.setAdapter(myAdapter);
 
         database.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -115,6 +127,8 @@ public class HomeFragment extends Fragment {
                     list.add(user);
                 }
                 myAdapter.notifyDataSetChanged();
+
+                loadingDialog.stopLoading();
 
             }
 
@@ -127,6 +141,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 
     private void setSubscriptionCard(){
 

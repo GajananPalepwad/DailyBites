@@ -1,10 +1,12 @@
 package com.gn4k.dailybites;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.gn4k.dailybites.RoomForWhishList.Wishlist;
 import com.gn4k.dailybites.RoomForWhishList.WishlistAdapter;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDao;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDatabase;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +39,9 @@ public class RecentFragment extends Fragment {
     }
 
     private RecyclerView recentRecyclerView, wishlistRecycleView;
+    private BottomNavigationView bottomNavigationView;
+    private int previousScrollY = 0;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -50,6 +56,25 @@ public class RecentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recent, container, false);
         recentRecyclerView = view.findViewById(R.id.recyclerViewRecent);
         wishlistRecycleView = view.findViewById(R.id.recyclerViewWishlist);
+
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+
+
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY+1 > previousScrollY) {
+                    // Scrolling down
+                    hideNavigationBar(bottomNavigationView);
+
+                } else if (scrollY-1 < previousScrollY) {
+                    // Scrolling up
+                    showNavigationBar(bottomNavigationView);
+                }
+                previousScrollY = scrollY;
+            }
+        });
 
 
         setRecentRecyclerView();
@@ -121,6 +146,18 @@ public class RecentFragment extends Fragment {
     }
 
 
+    private void hideNavigationBar(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", view.getHeight()+(view.getHeight()/2));
+        animator.setDuration(50);
+        animator.start();
+    }
+
+    // Method to show the bottom navigation bar with animation
+    private void showNavigationBar(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 0);
+        animator.setDuration(50);
+        animator.start();
+    }
 
 
 }

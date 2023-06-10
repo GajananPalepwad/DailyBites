@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -55,11 +56,13 @@ public class UserLoginPage extends AppCompatActivity {
     private TextView email;
     private GoogleSignInClient client;
     LatLng latLng ;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login_page);
+        loadingDialog = new LoadingDialog(this);
 
         login = findViewById(R.id.login);
         pass = findViewById(R.id.password);
@@ -76,7 +79,7 @@ public class UserLoginPage extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loadingDialog.startLoading();
                 checkValidationToLogin();
 
             }
@@ -85,6 +88,7 @@ public class UserLoginPage extends AppCompatActivity {
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoading();
                 setRegistration(v);
             }
         });
@@ -99,6 +103,7 @@ public class UserLoginPage extends AppCompatActivity {
     }
 
     public void setRegistration(View view){
+
         Intent i = client.getSignInIntent();
         startActivityForResult(i, 1234);
     }
@@ -109,9 +114,10 @@ public class UserLoginPage extends AppCompatActivity {
 
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            loadingDialog.stopLoading();
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
+                loadingDialog.startLoading();
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -119,10 +125,12 @@ public class UserLoginPage extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
+                                    loadingDialog.stopLoading();
                                     Intent intent = new Intent(getApplicationContext(), UserRegistration.class);
                                     startActivity(intent);
 
                                 } else {
+                                    loadingDialog.stopLoading();
                                     Toast.makeText(UserLoginPage.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -135,63 +143,76 @@ public class UserLoginPage extends AppCompatActivity {
         }
     }
 
+
+
+    String getEmail="";
+    String getPassword="";
     private void checkValidationToLogin(){
 
-        String getEmail = email.getText().toString();
-        String getPassword = pass.getText().toString();
 
-        DocumentReference emailRef = db.collection("User").document(getEmail);
-        emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
+        if(!email.getText().toString().equals("")) {
+            getEmail = email.getText().toString();
+            getPassword = pass.getText().toString();
 
-                    if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
+            DocumentReference emailRef = db.collection("User").document(getEmail);
+            emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists()){
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+                        if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
 
-                        preferences.putString("UserEmail",getEmail);
-                        preferences.putString("UserPassword",getPassword);
-                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
-                        preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
-                        preferences.putString("messName", documentSnapshot.getString(KEY_MESSNAME));
-                        preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
-                        preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
-                        preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
-                        preferences.apply();
-                        if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
-                            Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
-                            startActivity(intent);
-                            return;
-                        }
-                        else{
-                            if(documentSnapshot.getDouble(KEY_LATITUDE)== 0 ){
+                            SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                            SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+                            preferences.putString("UserEmail",getEmail);
+                            preferences.putString("UserPassword",getPassword);
+                            preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
+                            preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                            preferences.putString("messName", documentSnapshot.getString(KEY_MESSNAME));
+                            preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
+                            preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
+                            preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
+                            preferences.apply();
+                            if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
+                                loadingDialog.stopLoading();
                                 Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
                                 startActivity(intent);
                                 return;
                             }
+                            else{
+                                if(documentSnapshot.getDouble(KEY_LATITUDE)== 0 ){
+                                    loadingDialog.stopLoading();
+                                    Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
+                                    startActivity(intent);
+                                    return;
+                                }
+                            }
+                            latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
+
+                            preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
+                            preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
+                            preferences.putString("UserAddress",getAddressFromLatLng(latLng));
+                            preferences.apply();
+                            loadingDialog.stopLoading();
+                            Intent intent = new Intent(UserLoginPage.this,Home.class);
+                            startActivity(intent);
+                            finish();
+
+                        }else{
+                            loadingDialog.stopLoading();
+                            Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                         }
-                        latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
-
-                        preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
-                        preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
-                        preferences.putString("UserAddress",getAddressFromLatLng(latLng));
-                        preferences.apply();
-
-                        Intent intent = new Intent(UserLoginPage.this,Home.class);
-                        startActivity(intent);
-                        finish();
-
                     }else{
-
-                        Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                        loadingDialog.stopLoading();
+                        Toast.makeText(UserLoginPage.this, "Account not found", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(UserLoginPage.this, "Account not found", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            });
+        }else{
+            loadingDialog.stopLoading();
+            Toast.makeText(this, "Please provide credentials", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

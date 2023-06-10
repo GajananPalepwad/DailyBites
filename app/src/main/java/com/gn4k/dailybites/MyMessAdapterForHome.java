@@ -29,6 +29,7 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
         this.context = context;
         this.activity = activity;
         this.list = list;
+        this.loadingDialog = loadingDialog;
 
     }
 
@@ -41,14 +42,13 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
     }
 
 
-    boolean show = true;
+
     @Override
     public void onBindViewHolder(@NonNull MyMessAdapterForHome.MyViewHolder holder, int position) {
 
         MessModel messmodel = list.get(position);
         holder.messName.setText(messmodel.getMessName());
         Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
-        loadingDialog = new LoadingDialog(activity);
         if(messmodel.getIsVerified().equals("yes")) {
             holder.ver.setText("Verified");
         }else{
@@ -58,14 +58,8 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
             @Override
             public void onClick(View v) {
 
-//                if(show){
-//                    loadingDialog.startLoading();
-//                    show = false;
-//                }else {
-//                    show = true;
-//                    loadingDialog.stopLoading();
-//                }
-
+                loadingDialog.startLoading();
+                Values.show = false;
                 // Handle card click event
                 // You can start a new activity or perform any desired action here
                 if (messmodel.getLatitude() != null && messmodel.getLongitude() != null) {

@@ -7,7 +7,6 @@
     tools:context=".UserFragment">
 
 
-
     <TextView
         android:id="@+id/tooltext"
         android:layout_width="match_parent"

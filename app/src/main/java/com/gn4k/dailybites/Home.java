@@ -5,17 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
     private static final int YOUR_REQUEST_CODE = 123;
     BottomNavigationView bottomNavigationView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +75,9 @@ public class Home extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 }
+
+class Values{
+    static boolean show = true;
+        }

@@ -44,78 +44,100 @@
         app:layout_constraintTop_toTopOf="@+id/wallet"
         app:srcCompat="@drawable/bell_pin_fill" />
 
-    <TextView
-        android:id="@+id/Messlist"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/alegreya_sc_black"
-        android:paddingHorizontal="7dp"
-        android:text="Recently  Visited"
-        android:textColor="#191B1A"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/tooltext" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewRecent"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:divider="@null"
-        android:foregroundGravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Messlist" />
+        app:layout_constraintTop_toBottomOf="@+id/tooltext">
 
-    <TextView
-        android:id="@+id/WishList"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/alegreya_sc_black"
-        android:paddingHorizontal="7dp"
-        android:text="Wishlist"
-        android:textColor="#191B1A"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView172"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewRecent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageView172"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_marginLeft="15dp"
-        android:src="@drawable/watchlist"
-        app:layout_constraintBottom_toBottomOf="@+id/WishList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WishList" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewWishlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:divider="@null"
-        android:foregroundGravity="center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WishList" />
+                <TextView
+                    android:id="@+id/Messlist"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/alegreya_sc_black"
+                    android:paddingHorizontal="7dp"
+                    android:text="Recently  Visited"
+                    android:textColor="#191B1A"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView17"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView17"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/recent"
-        android:layout_marginLeft="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/Messlist"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Messlist" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:divider="@null"
+                    android:foregroundGravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/Messlist" />
+
+                <TextView
+                    android:id="@+id/WishList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/alegreya_sc_black"
+                    android:paddingHorizontal="7dp"
+                    android:text="Wishlist"
+                    android:textColor="#191B1A"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView172"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewRecent" />
+
+                <ImageView
+                    android:id="@+id/imageView172"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/watchlist"
+                    app:layout_constraintBottom_toBottomOf="@+id/WishList"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/WishList" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewWishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="10dp"
+                    android:divider="@null"
+                    android:foregroundGravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/WishList" />
+
+                <ImageView
+                    android:id="@+id/imageView17"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/recent"
+                    app:layout_constraintBottom_toBottomOf="@+id/Messlist"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/Messlist" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

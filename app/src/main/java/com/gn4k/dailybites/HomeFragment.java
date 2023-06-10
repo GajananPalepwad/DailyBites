@@ -84,8 +84,8 @@ public class HomeFragment extends Fragment {
         loadingDialog.startLoading();
 
 
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
 
 
@@ -142,6 +142,15 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        if(!Values.show) {
+            loadingDialog.stopLoading();
+            Values.show = true;
+        }
+        super.onResume();
+
+    }
 
     private void setSubscriptionCard(){
 

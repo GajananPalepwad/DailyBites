@@ -40,6 +40,8 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
         return  new MyViewHolder(v);
     }
 
+
+    boolean show = true;
     @Override
     public void onBindViewHolder(@NonNull MyMessAdapterForHome.MyViewHolder holder, int position) {
 
@@ -47,9 +49,22 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
         holder.messName.setText(messmodel.getMessName());
         Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
         loadingDialog = new LoadingDialog(activity);
+        if(messmodel.getIsVerified().equals("yes")) {
+            holder.ver.setText("Verified");
+        }else{
+            holder.ver.setText("Not Verified");
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                if(show){
+//                    loadingDialog.startLoading();
+//                    show = false;
+//                }else {
+//                    show = true;
+//                    loadingDialog.stopLoading();
+//                }
 
                 // Handle card click event
                 // You can start a new activity or perform any desired action here
@@ -94,13 +109,14 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView messName;
+        TextView messName, ver;
         ImageView coverImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             messName = itemView.findViewById(R.id.messName);
             coverImg = itemView.findViewById(R.id.coverImg);
+            ver = itemView.findViewById(R.id.ver);
 
 
         }

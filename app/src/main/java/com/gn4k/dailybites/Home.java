@@ -25,7 +25,12 @@ public class Home extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomeFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
+        MenuItem homebtn = bottomNavigationView.getMenu().findItem(R.id.nav_home);
+        MenuItem calenderbtn = bottomNavigationView.getMenu().findItem(R.id.nav_calender);
+        MenuItem recentbtn = bottomNavigationView.getMenu().findItem(R.id.nav_recent);
+        MenuItem userbtn = bottomNavigationView.getMenu().findItem(R.id.nav_user);
 
+        homebtn.setEnabled(false);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -33,18 +38,34 @@ public class Home extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.nav_home:
                         fragment = new HomeFragment();
+                        homebtn.setEnabled(false);
+                        calenderbtn.setEnabled(true);
+                        recentbtn.setEnabled(true);
+                        userbtn.setEnabled(true);
                         break;
 
                     case R.id.nav_calender:
                         fragment = new CalenderFragment();
+                        homebtn.setEnabled(true);
+                        calenderbtn.setEnabled(false);
+                        recentbtn.setEnabled(true);
+                        userbtn.setEnabled(true);
                         break;
 
                     case R.id.nav_recent:
                         fragment = new RecentFragment();
+                        homebtn.setEnabled(true);
+                        calenderbtn.setEnabled(true);
+                        recentbtn.setEnabled(false);
+                        userbtn.setEnabled(true);
                         break;
 
                     case R.id.nav_user:
                         fragment = new UserFragment();
+                        homebtn.setEnabled(true);
+                        calenderbtn.setEnabled(true);
+                        recentbtn.setEnabled(true);
+                        userbtn.setEnabled(false);
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();

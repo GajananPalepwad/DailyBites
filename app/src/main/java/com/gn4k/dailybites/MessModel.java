@@ -14,6 +14,16 @@ public class MessModel {
     }
 
     String coverImage;
+
+    public String getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(String isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    String isVerified;
     MessModel(){
 
     }
@@ -53,7 +63,7 @@ public class MessModel {
 
     Double latitude;
 
-    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude) {
+    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified) {
         if (latitude == null || longitude == null) {
             throw new IllegalArgumentException("Latitude and longitude values must not be null.");
         }
@@ -62,6 +72,7 @@ public class MessModel {
         this.messName = messName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isVerified = isVerified;
     }
 
     Double longitude;

@@ -86,6 +86,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyRece
 
     String id;
     MyRecentViewHolder holder;
+
     @Override
     public void onBindViewHolder(@NonNull MyRecentViewHolder holder, @SuppressLint("RecyclerView") int position) {
         this.holder = holder;
@@ -110,8 +111,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyRece
             @Override
             public void onClick(View v) {
                 new Bgthread().start();
-//                holder.delete.setImageResource(R.drawable.empty_heart);
-
                 messList.remove(position);
                 notifyDataSetChanged();
             }

@@ -16,7 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.MessInfo;
 import com.gn4k.dailybites.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 // MessAdapter class
@@ -45,12 +51,13 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyRecentVi
 
 
     static class MyRecentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView messName;
+        TextView messName, ver;
         ImageView cover;
 
         MyRecentViewHolder(@NonNull View itemView) {
             super(itemView);
             messName = itemView.findViewById(R.id.messName);
+            ver = itemView.findViewById(R.id.ver);
             cover = itemView.findViewById(R.id.coverImg);
             itemView.setOnClickListener(this);
         }
@@ -82,6 +89,29 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyRecentVi
     public void onBindViewHolder(@NonNull MyRecentViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.messName.setText(messList.get(position).getMessNameR());
         Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.silver).into(holder.cover);
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbpath = db.child("mess").child(messList.get(position).getMessNoR());
+        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                    String isVer = (String) data.get("isVerified");
+                    if(isVer.equals("yes")){
+                        holder.ver.setText("Verified");
+                    }else {
+                        holder.ver.setText("Not Verified");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

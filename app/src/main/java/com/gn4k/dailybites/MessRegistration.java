@@ -143,6 +143,7 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("messName", getMessName);
                         data.put("mobileNo", getMobileNo);
                         data.put("password", getPassword);
+                        data.put("isVerified","");
 
                         dataRef.setValue(data)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

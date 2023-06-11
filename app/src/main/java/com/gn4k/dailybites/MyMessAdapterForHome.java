@@ -1,8 +1,11 @@
 package com.gn4k.dailybites;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +97,32 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
 
         });
 
+//        double distance = calculateDistance(
+//                Double.parseDouble(sharedPreferences.getString("UserLatitude","")),
+//                Double.parseDouble(sharedPreferences.getString("UserLongitude","")),
+//                messmodel.getLatitude(),
+//                messmodel.getLongitude());
+//
+//        // Store the distance in the messmodel for sorting purposes
+//        messmodel.setDistance(distance);
+
+
     }
+
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {///////////////////////////////////////////////////////////////
+        double R = 6371; // Radius of the earth in kilometers
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c; // Distance in kilometers
+        return distance;
+    }
+
+
 
     @Override
     public int getItemCount() {

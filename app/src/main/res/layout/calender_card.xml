@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="15dp"
     app:cardElevation="4dp"
-    android:layout_marginVertical="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
     app:cardCornerRadius="20dp">
 
 
@@ -16,7 +17,7 @@
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:text="30"
@@ -30,6 +31,7 @@
             android:id="@+id/month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/aldrich"
             android:text="JAN"
             android:textSize="19dp"
             android:textStyle="bold"
@@ -56,12 +58,11 @@
             android:id="@+id/food_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"
             android:text="aalu bhaji, rise, gulab jamun, poli, mugach varan, mango juce"
-            android:textColor="@color/black"
             android:textAlignment="textStart"
+            android:textColor="@color/black"
             android:textSize="13dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +70,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/weekday"
             app:layout_constraintTop_toBottomOf="@+id/weekday"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

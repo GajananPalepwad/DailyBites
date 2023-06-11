@@ -88,7 +88,7 @@ public class CalenderFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     CalendereAdapter recentAdapter = new CalendereAdapter(getActivity(),mess);
                     recyclerView.setAdapter(recentAdapter);
                 }

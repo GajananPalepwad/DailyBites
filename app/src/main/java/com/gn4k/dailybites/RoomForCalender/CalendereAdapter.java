@@ -90,77 +90,66 @@ public class CalendereAdapter extends RecyclerView.Adapter<CalendereAdapter.MyRe
         this.holder = holder;
 
         String date = messList.get(position).getDate();
+        if (date != null) {
+            // Split the date string using the delimiter "/"
+            String[] parts = date.split("/");
 
-// Split the date string using the delimiter "/"
-        String[] parts = date.split("/");
+            // Extract the month and day from the split parts
+            if (parts.length >= 2) {
+                String months = parts[0];
+                String dates = parts[1];
+                String monthAbbreviation = "";
 
-// Extract the month and day from the split parts
-        String months = parts[0];
-        String dates = parts[1];
-        String monthAbbreviation = "";
+                switch (months) {
+                    case "01":
+                        monthAbbreviation = "JAN";
+                        break;
+                    case "02":
+                        monthAbbreviation = "FEB";
+                        break;
+                    case "03":
+                        monthAbbreviation = "MAR";
+                        break;
+                    case "04":
+                        monthAbbreviation = "APR";
+                        break;
+                    case "05":
+                        monthAbbreviation = "MAY";
+                        break;
+                    case "06":
+                        monthAbbreviation = "JUN";
+                        break;
+                    case "07":
+                        monthAbbreviation = "JUL";
+                        break;
+                    case "08":
+                        monthAbbreviation = "AUG";
+                        break;
+                    case "09":
+                        monthAbbreviation = "SEP";
+                        break;
+                    case "10":
+                        monthAbbreviation = "OCT";
+                        break;
+                    case "11":
+                        monthAbbreviation = "NOV";
+                        break;
+                    case "12":
+                        monthAbbreviation = "DEC";
+                        break;
+                    default:
+                        monthAbbreviation = "Invalid month";
+                        break;
+                }
 
-        holder.day.setText(messList.get(position).getMessNoR());
-        holder.date.setText(dates);
-        holder.menu.setText(messList.get(position).getMenu());
-
-        switch (months) {
-            case "01":
-                monthAbbreviation = "JAN";
-                break;
-            case "02":
-                monthAbbreviation = "FEB";
-                break;
-            case "03":
-                monthAbbreviation = "MAR";
-                break;
-            case "04":
-                monthAbbreviation = "APR";
-                break;
-            case "05":
-                monthAbbreviation = "MAY";
-                break;
-            case "06":
-                monthAbbreviation = "JUN";
-                break;
-            case "07":
-                monthAbbreviation = "JUL";
-                break;
-            case "08":
-                monthAbbreviation = "AUG";
-                break;
-            case "09":
-                monthAbbreviation = "SEP";
-                break;
-            case "10":
-                monthAbbreviation = "OCT";
-                break;
-            case "11":
-                monthAbbreviation = "NOV";
-                break;
-            case "12":
-                monthAbbreviation = "DEC";
-                break;
-            default:
-                monthAbbreviation = "Invalid month";
-                break;
+                holder.day.setText(messList.get(position).getMessNoR() + "");
+                holder.date.setText(dates);
+                holder.menu.setText(messList.get(position).getMenu() + "");
+                holder.month.setText(monthAbbreviation + "");
+            }
         }
-        holder.month.setText(monthAbbreviation);
 
     }
-
-//    class Bgthread extends Thread { // to delete a mess in recent list in room database
-//        public void run() {
-//            super.run();
-//            WishlistDatabase db = Room.databaseBuilder(holder.messName.getContext(), WishlistDatabase.class, "WishlistView_DB").allowMainThreadQueries().build();
-//            WishlistDao messDao = db.userDao();
-//
-//            if (messDao.isExistByWishlistNo(id)) {
-//                WishlistDao wishlistDao = db.userDao();
-//                wishlistDao.delete(wishlistDao.getWishlistByUid(id));
-//            }
-//
-//        }
-//    }
 
             @Override
     public int getItemCount() {

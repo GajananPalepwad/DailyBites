@@ -28,6 +28,17 @@ public class MessModel {
 
     }
 
+    private double distance; // New property for storing distance
+
+    // Existing getters and setters
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
 
     public String getMobileNo() {
         return mobileNo;
@@ -63,7 +74,7 @@ public class MessModel {
 
     Double latitude;
 
-    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified) {
+    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance) {
         if (latitude == null || longitude == null) {
             throw new IllegalArgumentException("Latitude and longitude values must not be null.");
         }
@@ -73,6 +84,7 @@ public class MessModel {
         this.latitude = latitude;
         this.longitude = longitude;
         this.isVerified = isVerified;
+        this.distance = distance;
     }
 
     Double longitude;

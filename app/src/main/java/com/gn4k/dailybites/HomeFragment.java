@@ -38,6 +38,8 @@ import com.google.firebase.firestore.core.FirestoreClient;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +118,8 @@ public class HomeFragment extends Fragment {
         myAdapter = new MyMessAdapterForHome(container.getContext(), getActivity(), loadingDialog,list);
         recyclerView.setAdapter(myAdapter);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+
         database.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -126,6 +130,21 @@ public class HomeFragment extends Fragment {
                     MessModel user = dataSnapshot.getValue(MessModel.class);
                     list.add(user);
                 }
+
+                for (MessModel mess : list) {
+                    double distance = calculateDistance(
+                            Double.parseDouble(sharedPreferences.getString("UserLatitude","")),
+                            Double.parseDouble(sharedPreferences.getString("UserLongitude","")),
+                            mess.getLatitude(), mess.getLongitude());
+                    mess.setDistance(distance);
+                }
+                Collections.sort(list, new Comparator<MessModel>() {
+                    @Override
+                    public int compare(MessModel mess1, MessModel mess2) {
+                        return Double.compare(mess1.getDistance(), mess2.getDistance());
+                    }
+                });
+
                 myAdapter.notifyDataSetChanged();
 
                 loadingDialog.stopLoading();
@@ -142,15 +161,35 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        if(!ValuesLocal.show) {
-            loadingDialog.stopLoading();
-            ValuesLocal.show = true;
-        }
-        super.onResume();
+//    @Override
+//    public void onResume() {
+//        if(!ValuesLocal.show) {
+//            loadingDialog.stopLoading();
+//            ValuesLocal.show = true;
+//        }
+//        super.onResume();
+//
+//    }
 
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {///////////////////////////////////////////////////////////////
+        double R = 6371; // Radius of the earth in kilometers
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c; // Distance in kilometers
+        return distance;
     }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+        loadingDialog.stopLoading();
+    }
+
 
     private void setSubscriptionCard(){
 

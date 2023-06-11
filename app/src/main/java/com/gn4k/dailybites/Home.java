@@ -154,9 +154,6 @@ public class Home extends AppCompatActivity {
             long lastUid = messDao.getLastCalenderUid();
 
 
-
-
-
             if (lastUid == 0) {
                 // Database is empty, set initial uid to 1
                 int initialUid = 1;
@@ -184,7 +181,6 @@ class ValuesLocal {
     static boolean show = true;
 
     public String DateToWeekDate(String dateString) {
-        dateString = "06/11/2023";
         String dateFormat = "MM/dd/yyyy";
         String dayName = "null";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);

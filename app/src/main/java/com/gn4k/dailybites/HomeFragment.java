@@ -144,9 +144,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if(!Values.show) {
+        if(!ValuesLocal.show) {
             loadingDialog.stopLoading();
-            Values.show = true;
+            ValuesLocal.show = true;
         }
         super.onResume();
 

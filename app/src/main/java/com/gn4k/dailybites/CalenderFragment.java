@@ -1,64 +1,117 @@
 package com.gn4k.dailybites;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CalenderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.gn4k.dailybites.RoomForCalender.Calender;
+import com.gn4k.dailybites.RoomForCalender.CalenderDao;
+import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
+import com.gn4k.dailybites.RoomForCalender.CalendereAdapter;
+import com.gn4k.dailybites.RoomForRecent.Mess;
+import com.gn4k.dailybites.RoomForRecent.MessDao;
+import com.gn4k.dailybites.RoomForRecent.MessDatabase;
+import com.gn4k.dailybites.RoomForRecent.RecentAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Collections;
+import java.util.List;
+
 public class CalenderFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public CalenderFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CalenderFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CalenderFragment newInstance(String param1, String param2) {
-        CalenderFragment fragment = new CalenderFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RecyclerView recentRecyclerView;
+    private BottomNavigationView bottomNavigationView;
+    private int previousScrollY = 0;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calender, container, false);
+        View view = inflater.inflate(R.layout.fragment_calender, container, false);
+        recentRecyclerView = view.findViewById(R.id.recyclerViewCalender);
+
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+
+
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY+1 > previousScrollY) {
+                    // Scrolling down
+                    hideNavigationBar(bottomNavigationView);
+
+                } else if (scrollY-1 < previousScrollY) {
+                    // Scrolling up
+                    showNavigationBar(bottomNavigationView);
+                }
+                previousScrollY = scrollY;
+            }
+        });
+
+
+        new Bgthread(recentRecyclerView).start();
+        return view;
     }
+
+
+    class Bgthread extends Thread {  // to display recent list in recyclerView
+        private RecyclerView recyclerView;
+
+        Bgthread(RecyclerView recyclerView) {
+            this.recyclerView = recyclerView;
+        }
+
+        public void run() {
+            super.run();
+
+            CalenderDatabase messdb = Room.databaseBuilder(getActivity(), CalenderDatabase.class, "CalenderView_DB").build();
+            CalenderDao messDao = messdb.userDao();
+            List<Calender> mess = messDao.getAllCalender();
+            Collections.reverse(mess);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    CalendereAdapter recentAdapter = new CalendereAdapter(getActivity(),mess);
+                    recyclerView.setAdapter(recentAdapter);
+                }
+            });
+        }
+    }
+
+
+
+
+    private void hideNavigationBar(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", view.getHeight()+(view.getHeight()/2));
+        animator.setDuration(50);
+        animator.start();
+    }
+
+    // Method to show the bottom navigation bar with animation
+    private void showNavigationBar(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 0);
+        animator.setDuration(50);
+        animator.start();
+    }
+
+
+
 }

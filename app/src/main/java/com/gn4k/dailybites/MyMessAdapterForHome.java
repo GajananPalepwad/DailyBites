@@ -59,7 +59,7 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
             public void onClick(View v) {
 
                 loadingDialog.startLoading();
-                Values.show = false;
+                ValuesLocal.show = false;
                 // Handle card click event
                 // You can start a new activity or perform any desired action here
                 if (messmodel.getLatitude() != null && messmodel.getLongitude() != null) {

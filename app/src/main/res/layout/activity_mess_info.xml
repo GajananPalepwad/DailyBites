@@ -5,6 +5,7 @@
     android:id="@+id/gn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DFF6F6F6"
     tools:context=".MessInfo">
 
     <ImageView

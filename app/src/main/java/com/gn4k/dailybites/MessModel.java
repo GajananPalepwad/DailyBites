@@ -3,7 +3,36 @@ package com.gn4k.dailybites;
 public class MessModel {
 
     String mobileNo;
+    String dishPrize;
+
+    public String getDishPrize() {
+        return dishPrize;
+    }
+
+    public void setDishPrize(String dishPrize) {
+        this.dishPrize = dishPrize;
+    }
+
+    public String getToDayDish() {
+        return toDayDish;
+    }
+
+    public void setToDayDish(String toDayDish) {
+        this.toDayDish = toDayDish;
+    }
+
+    String toDayDish;
     String messName;
+
+    public String getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(String ratings) {
+        this.ratings = ratings;
+    }
+
+    String ratings;
 
     public String getCoverImage() {
         return coverImage;
@@ -74,7 +103,7 @@ public class MessModel {
 
     Double latitude;
 
-    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance) {
+    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance, String dishPrize, String toDayDish, String ratings) {
         if (latitude == null || longitude == null) {
             throw new IllegalArgumentException("Latitude and longitude values must not be null.");
         }
@@ -85,6 +114,9 @@ public class MessModel {
         this.longitude = longitude;
         this.isVerified = isVerified;
         this.distance = distance;
+        this.toDayDish = toDayDish;
+        this.dishPrize = dishPrize;
+        this.ratings = ratings;
     }
 
     Double longitude;

@@ -225,29 +225,11 @@
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewDish"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="15dp"
-                android:elevation="70dp"
-                app:cardCornerRadius="25dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="15dp"
-                android:elevation="70dp"
-                app:cardCornerRadius="25dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="15dp"
-                android:elevation="70dp"
-                app:cardCornerRadius="25dp" />
+                android:layout_height="match_parent"
+                android:divider="@null"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

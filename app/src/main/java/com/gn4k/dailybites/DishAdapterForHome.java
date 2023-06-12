@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +48,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
         return  new MyViewHolder(v);
     }
 
-
+    ;
 
     @Override
     public void onBindViewHolder(@NonNull DishAdapterForHome.MyViewHolder holder, int position) {
@@ -56,6 +57,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
         holder.menu.setText(messmodel.getToDayDish());
         holder.dishprice.setText("₹"+messmodel.getDishPrize());
         holder.ratings.setText(messmodel.getRatings());
+        holder.myRating.setRating(Float. parseFloat(messmodel.getRatings()));
         Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
         if(messmodel.getIsVerified().equals("yes")) {
             holder.ver.setText("Verified");
@@ -66,7 +68,21 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
             @Override
             public void onClick(View v) {
 
-                showSettingsBottomSheetDialog();
+                String latitude = String.valueOf(messmodel.getLatitude());
+                String longitude = String.valueOf(messmodel.getLongitude());
+
+                Intent intent = new Intent(context, DishInfo.class);
+                intent.putExtra("messMobile", messmodel.getMobileNo());
+                intent.putExtra("messName", messmodel.getMessName());
+                intent.putExtra("messIsDelivery", messmodel.getIsDelivery());
+                intent.putExtra("messCoverImage", messmodel.getCoverImage());
+                intent.putExtra("messRatings", messmodel.getRatings());
+                intent.putExtra("messDishPrize", messmodel.getDishPrize());
+                intent.putExtra("messToDayDish", messmodel.getToDayDish());
+                intent.putExtra("messLatitude", latitude);
+                intent.putExtra("messLongitude", longitude);
+
+                context.startActivity(intent);
 
             }
 
@@ -76,19 +92,37 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
     }
 
 
-
-    private BottomSheetDialog bottomSheetDialog;
-    private void showSettingsBottomSheetDialog() {
-
-        // Inflate the layout for the BottomSheetDialog
-        View bottomSheetView = inflaterH.inflate(R.layout.dishlist_bottomsheet, (ConstraintLayout) view.findViewById(R.id.setting_sheet));
-
-        bottomSheetDialog = new BottomSheetDialog(activity,R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.show();
-
-
-    }
+//
+//    private void showSettingsBottomSheetDialog(BottomSheetDialog bottomSheetDialog ) {
+//
+//        // Inflate the layout for the BottomSheetDialog
+//        View bottomSheetView = inflaterH.inflate(R.layout.dishlist_bottomsheet, (ConstraintLayout) view.findViewById(R.id.dish_sheet));
+//
+//        ImageView cover = bottomSheetView.findViewById(R.id.coverImgB);
+//        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(cover);
+//
+//        TextView menu = bottomSheetView.findViewById(R.id.menuB);
+//        menu.setText(messmodel.getToDayDish());
+//
+//        RatingBar myRatingBar = bottomSheetView.findViewById(R.id.myRatingBarB);
+//        myRatingBar.setRating(Float. parseFloat(messmodel.getRatings()));
+//
+//        TextView priceW = bottomSheetView.findViewById(R.id.Tv_prizeW);
+//        if (messmodel.isDelivery.equals("no")){
+//            priceW.setText("Not Available");
+//        }else {
+//            priceW.setText("₹"+(Integer.parseInt(messmodel.getDishPrize())+40)+"");
+//        }
+//
+//        TextView priceWO = bottomSheetView.findViewById(R.id.Tv_prizeWO);
+//        priceWO.setText("₹"+messmodel.getDishPrize());
+//
+//
+//        bottomSheetDialog.setContentView(bottomSheetView);
+//        bottomSheetDialog.show();
+//
+//
+//    }
 
 
     @Override
@@ -99,6 +133,9 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView menu, ver, dishprice, ratings;
+
+        RatingBar myRating;
+
         ImageView coverImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +145,8 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
             ver = itemView.findViewById(R.id.isVerified);
             dishprice = itemView.findViewById(R.id.price);
             ratings = itemView.findViewById(R.id.ratings);
+            myRating = itemView.findViewById(R.id.myRatingBarC);
+
 
 
         }

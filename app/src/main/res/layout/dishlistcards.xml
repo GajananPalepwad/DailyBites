@@ -81,7 +81,7 @@
 
 
         <RatingBar
-            android:id="@+id/myRatingBar"
+            android:id="@+id/myRatingBarC"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

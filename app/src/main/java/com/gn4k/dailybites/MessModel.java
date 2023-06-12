@@ -5,6 +5,16 @@ public class MessModel {
     String mobileNo;
     String dishPrize;
 
+    public String getIsDelivery() {
+        return isDelivery;
+    }
+
+    public void setIsDelivery(String isDelivery) {
+        this.isDelivery = isDelivery;
+    }
+
+    String isDelivery;
+
     public String getDishPrize() {
         return dishPrize;
     }
@@ -103,7 +113,7 @@ public class MessModel {
 
     Double latitude;
 
-    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance, String dishPrize, String toDayDish, String ratings) {
+    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance, String dishPrize, String toDayDish, String ratings, String isDelivery) {
         if (latitude == null || longitude == null) {
             throw new IllegalArgumentException("Latitude and longitude values must not be null.");
         }
@@ -117,6 +127,7 @@ public class MessModel {
         this.toDayDish = toDayDish;
         this.dishPrize = dishPrize;
         this.ratings = ratings;
+        this.isDelivery = isDelivery;
     }
 
     Double longitude;

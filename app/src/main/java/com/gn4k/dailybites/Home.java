@@ -32,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Home extends AppCompatActivity {
+public class  Home extends AppCompatActivity {
 
     private static final int YOUR_REQUEST_CODE = 123;
 
@@ -108,36 +108,38 @@ public class Home extends AppCompatActivity {
     private void getTodaysMenuInCalenderRoom() {
 
 
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference dbpath = db.child("mess").child(sharedPreferences.getString("MessNo",""));
-        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                    menu = String.valueOf(data.get("menu"));
+        if(!sharedPreferences.getString("messName","").equals("")) {
 
-                    GetDateTime getDateTime = new GetDateTime(activity);
-                    getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-                        @Override
-                        public void onGetDateTime(String date2, String time) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpath = db.child("mess").child(sharedPreferences.getString("MessNo", ""));
+            dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        menu = String.valueOf(data.get("menu"));
 
-                            date = date2;
-                            ValuesLocal values = new ValuesLocal();
-                            day = values.DateToWeekDate(date);
-                            new CalenderBgthread().start();
-                        }
-                    });
+                        GetDateTime getDateTime = new GetDateTime(activity);
+                        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+                            @Override
+                            public void onGetDateTime(String date2, String time) {
+
+                                date = date2;
+                                ValuesLocal values = new ValuesLocal();
+                                day = values.DateToWeekDate(date);
+                                new CalenderBgthread().start();
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+            });
+        }
 
 
     }

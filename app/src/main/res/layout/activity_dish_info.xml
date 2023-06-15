@@ -264,7 +264,7 @@
         android:backgroundTint="@color/brandcolor"
         android:drawablePadding="13dp"
         android:paddingHorizontal="13dp"
-        android:text="Order Now"
+        android:text="One Time Pass"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="20dp"

@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,6 +74,24 @@ public class HomeFragment extends Fragment {
         endDate = getActivity().findViewById(R.id.endDate);
         planImg = getActivity().findViewById(R.id.planImg);
 
+        ImageView wallet = view.findViewById(R.id.wallet);
+
+        ImageView notification = view.findViewById(R.id.notification);
+        wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationForUser.class);
+                startActivity(intent);
+            }
+        });
 
         setSubscriptionCard();
         endSubcription();
@@ -151,9 +171,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,11 +216,8 @@ public class HomeFragment extends Fragment {
                 loadingDialog.stopLoading();
 
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
 
@@ -214,7 +229,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {///////////////////////////////////////////////////////////////
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) { //calculate Distance from user to mess
         double R = 6371; // Radius of the earth in kilometers
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -236,29 +251,31 @@ public class HomeFragment extends Fragment {
 
     private void setSubscriptionCard(){
 
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
 
-        name.setText(sharedPreferences.getString("UserName",""));
-        planName.setText(sharedPreferences.getString("planName",""));
-        messName.setText(sharedPreferences.getString("messName",""));
-        no.setText(sharedPreferences.getString("MessNo","")+sharedPreferences.getString("UserMobileNo",""));
-        endDate.setText(convertDateFormat(sharedPreferences.getString("toDate",""), "MM/dd/yyyy", "dd/MM"));
-        EndDate = sharedPreferences.getString("toDate","");
+        if(!sharedPreferences.getString("messName","").equals("")) {
+            name.setText(sharedPreferences.getString("UserName", ""));
+            planName.setText(sharedPreferences.getString("planName", ""));
+            messName.setText(sharedPreferences.getString("messName", ""));
+            no.setText(sharedPreferences.getString("MessNo", "") + sharedPreferences.getString("UserMobileNo", ""));
+            endDate.setText(convertDateFormat(sharedPreferences.getString("toDate", ""), "MM/dd/yyyy", "dd/MM"));
+            EndDate = sharedPreferences.getString("toDate", "");
 
-        switch (sharedPreferences.getString("planName","")){
-            case "Diamond Plan":
-                planImg.setImageResource(R.drawable.diamond);
-                break;
-            case "Gold Plan":
-                planImg.setImageResource(R.drawable.gold);
-                break;
-            case "Silver Plan":
-                planImg.setImageResource(R.drawable.silver);
-                break;
-            default:
-                planImg.setImageResource(R.drawable.bearfast);
+            switch (sharedPreferences.getString("planName", "")) {
+                case "Diamond Plan":
+                    planImg.setImageResource(R.drawable.diamond);
+                    break;
+                case "Gold Plan":
+                    planImg.setImageResource(R.drawable.gold);
+                    break;
+                case "Silver Plan":
+                    planImg.setImageResource(R.drawable.silver);
+                    break;
+                default:
+                    planImg.setImageResource(R.drawable.bearfast);
+            }
         }
-
     }
 
     public static String convertDateFormat(String inputDate, String inputFormat, String outputFormat) {
@@ -276,45 +293,82 @@ public class HomeFragment extends Fragment {
 
     private void endSubcription(){
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+
+
         GetDateTime getDateTime = new GetDateTime(getActivity());
         getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
             @Override
             public void onGetDateTime(String date, String time) {
-                if (EndDate.equals(date)){
+                if(!sharedPreferences.getString("planName", "").equals("One day Plan")) {
+                    if (sharedPreferences.getString("toDate", "").equals(date)) {
 
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
-                    SharedPreferences.Editor preferences = sharedPreferences.edit();
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                    preferences.putString("messName","");
-                    preferences.putString("MessNo","Buy subscription to get this card");
-                    preferences.putString("planName","");
-                    preferences.putString("fromDate","");
-                    preferences.putString("toDate","");
-                    preferences.apply();
+                        preferences.putString("messName", "");
+                        preferences.putString("MessNo", "");
+                        preferences.putString("planName", "");
+                        preferences.putString("fromDate", "");
+                        preferences.putString("toDate", "");
+                        preferences.apply();
 
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    Map<String, Object> updates = new HashMap<>();
-                    updates.put("from", FieldValue.delete());
-                    updates.put("to", FieldValue.delete());
-                    updates.put("planName", FieldValue.delete());
-                    updates.put("messNo", FieldValue.delete());
-                    updates.put("messName", FieldValue.delete());
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("from", FieldValue.delete());
+                        updates.put("to", FieldValue.delete());
+                        updates.put("planName", FieldValue.delete());
+                        updates.put("messNo", FieldValue.delete());
+                        updates.put("messName", FieldValue.delete());
 
-                    db.collection("User").
-                            document(sharedPreferences.getString("UserEmail", "")).
-                            update(updates).
-                            addOnSuccessListener(aVoid -> {
-                            // Field deleted successfully
-                            showInstructionDialogBox("Plan Expired", "Your "+
-                                    sharedPreferences.getString("planName","") +
-                                    " of " + sharedPreferences.getString("messName","")+ " is EXPIRED TODAY !!!");
-                            })
-                            .addOnFailureListener(e -> {
-                                // Error occurred while deleting the field
-                                System.out.println("Error deleting field: " + e.getMessage());
-                            });
+                        db.collection("User").
+                                document(sharedPreferences.getString("UserEmail", "")).
+                                update(updates).
+                                addOnSuccessListener(aVoid -> {
+                                    // Field deleted successfully
+                                    showInstructionDialogBox("Plan Expired", "Your " +
+                                            sharedPreferences.getString("planName", "") +
+                                            " of " + sharedPreferences.getString("messName", "") + " is EXPIRED TODAY !!!");
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Error occurred while deleting the field
+                                    System.out.println("Error deleting field: " + e.getMessage());
+                                });
 
 
+                    }
+                }else{
+                    if (!sharedPreferences.getString("fromDate", "").equals(date)) {
+
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+                        preferences.putString("messName", "");
+                        preferences.putString("MessNo", "");
+                        preferences.putString("planName", "");
+                        preferences.putString("fromDate", "");
+                        preferences.putString("toDate", "");
+                        preferences.apply();
+
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("from", FieldValue.delete());
+                        updates.put("to", FieldValue.delete());
+                        updates.put("planName", FieldValue.delete());
+                        updates.put("messNo", FieldValue.delete());
+                        updates.put("messName", FieldValue.delete());
+
+                        db.collection("User").
+                                document(sharedPreferences.getString("UserEmail", "")).
+                                update(updates).
+                                addOnSuccessListener(aVoid -> {
+                                    // Field deleted successfully
+                                    showInstructionDialogBox("Plan Expired", "Your plan is Expired TODAY !!!");
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Error occurred while deleting the field
+                                    System.out.println("Error deleting field: " + e.getMessage());
+                                });
+
+                    }
                 }
             }
         });

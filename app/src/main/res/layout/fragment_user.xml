@@ -148,7 +148,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:fontFamily="@font/alegreya_sc_black"
-                            android:text="Madhuri\nMess"
+                            android:text="Mess\nName"
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textSize="15dp" />

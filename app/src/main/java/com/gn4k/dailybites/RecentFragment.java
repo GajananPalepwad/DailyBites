@@ -15,6 +15,7 @@ import androidx.room.Room;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.RoomForRecent.Mess;
@@ -46,6 +47,25 @@ public class RecentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView wallet = view.findViewById(R.id.wallet);
+
+        ImageView notification = view.findViewById(R.id.notification);
+        wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationForUser.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

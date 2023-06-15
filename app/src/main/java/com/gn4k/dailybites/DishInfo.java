@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -34,8 +36,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DishInfo extends AppCompatActivity {
+public class DishInfo extends AppCompatActivity implements PaymentResultListener{
+
+    private static final String KEY_MESSNAME = "messName";
+    private static final String KEY_MESSNO = "messNo";
+    private static final String KEY_PLANNAME = "planName";
+    private static final String KEY_FROMDATE = "from";
+    private static final String KEY_TODATE = "to";
     Bundle bundle;
+    RadioButton withDeliveryRadioButton;
+    RadioButton withoutDeliveryRadioButton;
+    int planPrice = 0;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +63,15 @@ public class DishInfo extends AppCompatActivity {
         TextView menu = findViewById(R.id.menuB);
         menu.setText(bundle.getString("messToDayDish"));
 //
-
+        withDeliveryRadioButton = findViewById(R.id.WithRadioButton);
+        withoutDeliveryRadioButton = findViewById(R.id.WithOutRadioButton);
 //
         TextView priceW = findViewById(R.id.Tv_prizeW);
         if (bundle.getString("messIsDelivery").equals("no")){
             priceW.setText("Not Available");
+            withDeliveryRadioButton.setEnabled(false);
+            withoutDeliveryRadioButton.setChecked(true);
+            planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
         }else {
             priceW.setText("₹"+(Integer.parseInt(bundle.getString("messDishPrize"))+40)+"");
         }
@@ -74,15 +91,39 @@ public class DishInfo extends AppCompatActivity {
                     RatingBar myRatingBar = findViewById(R.id.myRatingBarB);
                     TextView ratings = findViewById(R.id.ratingsB);
                     ratings.setText((String) data.get("ratings"));
-                    myRatingBar.setRating(Float. parseFloat((String) data.get("ratings")) );
+                    myRatingBar.setRating(Float.parseFloat((String) data.get("ratings")));
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
 
+        withDeliveryRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planPrice = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
+                // Set 'With Delivery' radio button as checked
+                withDeliveryRadioButton.setChecked(true);
+                // Uncheck 'Without Delivery' radio button
+                withoutDeliveryRadioButton.setChecked(false);
             }
         });
+
+        withoutDeliveryRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
+                // Set 'Without Delivery' radio button as checked
+                withoutDeliveryRadioButton.setChecked(true);
+                // Uncheck 'With Delivery' radio button
+                withDeliveryRadioButton.setChecked(false);
+            }
+        });
+
+
+
+
+
 
         Button gotomap = findViewById(R.id.location);
 
@@ -95,6 +136,19 @@ public class DishInfo extends AppCompatActivity {
                 intent.putExtra("messLatitude", bundle.getString("messLatitude"));
                 intent.putExtra("messLongitude", bundle.getString("messLongitude"));
                 startActivity(intent);
+            }
+        });
+
+        Button buy = findViewById(R.id.buy);
+
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
+                    startPayment();
+                }else{
+                    showInstructionDialogBox("Choose a option", "with delivery or without delivery");
+                }
             }
         });
 
@@ -118,7 +172,7 @@ public class DishInfo extends AppCompatActivity {
             options.put("send_sms_hash", true);
             options.put("allow_rotation", false);
             options.put("currency", "INR");
-            options.put("amount", 2000);
+            options.put("amount", planPrice);
 
             JSONObject preFill = new JSONObject();
             preFill.put("email", email);
@@ -146,20 +200,20 @@ public class DishInfo extends AppCompatActivity {
                 SharedPreferences.Editor preferences = sharedPreferences.edit();
 
                 Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put(KEY_MESSNAME, messName);
-                userInfo.put(KEY_MESSNO, mobileNo);
-                userInfo.put(KEY_PLANNAME, planName + " Plan");
+                userInfo.put(KEY_MESSNAME, bundle.getString("messName"));
+                userInfo.put(KEY_MESSNO, bundle.getString("messMobile"));
+                userInfo.put(KEY_PLANNAME, "One day" + " Plan");
                 userInfo.put(KEY_FROMDATE, date);
 
-                preferences.putString("messName", messName);
-                preferences.putString("MessNo", mobileNo);
-                preferences.putString("planName", planName + " Plan");
+                preferences.putString("messName", bundle.getString("messName"));
+                preferences.putString("MessNo", bundle.getString("messMobile"));
+                preferences.putString("planName", "One day" + " Plan");
                 preferences.putString("fromDate", date);
+                preferences.putString("toDate", date);
 
-                String nextMonthDateString = getNextMonthDate(date);
 
-                userInfo.put(KEY_TODATE, nextMonthDateString);
-                preferences.putString("toDate", nextMonthDateString);
+                userInfo.put(KEY_TODATE, date);
+
                 preferences.apply();
 
                 db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
@@ -168,7 +222,7 @@ public class DishInfo extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 // Move to the home screen
-                                Toast.makeText(PlanInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DishInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -179,15 +233,13 @@ public class DishInfo extends AppCompatActivity {
                         });
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference dataRef = ref.child("mess").child(mobileNo).child(planName + "plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
+                DatabaseReference dataRef = ref.child("mess").child(bundle.getString("messMobile")).child("OneDay" + "Plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("name", sharedPreferences.getString("UserName", ""));
                 data.put("email", sharedPreferences.getString("UserEmail", ""));
-                data.put("plan", planName + " Plan");
-                data.put("fromDate", date);
-                data.put("toDate", nextMonthDateString);
-
+                data.put("plan", "One Day" + " Plan");
+                data.put("forDate", date);
 
                 dataRef.updateChildren(data)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -210,8 +262,8 @@ public class DishInfo extends AppCompatActivity {
 
     @Override
     public void onPaymentError(int i, String s) {
-//        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
-//        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
+        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
+        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
 
     }
 

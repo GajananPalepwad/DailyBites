@@ -221,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
-                android:text="Dish List  ->"
+                android:text="OneDay Plans  ->"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 

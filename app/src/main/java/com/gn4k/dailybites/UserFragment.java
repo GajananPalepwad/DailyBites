@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,34 +67,59 @@ public class UserFragment extends Fragment {
 
         name.setText(sharedPreferences.getString("UserName",""));
         address.setText(sharedPreferences.getString("UserAddress",""));
-        MessName.setText(sharedPreferences.getString("messName",""));
+        if(!sharedPreferences.getString("messName","").equals("")) {
+            MessName.setText(sharedPreferences.getString("messName", ""));
+        }
 
 
+        if(sharedPreferences.getString("planName", "").equals("One day Plan")){
+            daysRemain.setText(1+ " Day Left");
+        }else {
 
-        GetDateTime getDateTime = new GetDateTime(getActivity());
-        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+            GetDateTime getDateTime = new GetDateTime(getActivity());
+            getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+                @Override
+                public void onGetDateTime(String date, String time) {
+
+                    String givenDateStr = sharedPreferences.getString("toDate", "");
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                    // Parse the current date string to a LocalDate object
+                    Date currentDate = null;
+                    Date givenDate = null;
+                    try {
+                        currentDate = formatter.parse(date);
+                        givenDate = formatter.parse(givenDateStr);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // Calculate the number of days between the given date and the current date
+                    long remainingDays = -1;
+                    if (currentDate != null && givenDate != null) {
+                        long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
+                        remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
+                    }
+                    daysRemain.setText(remainingDays + " Days Left");
+
+                }
+            });
+        }
+
+        ImageView wallet = view.findViewById(R.id.wallet);
+
+        ImageView notification = view.findViewById(R.id.notification);
+        wallet.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGetDateTime(String date, String time) {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WalletForUser.class);
+                startActivity(intent);
+            }
+        });
 
-                String givenDateStr = sharedPreferences.getString("toDate","");
-                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                // Parse the current date string to a LocalDate object
-                Date currentDate = null;
-                Date givenDate = null;
-                try {
-                    currentDate = formatter.parse(date);
-                    givenDate = formatter.parse(givenDateStr);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                // Calculate the number of days between the given date and the current date
-                long remainingDays = -1;
-                if (currentDate != null && givenDate != null) {
-                    long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
-                    remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
-                }
-                daysRemain.setText(remainingDays+ " Days Left");
-
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationForUser.class);
+                startActivity(intent);
             }
         });
 
@@ -109,9 +135,6 @@ public class UserFragment extends Fragment {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               // BottomSheetDialog sheetDialog = new BottomSheetDialog( getActivity(), R.style.AppBottomSheetDialogTheme);
-              //  View view = LayoutInflater.from(getActivity()).inflate(R.layout.setting_bottomsheet, (ConstraintLayout)getView().findViewById(R.id.setting_sheet));
 
                 showSettingsBottomSheetDialog();
 

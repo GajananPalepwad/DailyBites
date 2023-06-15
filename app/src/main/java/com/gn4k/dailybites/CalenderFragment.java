@@ -1,6 +1,7 @@
 package com.gn4k.dailybites;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.widget.NestedScrollView;
@@ -12,6 +13,7 @@ import androidx.room.Room;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.gn4k.dailybites.RoomForCalender.Calender;
 import com.gn4k.dailybites.RoomForCalender.CalenderDao;
@@ -46,6 +48,25 @@ public class CalenderFragment extends Fragment {
         recentRecyclerView = view.findViewById(R.id.recyclerViewCalender);
 
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+
+        ImageView wallet = view.findViewById(R.id.wallet);
+
+        ImageView notification = view.findViewById(R.id.notification);
+        wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NotificationForUser.class);
+                startActivity(intent);
+            }
+        });
 
 
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);

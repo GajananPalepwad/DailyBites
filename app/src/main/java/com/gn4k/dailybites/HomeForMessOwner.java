@@ -32,6 +32,8 @@ public class HomeForMessOwner extends AppCompatActivity {
     int countD =0, countS = 0, countG =0, totalUsers = 0;
     RatingBar myRatingBar;
 
+    CardView consumersBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +48,12 @@ public class HomeForMessOwner extends AppCompatActivity {
             subscribers = findViewById(R.id.subscribers);
             ratings = findViewById(R.id.ratingInNumber);
             myRatingBar = findViewById(R.id.myRatingBar);
+            consumersBtn = findViewById(R.id.ConsumersBtn);
 
             SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
             DatabaseReference dbpath = db.child("mess")
                     .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
-
             dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
@@ -75,6 +77,14 @@ public class HomeForMessOwner extends AppCompatActivity {
 
             mobileNo = sharedPreferences.getString("MessOwnerMobileNo", "");
 
+
+        consumersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, ConsumersList.class);
+                startActivity(intent);
+            }
+        });
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/silverbtn"
+        android:title="Silver"
+        android:icon="@drawable/silver"/>
+
+    <item android:id="@+id/goldbtn"
+        android:title="Gold"
+        android:icon="@drawable/gold"/>
+
+    <item android:id="@+id/diamondbtn"
+        android:title="Diamond"
+        android:icon="@drawable/diamond"/>
+
+
+</menu>

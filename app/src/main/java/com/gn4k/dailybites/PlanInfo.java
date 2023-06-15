@@ -77,7 +77,13 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startPayment();
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+
+                if(sharedPreferences.getString("planName", "").equals("")) {
+                    startPayment();
+                }else {
+                    showInstructionDialogBox("Plan Exist", "You already have an another plan....");
+                }
             }
         });
 

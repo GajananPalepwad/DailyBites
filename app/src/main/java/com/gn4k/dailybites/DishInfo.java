@@ -144,10 +144,17 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
-                    startPayment();
-                }else{
-                    showInstructionDialogBox("Choose a option", "with delivery or without delivery");
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+
+                if(sharedPreferences.getString("planName", "").equals("")){
+
+                    if (withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
+                        startPayment();
+                    } else {
+                        showInstructionDialogBox("Choose a option", "with delivery or without delivery");
+                    }
+                }else {
+                    showInstructionDialogBox("Plan Exist", "You already have an another plan....");
                 }
             }
         });

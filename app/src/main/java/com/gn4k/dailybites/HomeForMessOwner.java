@@ -3,10 +3,13 @@ package com.gn4k.dailybites;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,14 +36,15 @@ public class HomeForMessOwner extends AppCompatActivity {
     int countD =0, countS = 0, countG =0, totalUsers = 0;
     RatingBar myRatingBar;
 
-    CardView consumersBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
             Button silver, gold, diamond;
-            CardView profile = findViewById(R.id.profile);
+            CardView profile, settings, consumersBtn, wallet, sendMsg, support;
+            settings = findViewById(R.id.settings);
+            profile = findViewById(R.id.profile);
             silver = findViewById(R.id.silver);
             gold = findViewById(R.id.gold);
             diamond = findViewById(R.id.diamond);
@@ -121,10 +126,67 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettingsBottomSheetDialog();
+            }
+        });
+
+
+
         getCountOfUsers();
 
     }
 
+
+    private BottomSheetDialog bottomSheetDialog;
+    private void showSettingsBottomSheetDialog() {
+
+
+        // Inflate the layout for the BottomSheetDialog
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.setting_bottomsheet, (ConstraintLayout) findViewById(R.id.setting_sheet));
+
+        // Find your button or any other view inside the BottomSheetDialog layout
+        CardView notifi = bottomSheetView.findViewById(R.id.notificationSettings);
+        CardView cache = bottomSheetView.findViewById(R.id.clearCache);
+        CardView lan = bottomSheetView.findViewById(R.id.lan);
+        // Set click listener for the button inside the BottomSheetDialog
+
+        notifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                startActivity(intent);
+            }
+        });
+
+
+        cache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle button click inside the BottomSheetDialog
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
+            }
+        });
+
+        lan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+                intent.putExtra("data", "settingsMess");
+                startActivity(intent);
+            }
+        });
+
+        // Create the BottomSheetDialog
+        bottomSheetDialog = new BottomSheetDialog(HomeForMessOwner.this,R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
 
 
     private void getCountOfUsers(){

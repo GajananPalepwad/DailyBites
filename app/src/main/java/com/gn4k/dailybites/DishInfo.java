@@ -246,6 +246,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("name", sharedPreferences.getString("UserName", ""));
                 data.put("email", sharedPreferences.getString("UserEmail", ""));
                 data.put("plan", "One Day" + " Plan");
+                data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("forDate", date);
 
                 dataRef.updateChildren(data)

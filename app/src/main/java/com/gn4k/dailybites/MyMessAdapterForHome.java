@@ -97,15 +97,6 @@ public class MyMessAdapterForHome extends RecyclerView.Adapter<MyMessAdapterForH
 
         });
 
-//        double distance = calculateDistance(
-//                Double.parseDouble(sharedPreferences.getString("UserLatitude","")),
-//                Double.parseDouble(sharedPreferences.getString("UserLongitude","")),
-//                messmodel.getLatitude(),
-//                messmodel.getLongitude());
-//
-//        // Store the distance in the messmodel for sorting purposes
-//        messmodel.setDistance(distance);
-
 
     }
 

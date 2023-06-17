@@ -199,12 +199,6 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     }
 
 
-
-
-
-
-
-
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();

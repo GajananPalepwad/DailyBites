@@ -4,15 +4,15 @@
 
     <item android:id="@+id/silverbtn"
         android:title="Silver"
-        android:icon="@drawable/silver"/>
+        android:icon="@drawable/s"/>
 
     <item android:id="@+id/goldbtn"
         android:title="Gold"
-        android:icon="@drawable/gold"/>
+        android:icon="@drawable/g"/>
 
     <item android:id="@+id/diamondbtn"
         android:title="Diamond"
-        android:icon="@drawable/diamond"/>
+        android:icon="@drawable/d"/>
 
 
 </menu>

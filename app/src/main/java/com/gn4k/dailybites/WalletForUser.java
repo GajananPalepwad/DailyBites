@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.gn4k.dailybites.R;
+
 public class WalletForUser extends AppCompatActivity {
 
     @Override

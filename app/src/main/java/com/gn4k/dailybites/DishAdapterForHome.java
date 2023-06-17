@@ -54,7 +54,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
     public void onBindViewHolder(@NonNull DishAdapterForHome.MyViewHolder holder, int position) {
 
         MessModel messmodel = list.get(position);
-        holder.menu.setText(messmodel.getToDayDish());
+        holder.menu.setText(messmodel.getMenu());
         holder.dishprice.setText("₹"+messmodel.getDishPrize());
         holder.ratings.setText(messmodel.getRatings());
         holder.myRating.setRating(Float. parseFloat(messmodel.getRatings()));
@@ -78,7 +78,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
                 intent.putExtra("messCoverImage", messmodel.getCoverImage());
                 intent.putExtra("messRatings", messmodel.getRatings());
                 intent.putExtra("messDishPrize", messmodel.getDishPrize());
-                intent.putExtra("messToDayDish", messmodel.getToDayDish());
+                intent.putExtra("messToDayDish", messmodel.getMenu());
                 intent.putExtra("messLatitude", latitude);
                 intent.putExtra("messLongitude", longitude);
 

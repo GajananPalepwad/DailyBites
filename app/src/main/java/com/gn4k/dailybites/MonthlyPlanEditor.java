@@ -164,7 +164,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
         String description = evdescription.getText().toString();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
-// Update user information in Firebase database
+        // Update user information in Firebase database
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         DatabaseReference dataRef = ref.child("mess").
                 child(sharedPreferences.getString("MessOwnerMobileNo", "")).

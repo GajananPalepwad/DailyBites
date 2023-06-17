@@ -22,7 +22,7 @@ public class LanguageChooser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(getIntent().getStringExtra("data").equals("settings") || getIntent().getStringExtra("data").equals("settingsMess")) {
+                if(getIntent().getStringExtra("data")!= null) {
                     onBackPressed();
                 }else if(getIntent().getStringExtra("data") == null){
                     Intent intent = new Intent(LanguageChooser.this, ChooseMessOrUser.class);

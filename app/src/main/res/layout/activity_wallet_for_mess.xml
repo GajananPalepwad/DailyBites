@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WalletForUser">
+    tools:context=".Mess.WalletForMess">
+
 
 
     <ImageView
@@ -92,7 +93,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="10dp"
                 android:inputType="number"
-                android:text="Total Deposit"
+                android:text="Withdraw Pending"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold"
@@ -164,6 +165,7 @@
 
 
             <TextView
+                android:id="@+id/balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -197,13 +199,13 @@
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/deposite"
+        app:layout_constraintBottom_toTopOf="@+id/withdraw"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <Button
-        android:id="@+id/deposite"
+        android:id="@+id/withdraw"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="15dp"
@@ -211,7 +213,7 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/button_shape"
         android:elevation="10dp"
-        android:text="Deposite"
+        android:text="Withdraw"
         android:textAllCaps="false"
         android:textColor="#191B1A"
         android:textSize="19dp"
@@ -219,5 +221,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

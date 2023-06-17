@@ -23,15 +23,15 @@ public class MessModel {
         this.dishPrize = dishPrize;
     }
 
-    public String getToDayDish() {
-        return toDayDish;
+    public String getMenu() {
+        return menu;
     }
 
-    public void setToDayDish(String toDayDish) {
-        this.toDayDish = toDayDish;
+    public void setMenu(String toDayDish) {
+        this.menu = toDayDish;
     }
 
-    String toDayDish;
+    String menu;
     String messName;
 
     public String getRatings() {
@@ -113,7 +113,7 @@ public class MessModel {
 
     Double latitude;
 
-    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance, String dishPrize, String toDayDish, String ratings, String isDelivery) {
+    public MessModel(String mobileNo, String messName, String coverImage, Double latitude, Double longitude, String isVerified, double distance, String dishPrize, String menu, String ratings, String isDelivery) {
         if (latitude == null || longitude == null) {
             throw new IllegalArgumentException("Latitude and longitude values must not be null.");
         }
@@ -124,7 +124,7 @@ public class MessModel {
         this.longitude = longitude;
         this.isVerified = isVerified;
         this.distance = distance;
-        this.toDayDish = toDayDish;
+        this.menu = menu;
         this.dishPrize = dishPrize;
         this.ratings = ratings;
         this.isDelivery = isDelivery;

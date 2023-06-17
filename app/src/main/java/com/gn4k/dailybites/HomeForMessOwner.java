@@ -1,10 +1,12 @@
 package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.WalletForMess;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +46,9 @@ public class HomeForMessOwner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
             Button silver, gold, diamond;
-            CardView profile, settings, consumersBtn, wallet, sendMsg, support;
+            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu;
+            wallet = findViewById(R.id.walletM);
+            updateMenu = findViewById(R.id.dailyMenu);
             settings = findViewById(R.id.settings);
             profile = findViewById(R.id.profile);
             silver = findViewById(R.id.silver);
@@ -133,10 +139,78 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
+        updateMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, AddToDaysMenu.class);
+                startActivity(intent);
+            }
+        });
+
+        wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, WalletForMess.class);
+                startActivity(intent);
+            }
+        });
+
 
 
         getCountOfUsers();
 
+    }
+
+
+    private void showLogoutDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeForMessOwner.this);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Call the logout function
+                Logout();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    private void Logout(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+        preferences.putString("MessOwnerEmail","");
+        preferences.putString("MessName","");
+        preferences.putString("MessOwnerPassword","");
+        preferences.putString("MessOwnerMobileNo","");
+        preferences.putString("MessOwnerLatitude","");
+        preferences.putString("MessOwnerLongitude","");
+        preferences.putString("MessOwnerName","");
+        preferences.putString("MessOwnerAddress","");
+        preferences.apply();
+
+        SharedPreferences sharedPreferencesChoose = getSharedPreferences("Choose", MODE_PRIVATE);
+        SharedPreferences.Editor preferences2 = sharedPreferencesChoose.edit();
+        preferences2.putString("MessOrUser","");
+        preferences2.apply();
+
+        Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+        startActivity(intent);
+        finish();
     }
 
 
@@ -145,12 +219,13 @@ public class HomeForMessOwner extends AppCompatActivity {
 
 
         // Inflate the layout for the BottomSheetDialog
-        View bottomSheetView = getLayoutInflater().inflate(R.layout.setting_bottomsheet, (ConstraintLayout) findViewById(R.id.setting_sheet));
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.setting_bottomsheet_for_mess, (ConstraintLayout) findViewById(R.id.setting_sheet));
 
         // Find your button or any other view inside the BottomSheetDialog layout
         CardView notifi = bottomSheetView.findViewById(R.id.notificationSettings);
         CardView cache = bottomSheetView.findViewById(R.id.clearCache);
         CardView lan = bottomSheetView.findViewById(R.id.lan);
+        CardView logOut = bottomSheetView.findViewById(R.id.logout);
         // Set click listener for the button inside the BottomSheetDialog
 
         notifi.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +254,14 @@ public class HomeForMessOwner extends AppCompatActivity {
                 Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
                 intent.putExtra("data", "settingsMess");
                 startActivity(intent);
+            }
+        });
+
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogoutDialog();
             }
         });
 

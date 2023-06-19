@@ -4,36 +4,59 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gn4k.dailybites.HomeForMessOwner;
+
+import com.gn4k.dailybites.GetDateTime;
+
 import com.gn4k.dailybites.R;
+
+
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletDatabase;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletForMessDao;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletHistoryAdapter;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletMess;
+
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class WalletForMess extends AppCompatActivity {
 
     TextView balance, pending;
-    Button withdraw;
-
+    Button withdrawbtn;
+    String passwordFromFB, date;
+    private BottomSheetDialog bottomSheetDialog;
     String balanceString, pendingString;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +65,119 @@ public class WalletForMess extends AppCompatActivity {
 
         balance = findViewById(R.id.balance);
         pending = findViewById(R.id.pending);
-        withdraw = findViewById(R.id.withdraw);
+        withdrawbtn = findViewById(R.id.withdrawBtn);
+        recyclerView = findViewById(R.id.recyclerViewWallet);
 
-        withdraw.setOnClickListener(new View.OnClickListener() {
+        withdrawbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setWithdraw();
+                if(Double.parseDouble(balanceString)>1.0){
+                    showPasswordBottomSheetDialog();
+                }else{
+                    showInstructionDialogBox("Not enough Balance", "You should have balance more that ₹1 to withdraw");
+                }
+            }
+        });
+        updateAccordingtofirebase();
+
+
+        new Bgthread(recyclerView).start();
+
+    }
+
+
+    class Bgthread extends Thread {  // to display recent transition history in recyclerView
+        private RecyclerView recyclerView;
+
+        Bgthread(RecyclerView recyclerView) {
+            this.recyclerView = recyclerView;
+        }
+
+        public void run() {
+            super.run();
+
+            WalletDatabase messdb = Room.databaseBuilder(WalletForMess.this, WalletDatabase.class, "WalletView_DB").build();
+            WalletForMessDao messDao = messdb.walletDao();
+            List<WalletMess> mess = messDao.getAllMess();
+            Collections.reverse(mess);
+
+            WalletForMess.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(WalletForMess.this));
+                    WalletHistoryAdapter WalletAdapter = new WalletHistoryAdapter(WalletForMess.this,mess);
+                    recyclerView.setAdapter(WalletAdapter);
+                }
+            });
+        }
+    }
+
+
+    private void gettime(){
+        GetDateTime getDateTime = new GetDateTime(WalletForMess.this);
+        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+            @Override
+            public void onGetDateTime(String date2, String time) {
+                DateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat outputDateFormat = new SimpleDateFormat("dd MMM yy");
+                String finalDate="", finalTime="";
+                try {
+                    Date date3 = inputDateFormat.parse(date2);
+                    String formattedDate = outputDateFormat.format(date3);
+                    finalDate = formattedDate;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DateFormat inputTimeFormat = new SimpleDateFormat("HH:mm");
+                DateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a");
+
+                try {
+                    Date Time = inputTimeFormat.parse(time);
+                    String formattedTime = outputTimeFormat.format(Time);
+                    finalTime = formattedTime.toUpperCase();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                date = finalDate + ", " + finalTime;
+                new CalenderBgthread().start();
             }
         });
 
-
-        updateAccordingtofirebase();
-
     }
+
+
+    class CalenderBgthread extends Thread { // to add a mess in recent list in room database
+        public void run() {
+            super.run();
+
+            WalletDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    WalletDatabase.class, "WalletView_DB").build();
+
+            WalletForMessDao messDao = messdb.walletDao();
+
+            long lastUid = messDao.getLastMessUid();
+
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                messDao.insert(new WalletMess(initialUid,"Pending", date, balanceString));
+            } else {
+                long nextUid = lastUid + 1;
+
+                if (messDao.isExistByMessNo(date)) {
+                    WalletMess existingDate = messDao.getMessByUid(date);
+                    messDao.delete(existingDate);
+                    messDao.insert(new WalletMess(nextUid, "Pending", date, balanceString));
+                } else {
+                    messDao.insert(new WalletMess(nextUid, "Pending", date, balanceString));
+                }
+
+            }
+        }
+    }
+
 
     private void updateAccordingtofirebase(){
 
@@ -71,6 +194,7 @@ public class WalletForMess extends AppCompatActivity {
 
                     balanceString = (String) data.get("wallet");
                     pendingString = (String) data.get("withdrawPending");
+                    passwordFromFB = (String) data.get("password");
 
                     balance.setText("₹"+balanceString);
                     pending.setText("₹"+pendingString);
@@ -112,6 +236,7 @@ public class WalletForMess extends AppCompatActivity {
                         // Move to the home screen
                         showInstructionDialogBox("Payment Under Process", "You will receive you amount in bank account within 48 Hours");
                         updateAccordingtofirebase();
+                        gettime();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -121,7 +246,46 @@ public class WalletForMess extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
+
     }
+
+
+
+    private void showPasswordBottomSheetDialog() {
+
+
+        // Inflate the layout for the BottomSheetDialog
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.password_check_bottomsheet, (ConstraintLayout) findViewById(R.id.password_check_bottomsheet_id));
+
+        // Find your button or any other view inside the BottomSheetDialog layout
+        Button withdraw = bottomSheetView.findViewById(R.id.withdraw);
+        EditText pass = bottomSheetView.findViewById(R.id.tvPassword);
+        // Set click listener for the button inside the BottomSheetDialog
+
+        withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(pass.getText().toString().equals(passwordFromFB)){
+                    setWithdraw();
+                    bottomSheetDialog.dismiss();
+                }else{
+                    Toast.makeText(WalletForMess.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+        // Create the BottomSheetDialog
+        bottomSheetDialog = new BottomSheetDialog(WalletForMess.this,R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+
+
+
 
     private void showInstructionDialogBox(String title, String mbody) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

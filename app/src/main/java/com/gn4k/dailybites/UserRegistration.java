@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,6 +34,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +45,8 @@ public class UserRegistration extends AppCompatActivity {
     private static final String KEY_MOBILE_NO = "mobile no";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_TOKEN = "token";
+
 
     private EditText name, mobileNo, email, password, ConfirmPassword;
     private TextView passwordDoNotMatch;
@@ -90,6 +94,7 @@ public class UserRegistration extends AppCompatActivity {
         BTNregistor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getToken();
                 getRegister();
             }
         });
@@ -143,6 +148,7 @@ public class UserRegistration extends AppCompatActivity {
                             userInfo.put(KEY_EMAIL, getEmail);
                             userInfo.put(KEY_MOBILE_NO, getMobileNo);
                             userInfo.put(KEY_PASSWORD, getPassword);
+                            userInfo.put(KEY_TOKEN, tokenString);
 
 
                             //Saving the data to SharedPreference so we will not get data from Firestore.
@@ -153,6 +159,7 @@ public class UserRegistration extends AppCompatActivity {
                             preferences.putString("UserPassword",getPassword);
                             preferences.putString("UserMobileNo",getMobileNo);
                             preferences.putString("UserName",getName);
+                            preferences.putString("UserToken", tokenString);
                             preferences.apply();
 
                             db.collection("User").document(getEmail).set(userInfo).
@@ -195,6 +202,22 @@ public class UserRegistration extends AppCompatActivity {
         }else {
             Toast.makeText(this, "Please agree to all the terms and conditions before Registration", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    String tokenString="";
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    tokenString = task.getResult();
+                } else {
+                    // Handle the case when token retrieval fails
+                    Toast.makeText(UserRegistration.this, "Failed to retrieve token",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private boolean isPasswordValid(String password) {

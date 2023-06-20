@@ -74,7 +74,8 @@ public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdap
         holder.time.setText(messList.get(position).getTime());
         holder.amount.setText(messList.get(position).getAmount());
         holder.status.setText(messList.get(position).getStatus());
-        if(messList.get(position).getStatus().equals("Pending")){
+
+        if(messList.get(position).getStatus().equals("Pending")) {
             holder.StatusImg.setImageResource(R.drawable.pending_payment);
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentYellow));
         } else if (messList.get(position).getStatus().equals("Completed")) {

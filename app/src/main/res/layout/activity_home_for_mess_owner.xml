@@ -299,7 +299,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/settings" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView12"
+                    android:id="@+id/sendMSG"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginHorizontal="25dp"
@@ -340,7 +340,7 @@
                     app:cardCornerRadius="100dp"
                     app:cardElevation="20dp"
                     android:backgroundTint="@color/brandcolor"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView12"
+                    app:layout_constraintEnd_toStartOf="@+id/sendMSG"
                     app:layout_constraintStart_toEndOf="@+id/ConsumersBtn"
                     app:layout_constraintTop_toBottomOf="@+id/cardView8"  >
 
@@ -358,9 +358,9 @@
                     android:fontFamily="@font/alegreya_sc_black"
                     android:text="Send Message"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="@+id/cardView12"
-                    app:layout_constraintStart_toStartOf="@+id/cardView12"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView12" />
+                    app:layout_constraintEnd_toEndOf="@+id/sendMSG"
+                    app:layout_constraintStart_toStartOf="@+id/sendMSG"
+                    app:layout_constraintTop_toBottomOf="@+id/sendMSG" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView9"
@@ -451,7 +451,7 @@
                     app:cardElevation="20dp"
                     android:backgroundTint="@color/brandcolor"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView12"   >
+                    app:layout_constraintTop_toBottomOf="@+id/sendMSG"   >
 
 
                     <ImageView

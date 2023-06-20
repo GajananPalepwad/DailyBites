@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,15 +23,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,6 +55,7 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
+    private static final String KEY_TOKEN = "token";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button login;
     private TextView pass;
@@ -80,6 +86,7 @@ public class UserLoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingDialog.startLoading();
+                getToken();
                 checkValidationToLogin();
 
             }
@@ -89,6 +96,7 @@ public class UserLoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingDialog.startLoading();
+                getToken();
                 setRegistration(v);
             }
         });
@@ -173,6 +181,7 @@ public class UserLoginPage extends AppCompatActivity {
                             preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
                             preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
                             preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
+                            preferences.putString("UserToken", tokenString);
                             preferences.apply();
                             if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
                                 loadingDialog.stopLoading();
@@ -194,10 +203,54 @@ public class UserLoginPage extends AppCompatActivity {
                             preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
                             preferences.putString("UserAddress",getAddressFromLatLng(latLng));
                             preferences.apply();
-                            loadingDialog.stopLoading();
-                            Intent intent = new Intent(UserLoginPage.this,Home.class);
-                            startActivity(intent);
-                            finish();
+
+                            String plan = "";
+                            if(documentSnapshot.getString(KEY_PLANNAME).equals("Gold Plan")){
+                                plan ="Goldplan";
+                            } else if (documentSnapshot.getString(KEY_PLANNAME).equals("Silver Plan")) {
+                                plan ="Silverplan";
+                            } else if (documentSnapshot.getString(KEY_PLANNAME).equals("Diamond Plan")) {
+                                plan ="Diamondplan";
+                            }
+
+                            if(!documentSnapshot.getString(KEY_PLANNAME).equals("") || documentSnapshot.getString(KEY_PLANNAME)!=null) {
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                DatabaseReference dataRef = ref.child("mess").
+                                        child(documentSnapshot.getString(KEY_MESSNO)).
+                                        child(plan).
+                                        child("Users").
+                                        child(sharedPreferences.getString("UserMobileNo", ""));
+
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("token", tokenString);
+                                dataRef.updateChildren(data)
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // Error occurred while saving data
+                                                Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+
+                            Map<String, Object> userInfo = new HashMap<>();
+                            userInfo.put(KEY_TOKEN, tokenString);
+                            db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
+                                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            // Move to the home screen
+                                            loadingDialog.stopLoading();
+                                            Intent intent = new Intent(UserLoginPage.this,Home.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
                         }else{
                             loadingDialog.stopLoading();
@@ -230,6 +283,22 @@ public class UserLoginPage extends AppCompatActivity {
             e.printStackTrace();
         }
         return addressReturn;
+    }
+
+    String tokenString="";
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    tokenString = task.getResult();
+                } else {
+                    // Handle the case when token retrieval fails
+                    Toast.makeText(UserLoginPage.this, "Failed to retrieve token",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

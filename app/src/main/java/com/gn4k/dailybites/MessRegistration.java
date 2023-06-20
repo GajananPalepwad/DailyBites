@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class MessRegistration extends AppCompatActivity {
         BTNregistor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getToken();
                 getRegister();
             }
         });
@@ -131,6 +133,7 @@ public class MessRegistration extends AppCompatActivity {
                         preferences.putString("MessOwnerPassword",getPassword);
                         preferences.putString("MessOwnerMobileNo",getMobileNo);
                         preferences.putString("MessOwnerName",getName);
+                        preferences.putString("MessToken",tokenString);
                         preferences.apply();
 
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -143,6 +146,7 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("messName", getMessName);
                         data.put("mobileNo", getMobileNo);
                         data.put("password", getPassword);
+                        data.put("token", tokenString);
                         data.put("isVerified","");
 
                         dataRef.setValue(data)
@@ -185,6 +189,26 @@ public class MessRegistration extends AppCompatActivity {
 
 
     }
+
+
+    String tokenString="";
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    tokenString = task.getResult();
+                } else {
+                    // Handle the case when token retrieval fails
+                    Toast.makeText(MessRegistration.this, "Failed to retrieve token",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+
 
     @Override
     protected void onPause() {

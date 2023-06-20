@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -253,7 +256,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("fromDate", date);
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("toDate", nextMonthDateString);
-
+                data.put("token", sharedPreferences.getString("UserToken", ""));
 
                 dataRef.updateChildren(data)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

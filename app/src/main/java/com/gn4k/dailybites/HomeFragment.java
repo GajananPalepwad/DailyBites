@@ -219,7 +219,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
         return view;
     }
 
@@ -288,6 +287,8 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+
     private void endSubcription(){
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
@@ -302,13 +303,8 @@ public class HomeFragment extends Fragment {
 
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("messName", "");
-                        preferences.putString("MessNo", "");
-                        preferences.putString("planName", "");
-                        preferences.putString("fromDate", "");
-                        preferences.putString("toDate", "");
-                        preferences.apply();
 
+                        //remove data from user side
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("from", FieldValue.delete());
@@ -331,6 +327,23 @@ public class HomeFragment extends Fragment {
                                     System.out.println("Error deleting field: " + e.getMessage());
                                 });
 
+                        //remove your data from mess side
+                        FirebaseDatabase ref = FirebaseDatabase.getInstance();
+                        DatabaseReference dataRef = ref.getReference("mess").
+                                child(sharedPreferences.getString("MessNo", "")).
+                                child("OneDayPlan").
+                                child("Users").
+                                child(sharedPreferences.getString("UserMobileNo", ""));
+                        dataRef.removeValue();
+
+
+                        //remove your data from sharedPreferences
+                        preferences.putString("messName", "");
+                        preferences.putString("MessNo", "");
+                        preferences.putString("planName", "");
+                        preferences.putString("fromDate", "");
+                        preferences.putString("toDate", "");
+                        preferences.apply();
 
                     }
                 }else{
@@ -338,12 +351,22 @@ public class HomeFragment extends Fragment {
 
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("messName", "");
-                        preferences.putString("MessNo", "");
-                        preferences.putString("planName", "");
-                        preferences.putString("fromDate", "");
-                        preferences.putString("toDate", "");
-                        preferences.apply();
+                        String plan = "";
+                        if(sharedPreferences.getString("planName", "").equals("Gold Plan")){
+                            plan ="Goldplan";
+                        } else if (sharedPreferences.getString("planName", "").equals("Silver Plan")) {
+                            plan ="Silverplan";
+                        } else if (sharedPreferences.getString("planName", "").equals("Diamond Plan")) {
+                            plan ="Diamondplan";
+                        }
+
+                        FirebaseDatabase ref = FirebaseDatabase.getInstance();
+                        DatabaseReference dataRef = ref.getReference("mess").
+                                child(sharedPreferences.getString("MessNo", "")).
+                                child(plan).
+                                child("Users").
+                                child(sharedPreferences.getString("UserMobileNo", ""));
+                        dataRef.removeValue();
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         Map<String, Object> updates = new HashMap<>();
@@ -364,6 +387,18 @@ public class HomeFragment extends Fragment {
                                     // Error occurred while deleting the field
                                     System.out.println("Error deleting field: " + e.getMessage());
                                 });
+
+
+
+
+                        preferences.putString("messName", "");
+                        preferences.putString("MessNo", "");
+                        preferences.putString("planName", "");
+                        preferences.putString("fromDate", "");
+                        preferences.putString("toDate", "");
+                        preferences.apply();
+
+
 
                     }
                 }

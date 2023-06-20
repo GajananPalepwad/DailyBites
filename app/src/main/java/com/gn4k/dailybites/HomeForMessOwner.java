@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,7 @@ public class HomeForMessOwner extends AppCompatActivity {
         setContentView(R.layout.activity_home_for_mess_owner);
             Button silver, gold, diamond;
             CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu;
+            sendMsg = findViewById(R.id.sendMSG);
             wallet = findViewById(R.id.walletM);
             updateMenu = findViewById(R.id.dailyMenu);
             settings = findViewById(R.id.settings);
@@ -89,6 +91,13 @@ public class HomeForMessOwner extends AppCompatActivity {
             mobileNo = sharedPreferences.getString("MessOwnerMobileNo", "");
 
 
+        sendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, SendNotificationToUser.class);
+                startActivity(intent);
+            }
+        });
         consumersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

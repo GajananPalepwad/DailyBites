@@ -217,9 +217,9 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 preferences.putString("planName", "One day" + " Plan");
                 preferences.putString("fromDate", date);
                 preferences.putString("toDate", date);
+                preferences.putString("token", date);
 
-
-                userInfo.put(KEY_TODATE, date);
+                userInfo.put(KEY_TODATE, sharedPreferences.getString("UserToken", ""));
 
                 preferences.apply();
 
@@ -250,13 +250,6 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("forDate", date);
 
                 dataRef.updateChildren(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Data saved successfully
-                                // Toast.makeText(PlanInfo.this, "", Toast.LENGTH_SHORT).show();
-                            }
-                        })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {

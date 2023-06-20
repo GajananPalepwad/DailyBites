@@ -21,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -31,11 +32,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MessOnwnerLoginPage extends AppCompatActivity {
 
@@ -73,6 +76,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getToken();
                 checkValidationToLogin();
             }
         });
@@ -138,9 +142,6 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                     String firepass = (String) data.get("password");
                     if (pass.getText().toString().equals(firepass)) {
 
-
-
-
                         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
@@ -149,6 +150,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                         preferences.putString("MessOwnerPassword",pass.getText().toString());
                         preferences.putString("MessOwnerMobileNo",mobile_No.getText().toString());
                         preferences.putString("MessOwnerName",(String) data.get("ownerName"));
+                        preferences.putString("MessToken", tokenString);
                         preferences.apply();
                         if (!snapshot.hasChild("latitude")){
                             Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
@@ -168,7 +170,22 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                         preferences.putString("MessOwnerAddress", getAddressFromLatLng(latLng));
                         preferences.apply();
 
-                        Toast.makeText(MessOnwnerLoginPage.this, getAddressFromLatLng(latLng)+"", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MessOnwnerLoginPage.this, getAddressFromLatLng(latLng)+"", Toast.LENGTH_SHORT).show();
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+
+
+                        Map<String, Object> dataAdd = new HashMap<>();
+                        dataAdd.put("token", tokenString);
+                        dataRef.updateChildren(data).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Error occurred while saving data
+                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
 
                         Intent intent = new Intent(MessOnwnerLoginPage.this, HomeForMessOwner.class);
                         startActivity(intent);
@@ -204,4 +221,22 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
         }
         return addressReturn;
     }
+
+    String tokenString="";
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    tokenString = task.getResult();
+                } else {
+                    // Handle the case when token retrieval fails
+                    Toast.makeText(MessOnwnerLoginPage.this, "Failed to retrieve token",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
 }

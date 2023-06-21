@@ -217,7 +217,7 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-
+//        deleteSub();
 
         return view;
     }
@@ -286,126 +286,175 @@ public class HomeFragment extends Fragment {
         return "";
     }
 
+    private void deleteSub(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+        String plan = "";
+        if(sharedPreferences.getString("planName", "").equals("Gold Plan")){
+            plan ="Goldplan";
+        } else if (sharedPreferences.getString("planName", "").equals("Silver Plan")) {
+            plan ="Silverplan";
+        } else if (sharedPreferences.getString("planName", "").equals("Diamond Plan")) {
+            plan ="Diamondplan";
+        }
+
+        FirebaseDatabase ref = FirebaseDatabase.getInstance();
+        DatabaseReference dataRef = ref.getReference("mess").
+                child(sharedPreferences.getString("MessNo", "")).
+                child(plan).
+                child("Users").
+                child(sharedPreferences.getString("UserMobileNo", ""));
+        dataRef.removeValue();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("from", FieldValue.delete());
+        updates.put("to", FieldValue.delete());
+        updates.put("planName", FieldValue.delete());
+        updates.put("messNo", FieldValue.delete());
+        updates.put("messName", FieldValue.delete());
+
+        db.collection("User").
+                document(sharedPreferences.getString("UserEmail", "")).
+                update(updates).
+                addOnSuccessListener(aVoid -> {
+                    // Field deleted successfully
+                    showInstructionDialogBox("Plan Expired", "Your plan is Expired TODAY !!!");
+                })
+                .addOnFailureListener(e -> {
+                    // Error occurred while deleting the field
+                    System.out.println("Error deleting field: " + e.getMessage());
+                });
+
+
+        preferences.putString("messName", "");
+        preferences.putString("MessNo", "");
+        preferences.putString("planName", "");
+        preferences.putString("fromDate", "");
+        preferences.putString("toDate", "");
+        preferences.apply();
+
+    }
 
 
 
     private void endSubcription(){
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+        if(!sharedPreferences.getString("planName", "").equals("")) {
+            GetDateTime getDateTime = new GetDateTime(getActivity());
+            getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+                @Override
+                public void onGetDateTime(String date, String time) {
+                    if (!sharedPreferences.getString("planName", "").equals("One day Plan")) {
+                        if (sharedPreferences.getString("toDate", "").equals(date)) {
+
+                            SharedPreferences.Editor preferences = sharedPreferences.edit();
 
 
-        GetDateTime getDateTime = new GetDateTime(getActivity());
-        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-            @Override
-            public void onGetDateTime(String date, String time) {
-                if(!sharedPreferences.getString("planName", "").equals("One day Plan")) {
-                    if (sharedPreferences.getString("toDate", "").equals(date)) {
+                            //remove data from user side
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("from", FieldValue.delete());
+                            updates.put("to", FieldValue.delete());
+                            updates.put("planName", FieldValue.delete());
+                            updates.put("messNo", FieldValue.delete());
+                            updates.put("messName", FieldValue.delete());
+                            updates.put("messToken", FieldValue.delete());
 
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+                            db.collection("User").
+                                    document(sharedPreferences.getString("UserEmail", "")).
+                                    update(updates).
+                                    addOnSuccessListener(aVoid -> {
+                                        // Field deleted successfully
+                                        showInstructionDialogBox("Plan Expired", "Your " +
+                                                sharedPreferences.getString("planName", "") +
+                                                " of " + sharedPreferences.getString("messName", "") + " is EXPIRED TODAY !!!");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Error occurred while deleting the field
+                                        System.out.println("Error deleting field: " + e.getMessage());
+                                    });
 
-
-                        //remove data from user side
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> updates = new HashMap<>();
-                        updates.put("from", FieldValue.delete());
-                        updates.put("to", FieldValue.delete());
-                        updates.put("planName", FieldValue.delete());
-                        updates.put("messNo", FieldValue.delete());
-                        updates.put("messName", FieldValue.delete());
-
-                        db.collection("User").
-                                document(sharedPreferences.getString("UserEmail", "")).
-                                update(updates).
-                                addOnSuccessListener(aVoid -> {
-                                    // Field deleted successfully
-                                    showInstructionDialogBox("Plan Expired", "Your " +
-                                            sharedPreferences.getString("planName", "") +
-                                            " of " + sharedPreferences.getString("messName", "") + " is EXPIRED TODAY !!!");
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Error occurred while deleting the field
-                                    System.out.println("Error deleting field: " + e.getMessage());
-                                });
-
-                        //remove your data from mess side
-                        FirebaseDatabase ref = FirebaseDatabase.getInstance();
-                        DatabaseReference dataRef = ref.getReference("mess").
-                                child(sharedPreferences.getString("MessNo", "")).
-                                child("OneDayPlan").
-                                child("Users").
-                                child(sharedPreferences.getString("UserMobileNo", ""));
-                        dataRef.removeValue();
+                            //remove your data from mess side
+                            FirebaseDatabase ref = FirebaseDatabase.getInstance();
+                            DatabaseReference dataRef = ref.getReference("mess").
+                                    child(sharedPreferences.getString("MessNo", "")).
+                                    child("OneDayPlan").
+                                    child("Users").
+                                    child(sharedPreferences.getString("UserMobileNo", ""));
+                            dataRef.removeValue();
 
 
-                        //remove your data from sharedPreferences
-                        preferences.putString("messName", "");
-                        preferences.putString("MessNo", "");
-                        preferences.putString("planName", "");
-                        preferences.putString("fromDate", "");
-                        preferences.putString("toDate", "");
-                        preferences.apply();
+                            //remove your data from sharedPreferences
+                            preferences.putString("messName", "");
+                            preferences.putString("MessNo", "");
+                            preferences.putString("planName", "");
+                            preferences.putString("fromDate", "");
+                            preferences.putString("toDate", "");
+                            preferences.putString("messToken", "");
+                            preferences.apply();
 
-                    }
-                }else{
-                    if (!sharedPreferences.getString("fromDate", "").equals(date)) {
-
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
-
-                        String plan = "";
-                        if(sharedPreferences.getString("planName", "").equals("Gold Plan")){
-                            plan ="Goldplan";
-                        } else if (sharedPreferences.getString("planName", "").equals("Silver Plan")) {
-                            plan ="Silverplan";
-                        } else if (sharedPreferences.getString("planName", "").equals("Diamond Plan")) {
-                            plan ="Diamondplan";
                         }
+                    } else {
+                        if (!sharedPreferences.getString("fromDate", "").equals(date)) {
 
-                        FirebaseDatabase ref = FirebaseDatabase.getInstance();
-                        DatabaseReference dataRef = ref.getReference("mess").
-                                child(sharedPreferences.getString("MessNo", "")).
-                                child(plan).
-                                child("Users").
-                                child(sharedPreferences.getString("UserMobileNo", ""));
-                        dataRef.removeValue();
+                            SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> updates = new HashMap<>();
-                        updates.put("from", FieldValue.delete());
-                        updates.put("to", FieldValue.delete());
-                        updates.put("planName", FieldValue.delete());
-                        updates.put("messNo", FieldValue.delete());
-                        updates.put("messName", FieldValue.delete());
+                            String plan = "";
+                            if (sharedPreferences.getString("planName", "").equals("Gold Plan")) {
+                                plan = "Goldplan";
+                            } else if (sharedPreferences.getString("planName", "").equals("Silver Plan")) {
+                                plan = "Silverplan";
+                            } else if (sharedPreferences.getString("planName", "").equals("Diamond Plan")) {
+                                plan = "Diamondplan";
+                            }
 
-                        db.collection("User").
-                                document(sharedPreferences.getString("UserEmail", "")).
-                                update(updates).
-                                addOnSuccessListener(aVoid -> {
-                                    // Field deleted successfully
-                                    showInstructionDialogBox("Plan Expired", "Your plan is Expired TODAY !!!");
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Error occurred while deleting the field
-                                    System.out.println("Error deleting field: " + e.getMessage());
-                                });
+                            FirebaseDatabase ref = FirebaseDatabase.getInstance();
+                            DatabaseReference dataRef = ref.getReference("mess").
+                                    child(sharedPreferences.getString("MessNo", "")).
+                                    child(plan).
+                                    child("Users").
+                                    child(sharedPreferences.getString("UserMobileNo", ""));
+                            dataRef.removeValue();
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("from", FieldValue.delete());
+                            updates.put("to", FieldValue.delete());
+                            updates.put("planName", FieldValue.delete());
+                            updates.put("messNo", FieldValue.delete());
+                            updates.put("messName", FieldValue.delete());
+                            updates.put("messToken", FieldValue.delete());
+
+                            db.collection("User").
+                                    document(sharedPreferences.getString("UserEmail", "")).
+                                    update(updates).
+                                    addOnSuccessListener(aVoid -> {
+                                        // Field deleted successfully
+                                        showInstructionDialogBox("Plan Expired", "Your plan is Expired TODAY !!!");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Error occurred while deleting the field
+                                        System.out.println("Error deleting field: " + e.getMessage());
+                                    });
 
 
+                            preferences.putString("messName", "");
+                            preferences.putString("MessNo", "");
+                            preferences.putString("planName", "");
+                            preferences.putString("fromDate", "");
+                            preferences.putString("toDate", "");
+                            preferences.putString("messToken", "");
+                            preferences.apply();
 
 
-                        preferences.putString("messName", "");
-                        preferences.putString("MessNo", "");
-                        preferences.putString("planName", "");
-                        preferences.putString("fromDate", "");
-                        preferences.putString("toDate", "");
-                        preferences.apply();
-
-
-
+                        }
                     }
                 }
-            }
-        });
-
-
+            });
+        }
     }
 
     private void showInstructionDialogBox(String title, String mbody) {

@@ -1,6 +1,7 @@
 package com.gn4k.dailybites.SendNotificationClasses;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,10 +23,17 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.room.Room;
 
 
+import com.gn4k.dailybites.GetDateTime;
+import com.gn4k.dailybites.Home;
 import com.gn4k.dailybites.MainActivity;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.RoomForCalender.Calender;
+import com.gn4k.dailybites.RoomForCalender.CalenderDao;
+import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
+
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
@@ -111,9 +119,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
 
-
 // notificationId is a unique int for each notification that you must define
         mNotificationManager.notify(100, builder.build());
+
 
 
     }

@@ -178,7 +178,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
 
                         Map<String, Object> dataAdd = new HashMap<>();
                         dataAdd.put("token", tokenString);
-                        dataRef.updateChildren(data).addOnFailureListener(new OnFailureListener() {
+                        dataRef.updateChildren(dataAdd).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Error occurred while saving data

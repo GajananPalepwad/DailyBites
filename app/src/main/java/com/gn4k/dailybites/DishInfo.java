@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +44,12 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
     private static final String KEY_PLANNAME = "planName";
     private static final String KEY_FROMDATE = "from";
     private static final String KEY_TODATE = "to";
+    private static final String KEY_MESSTOKEN = "messToken";
     Bundle bundle;
     RadioButton withDeliveryRadioButton;
     RadioButton withoutDeliveryRadioButton;
     int planPrice = 0;
+    String token="";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -92,6 +95,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                     TextView ratings = findViewById(R.id.ratingsB);
                     ratings.setText((String) data.get("ratings"));
                     myRatingBar.setRating(Float.parseFloat((String) data.get("ratings")));
+                    token = (String) data.get("token");
                 }
             }
             @Override
@@ -197,7 +201,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
 
     @Override
     public void onPaymentSuccess(String s) {
-        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
 
         GetDateTime getDateTime = new GetDateTime(this);
         getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
@@ -211,13 +215,14 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 userInfo.put(KEY_MESSNO, bundle.getString("messMobile"));
                 userInfo.put(KEY_PLANNAME, "One day" + " Plan");
                 userInfo.put(KEY_FROMDATE, date);
+                userInfo.put(KEY_MESSTOKEN, token);
 
                 preferences.putString("messName", bundle.getString("messName"));
                 preferences.putString("MessNo", bundle.getString("messMobile"));
                 preferences.putString("planName", "One day" + " Plan");
                 preferences.putString("fromDate", date);
                 preferences.putString("toDate", date);
-                preferences.putString("token", date);
+                preferences.putString("token", token);
 
                 userInfo.put(KEY_TODATE, sharedPreferences.getString("UserToken", ""));
 
@@ -230,6 +235,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                             public void onSuccess(Void unused) {
                                 // Move to the home screen
                                 Toast.makeText(DishInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
+                                sendNotificationToMess();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -248,6 +254,8 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("plan", "One Day" + " Plan");
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("forDate", date);
+                data.put("token", sharedPreferences.getString("token", ""));
+
 
                 dataRef.updateChildren(data)
                         .addOnFailureListener(new OnFailureListener() {
@@ -267,6 +275,18 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
         showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
 
     }
+
+    private void sendNotificationToMess(){
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(token,
+                "📢New Customer Alert!",
+                "Congratulations!🥳🥳🥳 \nYou've just acquired a new customer for OneDay Plan. Take a moment to celebrate this achievement and get ready to provide exceptional service.",
+                getApplicationContext(),
+                DishInfo.this);
+
+        notificationsSender.SendNotifications();
+    }
+
+
 
     private void showInstructionDialogBox(String title, String mbody) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

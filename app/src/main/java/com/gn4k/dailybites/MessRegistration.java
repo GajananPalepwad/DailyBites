@@ -147,7 +147,21 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("mobileNo", getMobileNo);
                         data.put("password", getPassword);
                         data.put("token", tokenString);
-                        data.put("isVerified","");
+                        data.put("wallet", "0.0");
+                        data.put("withdrawPending", "0.0");
+                        data.put("totalWithdraw", "0.0");
+                        data.put("toDayDish", "");
+                        data.put("ratings", "0.0");
+                        data.put("menu", "");
+                        data.put("isDelivery", "");
+                        data.put("ifsc", "");
+                        data.put("dishPrize", "0");
+                        data.put("coverImage", "");
+                        data.put("bankName", "");
+                        data.put("bankHolderName", "");
+                        data.put("addharNo", "");
+                        data.put("accountNo", "");
+                        data.put("isVerified","no");
 
                         dataRef.setValue(data)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

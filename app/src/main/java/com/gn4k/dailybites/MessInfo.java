@@ -48,7 +48,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS;
     boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true;
     ImageView cover, isVeg;
-    String messName, address, ratings,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
+    String messName, address, token ,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
     private long num;
@@ -112,6 +112,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     intent.putExtra("plan", "Diamond");
                     intent.putExtra("mobileNo", messMobile);
                     intent.putExtra("messName", messName);
+                    intent.putExtra("token",token);
                     startActivity(intent);
                 }
             }
@@ -125,6 +126,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     intent.putExtra("plan", "Gold");
                     intent.putExtra("mobileNo", messMobile);
                     intent.putExtra("messName", messName);
+                    intent.putExtra("token",token);
                     startActivity(intent);
                 }
             }
@@ -138,6 +140,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                     intent.putExtra("plan", "Silver");
                     intent.putExtra("mobileNo", messMobile);
                     intent.putExtra("messName", messName);
+                    intent.putExtra("token",token);
                     startActivity(intent);
                 }
             }
@@ -273,6 +276,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         }
 
                         tvRatings.setText((String) data.get("ratings"));
+                        token=(String) data.get("token");
 
                         if(((String) data.get("isVerified")).equals("yes")){
                             verifyString = "Verified";

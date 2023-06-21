@@ -39,13 +39,12 @@ public class  Home extends AppCompatActivity {
     private String date, menu, day;
     SharedPreferences sharedPreferences;
     BottomNavigationView bottomNavigationView;
-
     Activity activity = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        ValuesLocal.activity= this;
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomeFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
@@ -175,13 +174,13 @@ public class  Home extends AppCompatActivity {
         }
     }
 
-
-
 }
+
+
 
 class ValuesLocal {
     static boolean show = true;
-
+    static Activity activity;
     public String DateToWeekDate(String dateString) {
         String dateFormat = "MM/dd/yyyy";
         String dayName = "null";

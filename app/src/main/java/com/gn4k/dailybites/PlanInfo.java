@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Mess.SendNotificationToUser;
+import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,11 +53,12 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private static final String KEY_MESSNO = "messNo";
     private static final String KEY_PLANNAME = "planName";
     private static final String KEY_FROMDATE = "from";
+    private static final String KEY_MESSTOKEN = "messToken";
     private static final String KEY_TODATE = "to";
     private TextView TVplanName, evprice, evdescription, TVveg, TVdelivery, TVbreakfast;
     private ImageView planImage, isVeg;
     private CardView back;
-    private String planName, mobileNo, messName, PlanDate;
+    private String planName, mobileNo, messName, token;
     private int planPrize;
     private Button subscribe;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -109,6 +112,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             planName = bundle.getString("plan");
             mobileNo = bundle.getString("mobileNo");
             messName = bundle.getString("messName");
+            token = bundle.getString("token");
         }
         TVplanName.setText(planName + " Plan");
 
@@ -204,7 +208,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
     @Override
     public void onPaymentSuccess(String s) {
-        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
 
         GetDateTime getDateTime = new GetDateTime(this);
         getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
@@ -218,11 +222,13 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 userInfo.put(KEY_MESSNO, mobileNo);
                 userInfo.put(KEY_PLANNAME, planName + " Plan");
                 userInfo.put(KEY_FROMDATE, date);
+                userInfo.put(KEY_MESSTOKEN, token);
 
                 preferences.putString("messName", messName);
                 preferences.putString("MessNo", mobileNo);
                 preferences.putString("planName", planName + " Plan");
                 preferences.putString("fromDate", date);
+                preferences.putString("messToken", token);
 
                 String nextMonthDateString = getNextMonthDate(date);
 
@@ -254,6 +260,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("email", sharedPreferences.getString("UserEmail", ""));
                 data.put("plan", planName + " Plan");
                 data.put("fromDate", date);
+                data.put("orderId", s);
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("toDate", nextMonthDateString);
                 data.put("token", sharedPreferences.getString("UserToken", ""));
@@ -263,7 +270,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                             @Override
                             public void onSuccess(Void aVoid) {
                                 // Data saved successfully
-                                // Toast.makeText(PlanInfo.this, "", Toast.LENGTH_SHORT).show();
+                                sendNotificationToMess();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -310,6 +317,15 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
         return "";
     }
 
+    private void sendNotificationToMess(){
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(token,
+                "📢New Customer Alert!",
+                "Congratulations!🥳🥳🥳 \nYou've just acquired a new customer for "+planName + " Plan"+". Take a moment to celebrate this achievement and get ready to provide exceptional service.",
+                getApplicationContext(),
+                PlanInfo.this);
+
+        notificationsSender.SendNotifications();
+    }
 
 
 

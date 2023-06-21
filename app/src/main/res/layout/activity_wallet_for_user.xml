@@ -211,7 +211,7 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/button_shape"
         android:elevation="10dp"
-        android:text="Deposite"
+        android:text="Deposit"
         android:textAllCaps="false"
         android:textColor="#191B1A"
         android:textSize="19dp"

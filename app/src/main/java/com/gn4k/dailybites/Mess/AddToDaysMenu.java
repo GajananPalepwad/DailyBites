@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.gn4k.dailybites.HomeForMessOwner;
 import com.gn4k.dailybites.MonthlyPlanEditor;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class AddToDaysMenu extends AppCompatActivity {
 
     EditText evmenuL, evprise, evmenuD;
     Button update;
+    String mobile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +46,17 @@ public class AddToDaysMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendAllDataToUpdateInFirebase();
+                notifyEveryDiamondUser();//diamond
+                notifyEveryGoldUser();//gold
+                notifyEverySilverUser();//silver
             }
         });
         updateAccordingtofirebase();
     }
-
+    String menu="";
     private void sendAllDataToUpdateInFirebase(){
         int price = Integer.parseInt(evprise.getText().toString());
-        String menu = "Lunch: "+evmenuL.getText().toString()+"\nDinner: "+evmenuD.getText().toString();
+        menu = "Lunch: "+evmenuL.getText().toString()+"\nDinner: "+evmenuD.getText().toString();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
         // Update user information in Firebase database
@@ -88,7 +93,7 @@ public class AddToDaysMenu extends AppCompatActivity {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         DatabaseReference dbpath = db.child("mess")
                 .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
-
+        mobile = sharedPreferences.getString("MessOwnerMobileNo", "");
         dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -97,7 +102,7 @@ public class AddToDaysMenu extends AppCompatActivity {
 
                     String s = (String) data.get("menu");
 
-                    Pattern lunchPattern = Pattern.compile("Lunch: (.+?) \nDinner:");
+                    Pattern lunchPattern = Pattern.compile("Lunch: (.+?)\nDinner:");
                     Pattern dinnerPattern = Pattern.compile("Dinner: (.+)");
 
                     // Create the matchers
@@ -127,5 +132,92 @@ public class AddToDaysMenu extends AppCompatActivity {
         });
 
     }
+
+
+    private void notifyEveryGoldUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Goldplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                "📢Today's Menu😋",
+                                menu,
+                                getApplicationContext(),
+                                AddToDaysMenu.this);
+
+                        notificationsSender.SendNotifications();
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
+            }
+        });
+    }
+
+    private void notifyEverySilverUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Silverplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                "📢Today's Menu😋",
+                                menu,
+                                getApplicationContext(),
+                                AddToDaysMenu.this);
+
+                        notificationsSender.SendNotifications();
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
+            }
+        });
+    }
+
+    private void notifyEveryDiamondUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Diamondplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                "📢Today's Menu😋",
+                                menu,
+                                getApplicationContext(),
+                                AddToDaysMenu.this);
+
+                        notificationsSender.SendNotifications();
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
+            }
+        });
+    }
+
+
 
 }

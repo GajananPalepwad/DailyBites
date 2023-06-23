@@ -1,53 +1,54 @@
 package com.gn4k.dailybites.SendNotificationClasses;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioAttributes;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.IBinder;
 import android.os.Vibrator;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.room.Room;
 
 
-import com.gn4k.dailybites.GetDateTime;
-import com.gn4k.dailybites.Home;
-import com.gn4k.dailybites.MainActivity;
+import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
-import com.gn4k.dailybites.RoomForCalender.Calender;
-import com.gn4k.dailybites.RoomForCalender.CalenderDao;
-import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
 
+import com.gn4k.dailybites.RoomForNotification.DatabaseHelper;
+import com.gn4k.dailybites.RoomForNotification.NotificationDao;
+import com.gn4k.dailybites.RoomForNotification.NotificationData;
+import com.gn4k.dailybites.RoomForNotification.NotificationDatabase;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
      NotificationManager mNotificationManager;
-
+     String title="", body="";
+    private DatabaseHelper dbHelper;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        title = remoteMessage.getNotification().getTitle().toString();
+        body = remoteMessage.getNotification().getBody().toString();
+        dbHelper = new DatabaseHelper(this);
+        insertNote(title, body, getCurrentTime());
 
-// playing audio and vibration when user se reques
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//
+//        new Bgthread().start();
+        // playing audio and vibration when user send request
+        Uri notification = Uri.parse("android.resource://" + getPackageName() + "/raw/notification_sound");
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         r.play();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -60,24 +61,30 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         v.vibrate(pattern, -1);
 
 
-        int resourceImage = getResources().getIdentifier(remoteMessage.getNotification().getIcon(), "drawable", getPackageName());
+        String icon = remoteMessage.getNotification().getIcon();
+        int resourceImage;
+        if (icon != null) {
+            resourceImage = getResources().getIdentifier(icon, "drawable", getPackageName());
+        } else {
+            // Provide a default icon resource ID if the icon is not specified
+            resourceImage = R.drawable.logo_black;
+        }
 
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            builder.setSmallIcon(R.drawable.icontrans);
+
             builder.setSmallIcon(resourceImage);
         } else {
-//            builder.setSmallIcon(R.drawable.icon_kritikar);
+
             builder.setSmallIcon(resourceImage);
         }
 
+        Intent resultIntent = new Intent(this, NotificationForMess.class);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        Intent resultIntent = new Intent(this, MainActivity.class);
-       // PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         PendingIntent pendingIntent = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             pendingIntent = PendingIntent.getActivity
@@ -90,9 +97,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
 
-        Uri customRingtoneUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+getPackageName()+"/raw/notification_sound.mp3");
 
-        builder.setSound(customRingtoneUri);
         builder.setContentTitle(remoteMessage.getNotification().getTitle());
         builder.setContentText(remoteMessage.getNotification().getBody());
         builder.setContentIntent(pendingIntent);
@@ -101,10 +106,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         builder.setPriority(Notification.PRIORITY_MAX);
         builder.setSmallIcon(R.drawable.logo_black);
 
+
         mNotificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -119,13 +123,60 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
 
-// notificationId is a unique int for each notification that you must define
+        // notificationId is a unique int for each notification that you must define
         mNotificationManager.notify(100, builder.build());
 
-
-
+    }
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date(System.currentTimeMillis());
+        return dateFormat.format(currentDate);
     }
 
+
+    private void insertNote(String title, String body, String time) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_TITLE, title);
+        values.put(DatabaseHelper.COLUMN_BODY, body);
+        values.put(DatabaseHelper.COLUMN_TIME, time);
+
+        long newRowId = db.insert(DatabaseHelper.TABLE_NAME, null, values);
+        db.close();
+
+        if (newRowId != -1) {
+            // Insertion successful
+        } else {
+            // Error occurred during insertion
+        }
+    }
+
+
+
+    class Bgthread extends Thread { // to add a notification in notification list in room database
+        public void run() {
+            super.run();
+
+            NotificationDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    NotificationDatabase.class, "NotificationView_DB").build();
+
+            NotificationDao notificationDao = messdb.notificationDao();
+
+            long lastUid = notificationDao.getLastNotificationUid();
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                notificationDao.insert(new NotificationData(initialUid, title, body, getCurrentTime()));
+            } else {
+                long nextUid = lastUid + 1;
+
+                notificationDao.insert(new NotificationData(nextUid, title, body, getCurrentTime()));
+
+            }
+        }
+    }
 }
 
 

@@ -1,8 +1,10 @@
 package com.gn4k.dailybites.Mess;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.HomeForMessOwner;
 import com.gn4k.dailybites.MonthlyPlanEditor;
 import com.gn4k.dailybites.R;
@@ -33,10 +36,13 @@ public class AddToDaysMenu extends AppCompatActivity {
     EditText evmenuL, evprise, evmenuD;
     Button update;
     String mobile;
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_days_menu);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoading();
         evmenuL = findViewById(R.id.menuL);
         evmenuD = findViewById(R.id.menuD);
         evprise = findViewById(R.id.price);
@@ -45,6 +51,7 @@ public class AddToDaysMenu extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoading();
                 sendAllDataToUpdateInFirebase();
                 notifyEveryDiamondUser();//diamond
                 notifyEveryGoldUser();//gold
@@ -123,7 +130,7 @@ public class AddToDaysMenu extends AppCompatActivity {
 
                     evprise.setText(String.valueOf(data.get("dishPrize")));
                 }
-
+                loadingDialog.stopLoading();
             }
 
             @Override
@@ -181,7 +188,8 @@ public class AddToDaysMenu extends AppCompatActivity {
                         notificationsSender.SendNotifications();
                     }
                 }
-
+                loadingDialog.stopLoading();
+                showInstructionDialogBox("Successful","Notifications send successful &\n OneDay plan added");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -218,6 +226,20 @@ public class AddToDaysMenu extends AppCompatActivity {
         });
     }
 
+    private void showInstructionDialogBox(String title, String mbody) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
 }

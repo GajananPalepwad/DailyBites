@@ -122,7 +122,7 @@ public class UserLoginPage extends AppCompatActivity {
 
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            loadingDialog.stopLoading();
+            loadingDialog.startLoading();
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 loadingDialog.startLoading();
@@ -205,13 +205,17 @@ public class UserLoginPage extends AppCompatActivity {
                             preferences.apply();
 
                             String plan = "";
-                            if(documentSnapshot.getString(KEY_PLANNAME).equals("Gold Plan")){
-                                plan ="Goldplan";
-                            } else if (documentSnapshot.getString(KEY_PLANNAME).equals("Silver Plan")) {
-                                plan ="Silverplan";
-                            } else if (documentSnapshot.getString(KEY_PLANNAME).equals("Diamond Plan")) {
-                                plan ="Diamondplan";
+                            String documentPlanName = documentSnapshot.getString(KEY_PLANNAME);
+                            if (documentPlanName != null) {
+                                if (documentPlanName.equals("Gold Plan")) {
+                                    plan = "Goldplan";
+                                } else if (documentPlanName.equals("Silver Plan")) {
+                                    plan = "Silverplan";
+                                } else if (documentPlanName.equals("Diamond Plan")) {
+                                    plan = "Diamondplan";
+                                }
                             }
+
 
                             if(!documentSnapshot.getString(KEY_PLANNAME).equals("") || documentSnapshot.getString(KEY_PLANNAME)!=null) {
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();

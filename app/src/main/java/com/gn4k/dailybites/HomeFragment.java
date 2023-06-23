@@ -29,7 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -85,7 +84,7 @@ public class HomeFragment extends Fragment {
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NotificationForUser.class);
+                Intent intent = new Intent(getActivity(), NotificationForMess.class);
                 startActivity(intent);
             }
         });
@@ -309,11 +308,11 @@ public class HomeFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> updates = new HashMap<>();
-        updates.put("from", FieldValue.delete());
-        updates.put("to", FieldValue.delete());
-        updates.put("planName", FieldValue.delete());
-        updates.put("messNo", FieldValue.delete());
-        updates.put("messName", FieldValue.delete());
+        updates.put("from", "");
+        updates.put("to", "");
+        updates.put("planName", "");
+        updates.put("messNo", "");
+        updates.put("messName", "");
 
         db.collection("User").
                 document(sharedPreferences.getString("UserEmail", "")).
@@ -356,12 +355,12 @@ public class HomeFragment extends Fragment {
                             //remove data from user side
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             Map<String, Object> updates = new HashMap<>();
-                            updates.put("from", FieldValue.delete());
-                            updates.put("to", FieldValue.delete());
-                            updates.put("planName", FieldValue.delete());
-                            updates.put("messNo", FieldValue.delete());
-                            updates.put("messName", FieldValue.delete());
-                            updates.put("messToken", FieldValue.delete());
+                            updates.put("from", "");
+                            updates.put("to","");
+                            updates.put("planName", "");
+                            updates.put("messNo", "");
+                            updates.put("messName", "");
+                            updates.put("messToken", "");
 
                             db.collection("User").
                                     document(sharedPreferences.getString("UserEmail", "")).
@@ -421,12 +420,12 @@ public class HomeFragment extends Fragment {
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             Map<String, Object> updates = new HashMap<>();
-                            updates.put("from", FieldValue.delete());
-                            updates.put("to", FieldValue.delete());
-                            updates.put("planName", FieldValue.delete());
-                            updates.put("messNo", FieldValue.delete());
-                            updates.put("messName", FieldValue.delete());
-                            updates.put("messToken", FieldValue.delete());
+                            updates.put("from", "");
+                            updates.put("to", "");
+                            updates.put("planName", "");
+                            updates.put("messNo", "");
+                            updates.put("messName", "");
+                            updates.put("messToken", "");
 
                             db.collection("User").
                                     document(sharedPreferences.getString("UserEmail", "")).

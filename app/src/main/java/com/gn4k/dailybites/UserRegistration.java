@@ -46,6 +46,11 @@ public class UserRegistration extends AppCompatActivity {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_PLAN_NAME = "planName";
+    private static final String KEY_TO = "to";
+    private static final String KEY_FROM = "from";
+    private static final String KEY_MESS_NO = "messNo";
+    private static final String KEY_MESS_NAME = "messName";
 
 
     private EditText name, mobileNo, email, password, ConfirmPassword;
@@ -149,6 +154,11 @@ public class UserRegistration extends AppCompatActivity {
                             userInfo.put(KEY_MOBILE_NO, getMobileNo);
                             userInfo.put(KEY_PASSWORD, getPassword);
                             userInfo.put(KEY_TOKEN, tokenString);
+                            userInfo.put(KEY_MESS_NAME, "");
+                            userInfo.put(KEY_MESS_NO, "");
+                            userInfo.put(KEY_PLAN_NAME, "");
+                            userInfo.put(KEY_FROM, "");
+                            userInfo.put(KEY_TO, "");
 
 
                             //Saving the data to SharedPreference so we will not get data from Firestore.
@@ -160,6 +170,10 @@ public class UserRegistration extends AppCompatActivity {
                             preferences.putString("UserMobileNo",getMobileNo);
                             preferences.putString("UserName",getName);
                             preferences.putString("UserToken", tokenString);
+                            preferences.putString("messName", "");
+                            preferences.putString("MessNo", "");
+                            preferences.putString("planName", "");
+                            preferences.putString("toDate", "");
                             preferences.apply();
 
                             db.collection("User").document(getEmail).set(userInfo).

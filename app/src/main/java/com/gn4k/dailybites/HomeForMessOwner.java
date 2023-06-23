@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.room.Room;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,12 +18,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
+import com.gn4k.dailybites.RoomForNotification.NotificationDao;
+import com.gn4k.dailybites.RoomForNotification.NotificationData;
+import com.gn4k.dailybites.RoomForNotification.NotificationDatabase;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,7 +50,8 @@ public class HomeForMessOwner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
             Button silver, gold, diamond;
-            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu;
+            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification;
+            notification = findViewById(R.id.notification);
             sendMsg = findViewById(R.id.sendMSG);
             wallet = findViewById(R.id.walletM);
             updateMenu = findViewById(R.id.dailyMenu);
@@ -164,11 +168,46 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
-
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, NotificationForMess.class);
+                startActivity(intent);
+            }
+        });
 
         getCountOfUsers();
-
+//        new Bgthread().start();
     }
+
+
+
+    class Bgthread extends Thread { // to add a mess in recent list in room database
+        public void run() {
+            super.run();
+
+            NotificationDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    NotificationDatabase.class, "NotificationView_DB").build();
+
+            NotificationDao notificationDao = messdb.notificationDao();
+
+            long lastUid = notificationDao.getLastNotificationUid();
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                notificationDao.insert(new NotificationData(initialUid, "messName", "messMobile", "urlCover"));
+            } else {
+                long nextUid = lastUid + 1;
+
+                notificationDao.insert(new NotificationData(nextUid, "messName", "messMobile", "urlCover"));
+
+            }
+        }
+    }
+
+
+
 
 
     private void showLogoutDialog() {

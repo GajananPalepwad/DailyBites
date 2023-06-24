@@ -4,10 +4,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,7 +19,6 @@ import androidx.room.Room;
 import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 
-import com.gn4k.dailybites.RoomForNotification.DatabaseHelper;
 import com.gn4k.dailybites.RoomForNotification.NotificationDao;
 import com.gn4k.dailybites.RoomForNotification.NotificationData;
 import com.gn4k.dailybites.RoomForNotification.NotificationDatabase;
@@ -34,7 +31,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
      NotificationManager mNotificationManager;
      String title="", body="";
-    private DatabaseHelper dbHelper;
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -42,11 +39,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         title = remoteMessage.getNotification().getTitle().toString();
         body = remoteMessage.getNotification().getBody().toString();
-        dbHelper = new DatabaseHelper(this);
-        insertNote(title, body, getCurrentTime());
 
 //
-//        new Bgthread().start();
+        new Bgthread().start();
         // playing audio and vibration when user send request
         Uri notification = Uri.parse("android.resource://" + getPackageName() + "/raw/notification_sound");
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
@@ -131,25 +126,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date currentDate = new Date(System.currentTimeMillis());
         return dateFormat.format(currentDate);
-    }
-
-
-    private void insertNote(String title, String body, String time) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TITLE, title);
-        values.put(DatabaseHelper.COLUMN_BODY, body);
-        values.put(DatabaseHelper.COLUMN_TIME, time);
-
-        long newRowId = db.insert(DatabaseHelper.TABLE_NAME, null, values);
-        db.close();
-
-        if (newRowId != -1) {
-            // Insertion successful
-        } else {
-            // Error occurred during insertion
-        }
     }
 
 

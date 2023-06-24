@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.gn4k.dailybites.RoomForNotification.NotificationAdapter;
 import com.gn4k.dailybites.RoomForNotification.NotificationDao;
@@ -19,19 +21,13 @@ import java.util.List;
 
 public class NotificationForMess extends AppCompatActivity {
 
-    String title="", body="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_mess);
 
-
-        title = getIntent().getStringExtra("title");
-        body = getIntent().getStringExtra("body");
 //        new BgthreadNotificationStore().start();
-
-//        Toast.makeText(this, ""+title, Toast.LENGTH_SHORT).show();
-        RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
+             RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
         new Bgthread(recentRecyclerView).start();
     }
 
@@ -68,29 +64,29 @@ public class NotificationForMess extends AppCompatActivity {
     }
 
 
-    class BgthreadNotificationStore extends Thread { // to add a notification in notification list in room database
-        public void run() {
-            super.run();
-
-            NotificationDatabase messdb = Room.databaseBuilder(getApplicationContext(),
-                    NotificationDatabase.class, "NotificationView_DB").build();
-
-            NotificationDao notificationDao = messdb.notificationDao();
-
-            long lastUid = notificationDao.getLastNotificationUid();
-
-            if (lastUid == 0) {
-                // Database is empty, set initial uid to 1
-                int initialUid = 1;
-                notificationDao.insert(new NotificationData(initialUid, title, body, getCurrentTime()));
-            } else {
-                long nextUid = lastUid + 1;
-
-                notificationDao.insert(new NotificationData(nextUid, title, body, getCurrentTime()));
-
-            }
-        }
-    }
+//    class BgthreadNotificationStore extends Thread { // to add a notification in notification list in room database
+//        public void run() {
+//            super.run();
+//
+//            NotificationDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+//                    NotificationDatabase.class, "NotificationView_DB").build();
+//
+//            NotificationDao notificationDao = messdb.notificationDao();
+//
+//            long lastUid = notificationDao.getLastNotificationUid();
+//
+//            if (lastUid == 0) {
+//                // Database is empty, set initial uid to 1
+//                int initialUid = 1;
+//                notificationDao.insert(new NotificationData(initialUid, title, body, getCurrentTime()));
+//            } else {
+//                long nextUid = lastUid + 1;
+//
+//                notificationDao.insert(new NotificationData(nextUid, title, body, getCurrentTime()));
+//
+//            }
+//        }
+//    }
 
 
 }

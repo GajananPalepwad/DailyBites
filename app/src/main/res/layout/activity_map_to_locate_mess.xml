@@ -143,6 +143,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:iconifiedByDefault="false"
+        app:queryHint="Search"
         android:closeIcon="@null"
         android:background="@drawable/textviewyellowboarder"
         android:drawableRight="?android:attr/actionModeWebSearchDrawable"

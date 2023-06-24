@@ -50,7 +50,8 @@ public class HomeForMessOwner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
             Button silver, gold, diamond;
-            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification;
+            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification, homelag;
+            homelag = findViewById(R.id.homelag);
             notification = findViewById(R.id.notification);
             sendMsg = findViewById(R.id.sendMSG);
             wallet = findViewById(R.id.walletM);
@@ -176,36 +177,19 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
-        getCountOfUsers();
-//        new Bgthread().start();
-    }
-
-
-
-    class Bgthread extends Thread { // to add a mess in recent list in room database
-        public void run() {
-            super.run();
-
-            NotificationDatabase messdb = Room.databaseBuilder(getApplicationContext(),
-                    NotificationDatabase.class, "NotificationView_DB").build();
-
-            NotificationDao notificationDao = messdb.notificationDao();
-
-            long lastUid = notificationDao.getLastNotificationUid();
-
-            if (lastUid == 0) {
-                // Database is empty, set initial uid to 1
-                int initialUid = 1;
-                notificationDao.insert(new NotificationData(initialUid, "messName", "messMobile", "urlCover"));
-            } else {
-                long nextUid = lastUid + 1;
-
-                notificationDao.insert(new NotificationData(nextUid, "messName", "messMobile", "urlCover"));
-
+        homelag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+                intent.putExtra("data", "settingsMess");
+                startActivity(intent);
             }
-        }
-    }
+        });
 
+
+
+        getCountOfUsers();
+    }
 
 
 

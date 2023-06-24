@@ -140,14 +140,14 @@ public class WalletForMess extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 date = finalDate + ", " + finalTime;
-                new CalenderBgthread().start();
+                new PendingAddBgthread().start();
             }
         });
 
     }
 
 
-    class CalenderBgthread extends Thread { // to add a mess in recent list in room database
+    class PendingAddBgthread extends Thread { // to add a mess in recent list in room database
         public void run() {
             super.run();
 
@@ -162,22 +162,88 @@ public class WalletForMess extends AppCompatActivity {
             if (lastUid == 0) {
                 // Database is empty, set initial uid to 1
                 int initialUid = 1;
-                messDao.insert(new WalletMess(initialUid,"Pending", date, balanceString));
+                messDao.insert(new WalletMess(initialUid,"Pending", date, "₹"+pendingString));
             } else {
                 long nextUid = lastUid + 1;
 
                 if (messDao.isExistByMessNo(date)) {
                     WalletMess existingDate = messDao.getMessByUid(date);
                     messDao.delete(existingDate);
-                    messDao.insert(new WalletMess(nextUid, "Pending", date, balanceString));
+                    messDao.insert(new WalletMess(nextUid, "Pending", date, "₹"+pendingString));
                 } else {
-                    messDao.insert(new WalletMess(nextUid, "Pending", date, balanceString));
+                    messDao.insert(new WalletMess(nextUid, "Pending", date, "₹"+pendingString));
                 }
 
             }
         }
     }
 
+    private void getTimeForCompletePayment(){
+        GetDateTime getDateTime = new GetDateTime(WalletForMess.this);
+        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
+            @Override
+            public void onGetDateTime(String date2, String time) {
+                DateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat outputDateFormat = new SimpleDateFormat("dd MMM yy");
+                String finalDate="", finalTime="";
+                try {
+                    Date date3 = inputDateFormat.parse(date2);
+                    String formattedDate = outputDateFormat.format(date3);
+                    finalDate = formattedDate;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                DateFormat inputTimeFormat = new SimpleDateFormat("HH:mm");
+                DateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a");
+
+                try {
+                    Date Time = inputTimeFormat.parse(time);
+                    String formattedTime = outputTimeFormat.format(Time);
+                    finalTime = formattedTime.toUpperCase();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                date = finalDate + ", " + finalTime;
+                new CompletedAddBgthread().start();
+            }
+        });
+
+    }
+
+    class CompletedAddBgthread extends Thread { // to add a mess in recent list in room database
+        public void run() {
+            super.run();
+
+            WalletDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    WalletDatabase.class, "WalletView_DB").build();
+
+            WalletForMessDao messDao = messdb.walletDao();
+
+            long lastUid = messDao.getLastMessUid();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                messDao.insert(new WalletMess(initialUid,"Completed", date, "₹"+S));
+            } else {
+                long nextUid = lastUid + 1;
+
+                if (messDao.isExistByMessNo(date)) {
+                    WalletMess existingDate = messDao.getMessByUid(date);
+                    messDao.delete(existingDate);
+                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+S));
+                } else {
+                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+S));
+                }
+
+            }
+        }
+    }
+
+    String S;
 
     private void updateAccordingtofirebase(){
 
@@ -198,6 +264,14 @@ public class WalletForMess extends AppCompatActivity {
 
                     balance.setText("₹"+balanceString);
                     pending.setText("₹"+pendingString);
+                    S = sharedPreferences.getString("PreviousWithdraw", "");
+                    if( ("₹"+pendingString).equals("₹0.0") && !S.equals("₹0.0")){
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
+                        getTimeForCompletePayment();
+                        preferences.putString("PreviousWithdraw", "₹0.0");
+                        preferences.apply();
+                    }
+
 
                 }
 
@@ -220,6 +294,10 @@ public class WalletForMess extends AppCompatActivity {
         balanceDouble = 0;
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+        preferences.putString("PreviousWithdraw", String.valueOf(pendingDouble));
+        preferences.apply();
         // Update user information in Firebase database
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         DatabaseReference dataRef = ref.child("mess").

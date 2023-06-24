@@ -9,9 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
+        <activity
+            android:name=".SendMessegeToMess"
+            android:exported="false" />
         <activity
             android:name=".Mess.SendNotificationToUser"
             android:exported="false" />
@@ -130,28 +132,24 @@
             </intent-filter>
         </receiver>
 
-
-
         <service
             android:name=".SendNotificationClasses.FirebaseMessagingService"
+            android:exported="true"
             android:permission="TODO"
-            tools:ignore="ExportedService"
-            android:exported="true">
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".SendNotificationClasses.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true"
             android:permission="TODO">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

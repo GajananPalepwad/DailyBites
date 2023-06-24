@@ -1,8 +1,11 @@
 package com.gn4k.dailybites.Mess;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -15,55 +18,147 @@ import com.gn4k.dailybites.SendNotificationClasses.Client;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class SendNotificationToUser extends AppCompatActivity {
 
-    EditText token, title, body;
+    EditText title, body;
     Button button;
+    String mobile, titleString, bodyString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_notification_to_user);
 
-        token = findViewById(R.id.editTextText);
-        title = findViewById(R.id.editTextText2);
-        body = findViewById(R.id.editTextText3);
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+        mobile = sharedPreferences.getString("MessOwnerMobileNo", "");
 
-        button = findViewById(R.id.button);
+
+        title = findViewById(R.id.title);
+        body = findViewById(R.id.body);
+
+        button = findViewById(R.id.send);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FcmNotificationsSender notificationsSender = new FcmNotificationsSender(token.getText().toString(),
-                        title.getText().toString(),
-                        body.getText().toString(),
-                        getApplicationContext(),
-                        SendNotificationToUser.this);
 
-                notificationsSender.SendNotifications();
+                titleString = title.getText().toString();
+                bodyString = body.getText().toString();
 
+                notifyEveryDiamondUser();//diamond
+                notifyEveryGoldUser();//gold
+                notifyEverySilverUser();//silver
 
             }
         });
-
-
-        getToken();
     }
-    String tokenString="";
-    private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+
+
+    private void notifyEveryGoldUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Goldplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    tokenString = task.getResult();
-                    token.setText(tokenString);
-                } else {
-                    // Handle the case when token retrieval fails
-                    Toast.makeText(SendNotificationToUser.this, "Failed to retrieve token",
-                            Toast.LENGTH_LONG).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                titleString,
+                                bodyString,
+                                getApplicationContext(),
+                                SendNotificationToUser.this);
+
+                        notificationsSender.SendNotifications();
+                    }
                 }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
             }
         });
     }
+
+    private void notifyEverySilverUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Silverplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                titleString,
+                                bodyString,
+                                getApplicationContext(),
+                                SendNotificationToUser.this);
+
+                        notificationsSender.SendNotifications();
+                    }
+                }
+
+                showInstructionDialogBox("Successful","Notifications send successful &\n OneDay plan added");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
+            }
+        });
+    }
+
+    private void notifyEveryDiamondUser(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("mess").child(mobile).child("Diamondplan").child("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userToken = userSnapshot.child("token").getValue(String.class);
+
+                    if (userToken != null) {
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(userToken,
+                                titleString,
+                                bodyString,
+                                getApplicationContext(),
+                                SendNotificationToUser.this);
+
+                        notificationsSender.SendNotifications();
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur
+            }
+        });
+    }
+
+    private void showInstructionDialogBox(String title, String mbody) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
 }

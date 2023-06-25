@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.WalletForMess;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,12 +81,12 @@ public class ProfilePageForMess extends AppCompatActivity {
     String passwordFromFB;
     EditText ownerName, messName, number;
     private BottomSheetDialog bottomSheetDialog;
-
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page_for_mess);
-
+        loadingDialog.startLoading();
         CardView imagePicker = findViewById(R.id.addImg);
 
         uploadDoc = findViewById(R.id.uploadDoc);
@@ -226,7 +227,7 @@ public class ProfilePageForMess extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
+        loadingDialog.stopLoading();
     }
 
     @Override

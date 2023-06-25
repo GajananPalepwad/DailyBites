@@ -1,25 +1,16 @@
-package com.gn4k.dailybites.consumersUserlistFragment;
-
-import static android.content.Context.MODE_PRIVATE;
+package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.MessInfo;
-import com.gn4k.dailybites.MessModel;
 import com.gn4k.dailybites.R;
 
 

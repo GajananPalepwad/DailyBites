@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,12 +63,15 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private int planPrize;
     private Button subscribe;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_info);
+
+        loadingDialog = new LoadingDialog(PlanInfo.this);
+        loadingDialog.startLoading();
 
         TVplanName = findViewById(R.id.tv_planName);
         planImage = findViewById(R.id.planImage);
@@ -165,6 +169,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 } else {
                     Toast.makeText(PlanInfo.this, "Something went wrong!!!!", Toast.LENGTH_SHORT).show();
                 }
+                loadingDialog.stopLoading();
             }
 
 

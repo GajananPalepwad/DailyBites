@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,10 +55,15 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
     String token="";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish_info);
+        loadingDialog.startLoading();
+
+
         bundle = getIntent().getExtras();
         TextView MessName = findViewById(R.id.MessName);
         MessName.setText(bundle.getString("messName"));
@@ -192,7 +198,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 }
             }
         });
-
+        loadingDialog.stopLoading();
     }
 
 

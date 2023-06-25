@@ -1,4 +1,4 @@
-package com.gn4k.dailybites.consumersUserlistFragment;
+package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.MessModel;
 import com.gn4k.dailybites.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,33 +23,35 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
-public class SilverUserList extends Fragment {
 
 
-    public SilverUserList() {
+public class GoldUserList extends Fragment {
+
+
+    public GoldUserList() {
         // Required empty public constructor
     }
+
     LoadingDialog loadingDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_silver_user_list, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_gold_user_list, container, false);
+        loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoading();
         // Inflate the layout for this fragment
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().
                 getReference("mess").
                 child(sharedPreferences.getString("MessOwnerMobileNo", "")).
-                child("Silverplan").child("Users");
+                child("Goldplan").child("Users");
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         ArrayList<UserModelForMess> list = new ArrayList<>();
-        UserListAdapter adapter = new UserListAdapter(container.getContext(), getActivity(), loadingDialog, list );
+        UserListAdapter adapter = new UserListAdapter(container.getContext(), getActivity(), loadingDialog, list);
         recyclerView.setAdapter(adapter);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,9 +61,12 @@ public class SilverUserList extends Fragment {
                     list.add(user);
                 }
                 adapter.notifyDataSetChanged();
+                loadingDialog.stopLoading();
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
 

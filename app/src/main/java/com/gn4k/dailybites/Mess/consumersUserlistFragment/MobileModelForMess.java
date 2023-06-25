@@ -1,4 +1,4 @@
-package com.gn4k.dailybites.consumersUserlistFragment;
+package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 public class MobileModelForMess {
     private String key;

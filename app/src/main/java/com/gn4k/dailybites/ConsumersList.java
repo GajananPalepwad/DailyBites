@@ -10,11 +10,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.WalletForMess;
-import com.gn4k.dailybites.consumersUserlistFragment.DiamondUserList;
-import com.gn4k.dailybites.consumersUserlistFragment.GoldUserList;
-import com.gn4k.dailybites.consumersUserlistFragment.SilverUserList;
+import com.gn4k.dailybites.Mess.consumersUserlistFragment.DiamondUserList;
+import com.gn4k.dailybites.Mess.consumersUserlistFragment.GoldUserList;
+import com.gn4k.dailybites.Mess.consumersUserlistFragment.SilverUserList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ConsumersList extends AppCompatActivity {

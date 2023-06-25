@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -47,12 +48,13 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
     private TextView pass;
     private TextView mobile_No;
     LatLng latLng ;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mess_onwner_login_page);
-
+        loadingDialog = new LoadingDialog(MessOnwnerLoginPage.this);
         TextView registration = findViewById(R.id.reg);
         login = findViewById(R.id.login);
         pass = findViewById(R.id.password);
@@ -70,12 +72,14 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setRegistration(v);
+                loadingDialog.startLoading();
             }
         });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.startLoading();
                 getToken();
                 checkValidationToLogin();
             }
@@ -103,6 +107,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
 
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            loadingDialog.startLoading();
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
@@ -113,10 +118,12 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
+                                    loadingDialog.stopLoading();
                                     Intent intent = new Intent(getApplicationContext(), MessRegistration.class);
                                     startActivity(intent);
 
                                 } else {
+                                    loadingDialog.stopLoading();
                                     Toast.makeText(MessOnwnerLoginPage.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -130,80 +137,83 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
     }
 
     private void checkValidationToLogin(){
+        if (!pass.getText().toString().isEmpty()) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference dbpath = db.child("mess").child(mobile_No.getText().toString());
+            dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                        String firepass = (String) data.get("password");
+                        if (pass.getText().toString().equals(firepass)) {
 
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference dbpath = db.child("mess").child(mobile_No.getText().toString());
+                            SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+                            SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                    String firepass = (String) data.get("password");
-                    if (pass.getText().toString().equals(firepass)) {
-
-                        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
-
-                        preferences.putString("MessOwnerEmail",(String) data.get("email"));
-                        preferences.putString("MessName",(String) data.get("messName"));
-                        preferences.putString("MessOwnerPassword",pass.getText().toString());
-                        preferences.putString("MessOwnerMobileNo",mobile_No.getText().toString());
-                        preferences.putString("MessOwnerName",(String) data.get("ownerName"));
-                        preferences.putString("MessToken", tokenString);
-                        preferences.apply();
-                        if (!snapshot.hasChild("latitude")){
-                            Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
-                            startActivity(intent);
-                            return;
-                        }
-                        else{
-                            if(String.valueOf(data.get("latitude")).equals("0")){
+                            preferences.putString("MessOwnerEmail", (String) data.get("email"));
+                            preferences.putString("MessName", (String) data.get("messName"));
+                            preferences.putString("MessOwnerPassword", pass.getText().toString());
+                            preferences.putString("MessOwnerMobileNo", mobile_No.getText().toString());
+                            preferences.putString("MessOwnerName", (String) data.get("ownerName"));
+                            preferences.putString("MessToken", tokenString);
+                            preferences.apply();
+                            if (!snapshot.hasChild("latitude")) {
+                                loadingDialog.stopLoading();
                                 Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
                                 startActivity(intent);
                                 return;
+                            } else {
+                                if (String.valueOf(data.get("latitude")).equals("0")) {
+                                    loadingDialog.stopLoading();
+                                    Intent intent = new Intent(MessOnwnerLoginPage.this, MapToLocateMess.class);
+                                    startActivity(intent);
+                                    return;
+                                }
                             }
+                            latLng = new LatLng((double) data.get("latitude"), (double) data.get("longitude"));
+                            preferences.putString("MessOwnerLatitude", String.valueOf(data.get("latitude")));
+                            preferences.putString("MessOwnerLongitude", String.valueOf(data.get("longitude")));
+                            preferences.putString("MessOwnerAddress", getAddressFromLatLng(latLng));
+                            preferences.apply();
+
+                            // Toast.makeText(MessOnwnerLoginPage.this, getAddressFromLatLng(latLng)+"", Toast.LENGTH_SHORT).show();
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+
+
+                            Map<String, Object> dataAdd = new HashMap<>();
+                            dataAdd.put("token", tokenString);
+                            dataRef.updateChildren(dataAdd).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Error occurred while saving data
+                                    loadingDialog.stopLoading();
+                                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            loadingDialog.stopLoading();
+                            Intent intent = new Intent(MessOnwnerLoginPage.this, HomeForMessOwner.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            loadingDialog.stopLoading();
+                            Toast.makeText(MessOnwnerLoginPage.this, "Please enter correct password", Toast.LENGTH_LONG).show();
                         }
-                        latLng = new LatLng((double)data.get("latitude"), (double)data.get("longitude"));
-                        preferences.putString("MessOwnerLatitude", String.valueOf(data.get("latitude")));
-                        preferences.putString("MessOwnerLongitude", String.valueOf(data.get("longitude")));
-                        preferences.putString("MessOwnerAddress", getAddressFromLatLng(latLng));
-                        preferences.apply();
-
-                       // Toast.makeText(MessOnwnerLoginPage.this, getAddressFromLatLng(latLng)+"", Toast.LENGTH_SHORT).show();
-
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
-
-
-                        Map<String, Object> dataAdd = new HashMap<>();
-                        dataAdd.put("token", tokenString);
-                        dataRef.updateChildren(dataAdd).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Error occurred while saving data
-                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-                        Intent intent = new Intent(MessOnwnerLoginPage.this, HomeForMessOwner.class);
-                        startActivity(intent);
-                        finish();
                     } else {
-                        Toast.makeText(MessOnwnerLoginPage.this, "Please enter correct password", Toast.LENGTH_LONG).show();
+                        loadingDialog.stopLoading();
+                        Toast.makeText(MessOnwnerLoginPage.this, "Account not found", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(MessOnwnerLoginPage.this, "Account not found", Toast.LENGTH_LONG).show();
                 }
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
     }
 
     private String getAddressFromLatLng(LatLng latLng) {
@@ -224,6 +234,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
 
     String tokenString="";
     private void getToken() {
+
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {

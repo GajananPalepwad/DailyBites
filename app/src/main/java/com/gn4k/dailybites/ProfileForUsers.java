@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -25,13 +26,16 @@ public class ProfileForUsers extends AppCompatActivity {
 
     private static final String KEY_NAME = "name";
     private EditText  Name, email, number;
-
+    LoadingDialog loadingDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_for_users);
+
+        loadingDialog = new LoadingDialog(ProfileForUsers.this);
+        loadingDialog.startLoading();
 
         Name = findViewById(R.id.Name);
         email = findViewById(R.id.email);
@@ -110,6 +114,6 @@ public class ProfileForUsers extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        loadingDialog.stopLoading();
     }
 }

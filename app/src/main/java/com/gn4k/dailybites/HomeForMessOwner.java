@@ -20,6 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
@@ -44,12 +45,14 @@ public class HomeForMessOwner extends AppCompatActivity {
     int countD =0, countS = 0, countG =0, totalUsers = 0;
     RatingBar myRatingBar;
 
-
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
+        loadingDialog = new LoadingDialog(HomeForMessOwner.this);
+        loadingDialog.startLoading();
         Button silver, gold, diamond;
         CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification, homelag;
         support = findViewById(R.id.support);
@@ -409,7 +412,7 @@ public class HomeForMessOwner extends AppCompatActivity {
                     countS = (int) dataSnapshot.getChildrenCount();
                     totalUsers = totalUsers + countS;
                     subscribers.setText(""+totalUsers);
-
+                    loadingDialog.stopLoading();
                     // Use the 'count' variable containing the number of child nodes
                 }
             }
@@ -420,9 +423,6 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
-
     }
-
-
 
 }

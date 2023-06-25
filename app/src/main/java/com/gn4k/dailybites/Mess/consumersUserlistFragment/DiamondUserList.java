@@ -1,4 +1,4 @@
-package com.gn4k.dailybites.consumersUserlistFragment;
+package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,7 +36,8 @@ public class DiamondUserList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diamond_user_list, container, false);
-
+        loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoading();
         // Inflate the layout for this fragment
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MessOwnerData",MODE_PRIVATE);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().
@@ -58,6 +59,7 @@ public class DiamondUserList extends Fragment {
                     list.add(user);
                 }
                 adapter.notifyDataSetChanged();
+                loadingDialog.stopLoading();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

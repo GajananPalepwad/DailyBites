@@ -62,8 +62,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mess_info);
 
-//        loadingDialog  = new LoadingDialog(this);
-//        loadingDialog.startLoading();
+        loadingDialog  = new LoadingDialog(this);
+        loadingDialog.startLoading();
 
         back = findViewById(R.id.back);
         addToWishList = findViewById(R.id.like);
@@ -366,6 +366,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         priseS.setText("Not Available");
                         isSPlanPresent = false;
                     }
+                    loadingDialog.stopLoading();
                 }
 
                 @Override

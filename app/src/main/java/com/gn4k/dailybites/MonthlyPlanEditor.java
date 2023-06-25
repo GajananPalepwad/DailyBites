@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,12 +44,15 @@ public class MonthlyPlanEditor extends AppCompatActivity {
     private String planName;
     private Button updateBTN;
     MaterialButtonToggleGroup toggleDelivery, toggleNonVeg, toggleBreakFast;
-
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_plan_editor);
+
+        loadingDialog = new LoadingDialog(MonthlyPlanEditor.this);
+        loadingDialog.startLoading();
 
         TVplanName = findViewById(R.id.tv_planName);
         planImage = findViewById(R.id.planImage);
@@ -141,21 +145,17 @@ public class MonthlyPlanEditor extends AppCompatActivity {
             }
         });
 
-
-
-        //Get the string from home screen to choose which plan theme should apply to this activity
-        Bundle bundle = getIntent().getExtras();
-        planName = bundle.getString("planName");
-        setAllThingsAccordingToPlan(planName);
-
-
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+        //Get the string from home screen to choose which plan theme should apply to this activity
+        Bundle bundle = getIntent().getExtras();
+        planName = bundle.getString("planName");
+        setAllThingsAccordingToPlan(planName);
 
     }
 
@@ -261,10 +261,13 @@ public class MonthlyPlanEditor extends AppCompatActivity {
                     }else {
                         toggleBreakFast.check(R.id.btn_nobrkFast);
                     }
+                    loadingDialog.stopLoading();
 
                     updateBTN.setText("Update");
                 } else {
-                        updateBTN.setText("Upload");
+                    loadingDialog.stopLoading();
+
+                    updateBTN.setText("Upload");
                 }
             }
 
@@ -272,7 +275,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
 
+        });
     }
 }

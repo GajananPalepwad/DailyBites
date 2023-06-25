@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.ConsumersList;
 import com.gn4k.dailybites.GetDateTime;
 
@@ -61,11 +62,13 @@ public class WalletForMess extends AppCompatActivity {
     private BottomSheetDialog bottomSheetDialog;
     String balanceString, pendingString;
     RecyclerView recyclerView;
-
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_for_mess);
+        loadingDialog = new LoadingDialog(WalletForMess.this);
+        loadingDialog.startLoading();
 
         balance = findViewById(R.id.balance);
         pending = findViewById(R.id.pending);
@@ -292,7 +295,7 @@ public class WalletForMess extends AppCompatActivity {
 
 
                 }
-
+                loadingDialog.stopLoading();
             }
 
             @Override

@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.RoomForCalender.Calender;
 import com.gn4k.dailybites.RoomForCalender.CalenderDao;
 import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
@@ -33,6 +35,7 @@ public class CalenderFragment extends Fragment {
     private RecyclerView recentRecyclerView;
     private BottomNavigationView bottomNavigationView;
     private int previousScrollY = 0;
+    TextView text;
 
 
     @Override
@@ -42,9 +45,11 @@ public class CalenderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calender, container, false);
         recentRecyclerView = view.findViewById(R.id.recyclerViewCalender);
-
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.startLoading();
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
 
+        text = view.findViewById(R.id.text);
         ImageView wallet = view.findViewById(R.id.wallet);
 
         ImageView notification = view.findViewById(R.id.notification);
@@ -59,10 +64,11 @@ public class CalenderFragment extends Fragment {
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NotificationForMess.class);
+                Intent intent = new Intent(getActivity(), SendMessegeToMess.class);
                 startActivity(intent);
             }
         });
+
 
 
         NestedScrollView nestedScrollView = view.findViewById(R.id.nestedScrollView);
@@ -82,16 +88,18 @@ public class CalenderFragment extends Fragment {
         });
 
 
-        new Bgthread(recentRecyclerView).start();
+        new Bgthread(recentRecyclerView, loadingDialog).start();
         return view;
     }
 
 
     class Bgthread extends Thread {  // to display recent list in recyclerView
         private RecyclerView recyclerView;
+        private LoadingDialog loadingDialog;
 
-        Bgthread(RecyclerView recyclerView) {
+        Bgthread(RecyclerView recyclerView, LoadingDialog loadingDialog) {
             this.recyclerView = recyclerView;
+            this.loadingDialog =loadingDialog;
         }
 
         public void run() {
@@ -108,8 +116,13 @@ public class CalenderFragment extends Fragment {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     CalendereAdapter recentAdapter = new CalendereAdapter(getActivity(),mess);
                     recyclerView.setAdapter(recentAdapter);
+                    if(recentAdapter.getItemCount()!=0){
+                        text.setVisibility(View.GONE);
+                    }
+                    loadingDialog.stopLoading();
                 }
             });
+
         }
     }
 

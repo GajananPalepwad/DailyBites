@@ -40,61 +40,45 @@ public class HomeForMessOwner extends AppCompatActivity {
 
     TextView messName, subscribers, ratings;
     ImageView profileImg;
-    String mobileNo;
+    String mobileNo, aadhaarNo;
     int countD =0, countS = 0, countG =0, totalUsers = 0;
     RatingBar myRatingBar;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_for_mess_owner);
-            Button silver, gold, diamond;
-            CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification, homelag;
-            homelag = findViewById(R.id.homelag);
-            notification = findViewById(R.id.notification);
-            sendMsg = findViewById(R.id.sendMSG);
-            wallet = findViewById(R.id.walletM);
-            updateMenu = findViewById(R.id.dailyMenu);
-            settings = findViewById(R.id.settings);
-            profile = findViewById(R.id.profile);
-            silver = findViewById(R.id.silver);
-            gold = findViewById(R.id.gold);
-            diamond = findViewById(R.id.diamond);
-            profileImg  = findViewById(R.id.profileimg);
-            messName  = findViewById(R.id.messName);
-            subscribers = findViewById(R.id.subscribers);
-            ratings = findViewById(R.id.ratingInNumber);
-            myRatingBar = findViewById(R.id.myRatingBar);
-            consumersBtn = findViewById(R.id.ConsumersBtn);
+        Button silver, gold, diamond;
+        CardView profile, settings, consumersBtn, wallet, sendMsg, support, updateMenu, notification, homelag;
+        support = findViewById(R.id.support);
+        homelag = findViewById(R.id.homelag);
+        notification = findViewById(R.id.notification);
+        sendMsg = findViewById(R.id.sendMSG);
+        wallet = findViewById(R.id.walletM);
+        updateMenu = findViewById(R.id.dailyMenu);
+        settings = findViewById(R.id.settings);
+        profile = findViewById(R.id.profile);
+        silver = findViewById(R.id.silver);
+        gold = findViewById(R.id.gold);
+        diamond = findViewById(R.id.diamond);
+        profileImg  = findViewById(R.id.profileimg);
+        messName  = findViewById(R.id.messName);
+        subscribers = findViewById(R.id.subscribers);
+        ratings = findViewById(R.id.ratingInNumber);
+        myRatingBar = findViewById(R.id.myRatingBar);
+        consumersBtn = findViewById(R.id.ConsumersBtn);
 
-            SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference dbpath = db.child("mess")
-                    .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
-            dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                        if ((String) data.get("coverImage") != null || (String) data.get("messName")!= null) {
-                            String url = (String) data.get("coverImage");
-                            Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
-                            messName.setText((String) data.get("messName"));
-                            ratings.setText((String) data.get("ratings"));
-                            myRatingBar.setRating(Float. parseFloat((String) data.get("ratings")) );
-                        }
+        getAllDataFromFirebase();
 
-                    }
-                }
-
+        support.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onClick(View v) {
+
+
             }
         });
-
-            mobileNo = sharedPreferences.getString("MessOwnerMobileNo", "");
-
 
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +98,6 @@ public class HomeForMessOwner extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
-                intent.putExtra("planName", "Silver");
                 startActivity(intent);
             }
         });
@@ -122,27 +105,39 @@ public class HomeForMessOwner extends AppCompatActivity {
         silver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                intent.putExtra("planName", "Silver");
-                startActivity(intent);
+                if(!aadhaarNo.equals("")) {
+                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                    intent.putExtra("planName", "Silver");
+                    startActivity(intent);
+                }else{
+                    showLogoutDialogToCompleteProfile();
+                }
             }
         });
 
         gold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                intent.putExtra("planName", "Gold");
-                startActivity(intent);
+                if(!aadhaarNo.equals("")) {
+                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                    intent.putExtra("planName", "Gold");
+                    startActivity(intent);
+                }else{
+                    showLogoutDialogToCompleteProfile();
+                }
             }
         });
 
         diamond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                intent.putExtra("planName", "Diamond");
-                startActivity(intent);
+                if(!aadhaarNo.equals("")) {
+                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                    intent.putExtra("planName", "Diamond");
+                    startActivity(intent);
+                }else{
+                    showLogoutDialogToCompleteProfile();
+                }
             }
         });
 
@@ -192,6 +187,35 @@ public class HomeForMessOwner extends AppCompatActivity {
     }
 
 
+    private void getAllDataFromFirebase(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbpath = db.child("mess")
+                .child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                    if ((String) data.get("coverImage") != null || (String) data.get("messName")!= null) {
+                        String url = (String) data.get("coverImage");
+                        Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
+                        messName.setText((String) data.get("messName"));
+                        ratings.setText((String) data.get("ratings"));
+                        myRatingBar.setRating(Float. parseFloat((String) data.get("ratings")) );
+                        aadhaarNo = (String) data.get("addharNo");
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        mobileNo = sharedPreferences.getString("MessOwnerMobileNo", "");
+    }
+
+
 
 
     private void showLogoutDialog() {
@@ -213,6 +237,28 @@ public class HomeForMessOwner extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // Dismiss the dialog
                 dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    private void showLogoutDialogToCompleteProfile() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeForMessOwner.this);
+        builder.setTitle("Oops!!!");
+        builder.setMessage("It seems like you haven't completed your profile.\nPress \"OK\" to Continue");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Call the logout function
+                Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
+                startActivity(intent);
+                dialog.dismiss();
+
             }
         });
 
@@ -302,6 +348,7 @@ public class HomeForMessOwner extends AppCompatActivity {
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
+
 
 
     private void getCountOfUsers(){

@@ -8,6 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
+
     <TextView
         android:id="@+id/tooltext"
         android:layout_width="match_parent"
@@ -23,6 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <ImageView
         android:id="@+id/wallet"
@@ -43,6 +47,24 @@
         app:layout_constraintEnd_toStartOf="@+id/wallet"
         app:layout_constraintTop_toTopOf="@+id/wallet"
         app:srcCompat="@drawable/bell_pin_fill" />
+
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="Everyday Menu will show here"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView"
+        app:layout_constraintEnd_toEndOf="@+id/nestedScrollView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tooltext" />
+
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"

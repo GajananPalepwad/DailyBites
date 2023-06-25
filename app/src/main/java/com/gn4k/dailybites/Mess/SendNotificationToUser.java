@@ -3,8 +3,10 @@ package com.gn4k.dailybites.Mess;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -13,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.ConsumersList;
+import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.Client;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
@@ -35,6 +39,38 @@ public class SendNotificationToUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_notification_to_user);
+
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SendNotificationToUser.this, NotificationForMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SendNotificationToUser.this, WalletForMess.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         mobile = sharedPreferences.getString("MessOwnerMobileNo", "");

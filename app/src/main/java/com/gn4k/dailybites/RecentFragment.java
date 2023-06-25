@@ -61,10 +61,11 @@ public class RecentFragment extends Fragment {
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NotificationForMess.class);
+                Intent intent = new Intent(getActivity(), SendMessegeToMess.class);
                 startActivity(intent);
             }
         });
+
 
     }
 

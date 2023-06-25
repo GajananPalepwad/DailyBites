@@ -1,12 +1,14 @@
 package com.gn4k.dailybites;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.RoomForNotification.NotificationAdapter;
@@ -25,9 +27,16 @@ public class NotificationForMess extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_mess);
+        CardView backBtn = findViewById(R.id.back);
 
-//        new BgthreadNotificationStore().start();
-             RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
         new Bgthread(recentRecyclerView).start();
     }
 

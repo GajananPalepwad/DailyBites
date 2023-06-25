@@ -2,11 +2,16 @@ package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.consumersUserlistFragment.DiamondUserList;
 import com.gn4k.dailybites.consumersUserlistFragment.GoldUserList;
 import com.gn4k.dailybites.consumersUserlistFragment.SilverUserList;
@@ -20,6 +25,36 @@ public class ConsumersList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumers_list);
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConsumersList.this, NotificationForMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConsumersList.this, WalletForMess.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new SilverUserList()).commit();

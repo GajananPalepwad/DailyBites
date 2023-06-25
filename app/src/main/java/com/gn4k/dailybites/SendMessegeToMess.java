@@ -2,7 +2,9 @@ package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,29 @@ public class SendMessegeToMess extends AppCompatActivity {
         body = findViewById(R.id.body);
 
         button = findViewById(R.id.send);
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SendMessegeToMess.this, WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

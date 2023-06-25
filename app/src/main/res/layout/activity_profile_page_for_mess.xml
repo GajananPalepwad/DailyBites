@@ -317,7 +317,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Addhar  Number"
+                        android:text="Aaddhaar  Number"
                         app:layout_constraintStart_toStartOf="@+id/addhar"
                         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 

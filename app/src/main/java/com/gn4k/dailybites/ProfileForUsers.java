@@ -2,6 +2,7 @@ package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +39,35 @@ public class ProfileForUsers extends AppCompatActivity {
         Button update, goToMap;
         update = findViewById(R.id.uploadpdU);
         goToMap = findViewById(R.id.updatelocationU);
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileForUsers.this, SendMessegeToMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileForUsers.this, WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("UserData", MODE_PRIVATE);
         SharedPreferences.Editor preferences = sharedPreferences.edit();

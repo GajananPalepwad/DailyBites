@@ -3,6 +3,7 @@ package com.gn4k.dailybites.Mess;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.HomeForMessOwner;
 import com.gn4k.dailybites.MonthlyPlanEditor;
+import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,12 +43,41 @@ public class AddToDaysMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_days_menu);
+
         loadingDialog = new LoadingDialog(this);
         loadingDialog.startLoading();
         evmenuL = findViewById(R.id.menuL);
         evmenuD = findViewById(R.id.menuD);
         evprise = findViewById(R.id.price);
         update = findViewById(R.id.update);
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddToDaysMenu.this, NotificationForMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddToDaysMenu.this, WalletForMess.class);
+                startActivity(intent);
+            }
+        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override

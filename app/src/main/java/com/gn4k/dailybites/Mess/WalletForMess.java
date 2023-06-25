@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import androidx.room.Room;
 
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.gn4k.dailybites.ConsumersList;
 import com.gn4k.dailybites.GetDateTime;
 
+import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 
 
@@ -67,6 +71,20 @@ public class WalletForMess extends AppCompatActivity {
         pending = findViewById(R.id.pending);
         withdrawbtn = findViewById(R.id.withdrawBtn);
         recyclerView = findViewById(R.id.recyclerViewWallet);
+
+
+        CardView backBtn = findViewById(R.id.back);
+
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
 
         withdrawbtn.setOnClickListener(new View.OnClickListener() {
             @Override

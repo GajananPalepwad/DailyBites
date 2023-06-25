@@ -3,6 +3,7 @@ package com.gn4k.dailybites;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -69,6 +71,34 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
         withDeliveryRadioButton = findViewById(R.id.WithRadioButton);
         withoutDeliveryRadioButton = findViewById(R.id.WithOutRadioButton);
 //
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DishInfo.this, SendMessegeToMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DishInfo.this, WalletForUser.class);
+                startActivity(intent);
+            }
+        });
+
         TextView priceW = findViewById(R.id.Tv_prizeW);
         if (bundle.getString("messIsDelivery").equals("no")){
             priceW.setText("Not Available");

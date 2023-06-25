@@ -6,12 +6,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.loader.content.CursorLoader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -31,8 +34,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.WalletForMess;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,10 +77,9 @@ public class ProfilePageForMess extends AppCompatActivity {
     EditText  ifsc;
     EditText  accountNo;
     EditText  bankName;
-
+    String passwordFromFB;
     EditText ownerName, messName, number;
-
-    CardView back;
+    private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +100,42 @@ public class ProfilePageForMess extends AppCompatActivity {
 
         updatePDbtn = findViewById(R.id.uploadpd);
         updateLocation = findViewById(R.id.updatelocation);
-        back = findViewById(R.id.back);
+
+
+        CardView backBtn = findViewById(R.id.back);
+        CardView notificationBtn = findViewById(R.id.notification);
+        CardView walletBtn = findViewById(R.id.wallet);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePageForMess.this, NotificationForMess.class);
+                startActivity(intent);
+            }
+        });
+
+        walletBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePageForMess.this, WalletForMess.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         uploadDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bankVerify();
+                showPasswordBottomSheetDialog();
             }
         });
 
@@ -119,15 +154,10 @@ public class ProfilePageForMess extends AppCompatActivity {
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
 
-                sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+
+        sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -158,6 +188,13 @@ public class ProfilePageForMess extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ProfilePageForMess.this, HomeForMessOwner.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void updateAccordingtofirebase(){
 
@@ -180,6 +217,7 @@ public class ProfilePageForMess extends AppCompatActivity {
                     accountNo.setText(String.valueOf(data.get("accountNo")));
                     addharNo.setText(String.valueOf(data.get("addharNo")));
                     ifsc.setText(String.valueOf(data.get("ifsc")));
+                    passwordFromFB = String.valueOf(data.get("password"));
                 }
             }
 
@@ -325,7 +363,38 @@ public class ProfilePageForMess extends AppCompatActivity {
                         // Error occurred while saving data
                         Toast.makeText(ProfilePageForMess.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    }
                 });
+    }
 
+    private void showPasswordBottomSheetDialog() {
+
+
+        // Inflate the layout for the BottomSheetDialog
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.password_check_bottomsheet, (ConstraintLayout) findViewById(R.id.password_check_bottomsheet_id));
+
+        // Find your button or any other view inside the BottomSheetDialog layout
+        Button withdraw = bottomSheetView.findViewById(R.id.withdraw);
+        EditText pass = bottomSheetView.findViewById(R.id.tvPassword);
+        // Set click listener for the button inside the BottomSheetDialog
+
+        withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(pass.getText().toString().equals(passwordFromFB)){
+                    bankVerify();
+                    bottomSheetDialog.dismiss();
+                }else{
+                    Toast.makeText(ProfilePageForMess.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+        // Create the BottomSheetDialog
+        bottomSheetDialog = new BottomSheetDialog(ProfilePageForMess.this,R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 
 }

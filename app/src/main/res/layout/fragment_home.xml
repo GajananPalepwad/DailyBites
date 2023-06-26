@@ -67,10 +67,9 @@
                     android:layout_height="200dp"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="14dp"
-                    android:elevation="70dp"
                     android:foreground="@drawable/cardback"
                     app:cardCornerRadius="25dp"
-                    app:cardElevation="10dp"
+                    app:cardElevation="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -190,6 +189,72 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView18"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:elevation="5dp"
+                    android:src="@drawable/gift_circle"
+                    app:layout_constraintBottom_toBottomOf="@+id/offer"
+                    app:layout_constraintStart_toStartOf="@+id/offer"
+                    app:layout_constraintTop_toTopOf="@+id/offer" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:elevation="5dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+                    app:layout_constraintStart_toEndOf="@+id/imageView18"
+                    app:layout_constraintTop_toTopOf="@+id/imageView18">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="You have a free Token"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="CLAM NOW >"
+                        android:textColor="#2BA4FF"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/offer"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="14dp"
+                    android:elevation="70dp"
+                    android:foreground="@drawable/offer_card_back"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
             <TextView
                 android:id="@+id/Messlist"

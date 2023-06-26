@@ -135,7 +135,7 @@
 
         <TextView
             android:id="@+id/isveg"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:inputType="number"
@@ -176,7 +176,7 @@
 
             <TextView
                 android:id="@+id/isdelivery"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="number"
@@ -255,7 +255,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:inputType="number"
-            android:paddingHorizontal="10dp"
             android:text="Lunch"
             android:textColor="@color/black"
             android:textSize="15dp"

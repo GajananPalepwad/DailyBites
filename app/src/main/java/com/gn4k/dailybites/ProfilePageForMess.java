@@ -86,6 +86,7 @@ public class ProfilePageForMess extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page_for_mess);
+        loadingDialog = new LoadingDialog(ProfilePageForMess.this);
         loadingDialog.startLoading();
         CardView imagePicker = findViewById(R.id.addImg);
 
@@ -220,14 +221,13 @@ public class ProfilePageForMess extends AppCompatActivity {
                     ifsc.setText(String.valueOf(data.get("ifsc")));
                     passwordFromFB = String.valueOf(data.get("password"));
                 }
+                loadingDialog.stopLoading();
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        loadingDialog.stopLoading();
+
     }
 
     @Override

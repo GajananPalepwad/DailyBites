@@ -61,6 +61,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish_info);
+        loadingDialog = new LoadingDialog(DishInfo.this);
         loadingDialog.startLoading();
 
 

@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
 
+    //scanner dependency
+    implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
 
 }

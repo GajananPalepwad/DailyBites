@@ -2,13 +2,46 @@ package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 public class UserModelForMess {
     String email;
+    String latitude;
 
-    public UserModelForMess(String email, String fromDate, String toDate, String name, String mobileNo) {
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    String longitude;
+    String address;
+
+
+    public UserModelForMess(String email, String fromDate, String toDate, String name, String mobileNo, String longitude, String latitude, String address) {
         this.email = email;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.name = name;
         this.mobileNo = mobileNo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+
     }
     public UserModelForMess(){}
     String fromDate;

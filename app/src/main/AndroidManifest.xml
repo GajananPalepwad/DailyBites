@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,6 +27,9 @@
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
         <activity
+            android:name=".User.OfferCodeScanner"
+            android:exported="false" />
+        <activity
             android:name=".SendMessegeToMess"
             android:exported="false" />
         <activity
@@ -34,7 +42,7 @@
             android:name=".Mess.AddToDaysMenu"
             android:exported="false" />
         <activity
-            android:name=".ConsumersList"
+            android:name=".Mess.consumersUserlistFragment.ConsumersList"
             android:exported="false" />
         <activity
             android:name=".NotificationForMess"

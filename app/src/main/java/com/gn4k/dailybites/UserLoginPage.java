@@ -52,6 +52,7 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_MESSNO = "messNo";
     private static final String KEY_PLANNAME = "planName";
     private static final String KEY_TODATE = "to";
+    private static final String KEY_FROMDATE = "from";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
@@ -181,6 +182,7 @@ public class UserLoginPage extends AppCompatActivity {
                             preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
                             preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
                             preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
+                            preferences.putString("fromDate", documentSnapshot.getString(KEY_FROMDATE));
                             preferences.putString("UserToken", tokenString);
                             preferences.apply();
                             if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
@@ -206,7 +208,7 @@ public class UserLoginPage extends AppCompatActivity {
 
                             String plan = "";
                             String documentPlanName = documentSnapshot.getString(KEY_PLANNAME);
-                            if (documentPlanName != null) {
+                            if (!documentPlanName.equals("")) {
                                 if (documentPlanName.equals("Gold Plan")) {
                                     plan = "Goldplan";
                                 } else if (documentPlanName.equals("Silver Plan")) {
@@ -214,10 +216,6 @@ public class UserLoginPage extends AppCompatActivity {
                                 } else if (documentPlanName.equals("Diamond Plan")) {
                                     plan = "Diamondplan";
                                 }
-                            }
-
-
-                            if(!documentSnapshot.getString(KEY_PLANNAME).equals("") || documentSnapshot.getString(KEY_PLANNAME)!=null) {
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                 DatabaseReference dataRef = ref.child("mess").
                                         child(documentSnapshot.getString(KEY_MESSNO)).
@@ -236,6 +234,11 @@ public class UserLoginPage extends AppCompatActivity {
                                             }
                                         });
                             }
+
+//
+//                            if(!documentSnapshot.getString(KEY_PLANNAME).equals("")) {
+//
+//                            }
 
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put(KEY_TOKEN, tokenString);

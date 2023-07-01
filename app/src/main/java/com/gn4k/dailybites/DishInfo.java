@@ -52,7 +52,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
     RadioButton withDeliveryRadioButton;
     RadioButton withoutDeliveryRadioButton;
     int planPrice = 0;
-    String token="";
+    String token="", delivery="no";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     LoadingDialog loadingDialog;
@@ -143,6 +143,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
             @Override
             public void onClick(View v) {
                 planPrice = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
+                delivery = "yes";
                 // Set 'With Delivery' radio button as checked
                 withDeliveryRadioButton.setChecked(true);
                 // Uncheck 'Without Delivery' radio button
@@ -154,6 +155,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
             @Override
             public void onClick(View v) {
                 planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
+                delivery = "no";
                 // Set 'Without Delivery' radio button as checked
                 withoutDeliveryRadioButton.setChecked(true);
                 // Uncheck 'With Delivery' radio button
@@ -261,7 +263,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 preferences.putString("toDate", date);
                 preferences.putString("token", token);
 
-                userInfo.put(KEY_TODATE, sharedPreferences.getString("UserToken", ""));
+                userInfo.put(KEY_TODATE, date);
 
                 preferences.apply();
 
@@ -291,16 +293,19 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("plan", "One Day" + " Plan");
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("forDate", date);
-                data.put("token", sharedPreferences.getString("token", ""));
+                data.put("orderId", s);
+                data.put("delivery", delivery);
+                data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
+                data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
+                data.put("address", sharedPreferences.getString("UserAddress", ""));
+                data.put("token", sharedPreferences.getString("UserToken", ""));
+
 
 
                 dataRef.updateChildren(data)
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Error occurred while saving data
-                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
-                            }
+                        .addOnFailureListener(e -> {
+                            // Error occurred while saving data
+                            showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
                         });
             }
         });

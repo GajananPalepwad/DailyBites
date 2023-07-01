@@ -10,6 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        //scanner code
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "Daily Bites"

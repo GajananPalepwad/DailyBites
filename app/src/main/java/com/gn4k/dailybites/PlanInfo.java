@@ -266,6 +266,9 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("plan", planName + " Plan");
                 data.put("fromDate", date);
                 data.put("orderId", s);
+                data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
+                data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
+                data.put("address", sharedPreferences.getString("UserAddress", ""));
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("toDate", nextMonthDateString);
                 data.put("token", sharedPreferences.getString("UserToken", ""));

@@ -13,21 +13,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.gn4k.dailybites.ConsumersList;
 import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
-import com.gn4k.dailybites.SendNotificationClasses.Client;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class SendNotificationToUser extends AppCompatActivity {

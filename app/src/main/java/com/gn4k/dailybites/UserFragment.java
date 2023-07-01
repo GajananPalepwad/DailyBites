@@ -72,77 +72,53 @@ public class UserFragment extends Fragment {
         }else {
 
             GetDateTime getDateTime = new GetDateTime(getActivity());
-            getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-                @Override
-                public void onGetDateTime(String date, String time) {
+            getDateTime.getDateTime((date, time) -> {
 
-                    String givenDateStr = sharedPreferences.getString("toDate", "");
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                    // Parse the current date string to a LocalDate object
-                    Date currentDate = null;
-                    Date givenDate = null;
-                    try {
-                        currentDate = formatter.parse(date);
-                        givenDate = formatter.parse(givenDateStr);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    // Calculate the number of days between the given date and the current date
-                    long remainingDays = -1;
-                    if (currentDate != null && givenDate != null) {
-                        long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
-                        remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
-                    }
-                    daysRemain.setText(remainingDays + " Days Left");
-
+                String givenDateStr = sharedPreferences.getString("toDate", "");
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                // Parse the current date string to a LocalDate object
+                Date currentDate = null;
+                Date givenDate = null;
+                try {
+                    currentDate = formatter.parse(date);
+                    givenDate = formatter.parse(givenDateStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                // Calculate the number of days between the given date and the current date
+                long remainingDays = -1;
+                if (currentDate != null && givenDate != null) {
+                    long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
+                    remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
+                }
+                daysRemain.setText(remainingDays + " Days Left");
+
             });
         }
 
         ImageView wallet = view.findViewById(R.id.wallet);
 
         ImageView notification = view.findViewById(R.id.notification);
-        wallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WalletForUser.class);
-                startActivity(intent);
-            }
+        wallet.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WalletForUser.class);
+            startActivity(intent);
         });
 
-        notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SendMessegeToMess.class);
-                startActivity(intent);
-            }
+        notification.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SendMessegeToMess.class);
+            startActivity(intent);
         });
 
 
-        persnolInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ProfileForUsers.class);
-                startActivity(intent);
-                getActivity();
-            }
+        persnolInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(),ProfileForUsers.class);
+            startActivity(intent);
+            getActivity();
         });
 
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        setting.setOnClickListener(v -> showSettingsBottomSheetDialog());
 
-                showSettingsBottomSheetDialog();
-
-            }
-        });
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutDialog();
-            }
-        });
+        logout.setOnClickListener(v -> showLogoutDialog());
 
         return view;
     }
@@ -153,20 +129,14 @@ public class UserFragment extends Fragment {
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout?");
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Call the logout function
-                Logout();
-            }
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Call the logout function
+            Logout();
         });
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Dismiss the dialog
-                dialog.dismiss();
-            }
+        builder.setNegativeButton("No", (dialog, which) -> {
+            // Dismiss the dialog
+            dialog.dismiss();
         });
 
         AlertDialog dialog = builder.create();

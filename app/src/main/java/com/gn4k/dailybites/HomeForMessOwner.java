@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.room.Room;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,9 +23,7 @@ import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
-import com.gn4k.dailybites.RoomForNotification.NotificationDao;
-import com.gn4k.dailybites.RoomForNotification.NotificationData;
-import com.gn4k.dailybites.RoomForNotification.NotificationDatabase;
+import com.gn4k.dailybites.Mess.consumersUserlistFragment.ConsumersList;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

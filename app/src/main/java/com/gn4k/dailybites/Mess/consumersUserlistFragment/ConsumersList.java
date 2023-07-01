@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.gn4k.dailybites.Mess.WalletForMess;
-import com.gn4k.dailybites.Mess.consumersUserlistFragment.DiamondUserList;
-import com.gn4k.dailybites.Mess.consumersUserlistFragment.GoldUserList;
-import com.gn4k.dailybites.Mess.consumersUserlistFragment.SilverUserList;
+import com.gn4k.dailybites.NotificationForMess;
+import com.gn4k.dailybites.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ConsumersList extends AppCompatActivity {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/user_container"
     android:background="#FDFCFC"
-    tools:context=".ConsumersList">
+    tools:context=".Mess.consumersUserlistFragment.ConsumersList">
 
 
     <androidx.cardview.widget.CardView

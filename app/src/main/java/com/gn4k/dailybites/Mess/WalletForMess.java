@@ -12,7 +12,6 @@ import androidx.room.Room;
 
 import android.content.DialogInterface;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +22,8 @@ import android.widget.Toast;
 
 
 import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.ConsumersList;
 import com.gn4k.dailybites.GetDateTime;
 
-import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 
 

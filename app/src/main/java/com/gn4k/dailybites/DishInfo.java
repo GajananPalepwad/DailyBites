@@ -139,28 +139,22 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
             public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-        withDeliveryRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                planPrice = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
-                delivery = "yes";
-                // Set 'With Delivery' radio button as checked
-                withDeliveryRadioButton.setChecked(true);
-                // Uncheck 'Without Delivery' radio button
-                withoutDeliveryRadioButton.setChecked(false);
-            }
+        withDeliveryRadioButton.setOnClickListener(v -> {
+            planPrice = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
+            delivery = "yes";
+            // Set 'With Delivery' radio button as checked
+            withDeliveryRadioButton.setChecked(true);
+            // Uncheck 'Without Delivery' radio button
+            withoutDeliveryRadioButton.setChecked(false);
         });
 
-        withoutDeliveryRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
-                delivery = "no";
-                // Set 'Without Delivery' radio button as checked
-                withoutDeliveryRadioButton.setChecked(true);
-                // Uncheck 'With Delivery' radio button
-                withDeliveryRadioButton.setChecked(false);
-            }
+        withoutDeliveryRadioButton.setOnClickListener(v -> {
+            planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
+            delivery = "no";
+            // Set 'Without Delivery' radio button as checked
+            withoutDeliveryRadioButton.setChecked(true);
+            // Uncheck 'With Delivery' radio button
+            withDeliveryRadioButton.setChecked(false);
         });
 
 

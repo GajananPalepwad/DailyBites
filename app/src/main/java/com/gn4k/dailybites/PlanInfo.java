@@ -55,6 +55,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private static final String KEY_PLANNAME = "planName";
     private static final String KEY_FROMDATE = "from";
     private static final String KEY_MESSTOKEN = "messToken";
+    private static final String KEY_FREEDISH = "freeDish";
     private static final String KEY_TODATE = "to";
     private TextView TVplanName, evprice, evdescription, TVveg, TVdelivery, TVbreakfast;
     private ImageView planImage, isVeg;
@@ -171,8 +172,6 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 }
                 loadingDialog.stopLoading();
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -228,11 +227,13 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 userInfo.put(KEY_PLANNAME, planName + " Plan");
                 userInfo.put(KEY_FROMDATE, date);
                 userInfo.put(KEY_MESSTOKEN, token);
+                userInfo.put(KEY_FREEDISH, "1");
 
                 preferences.putString("messName", messName);
                 preferences.putString("MessNo", mobileNo);
                 preferences.putString("planName", planName + " Plan");
                 preferences.putString("fromDate", date);
+                preferences.putString("freeDish", "1");
                 preferences.putString("messToken", token);
 
                 String nextMonthDateString = getNextMonthDate(date);
@@ -243,12 +244,9 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
                 db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
                         .update(userInfo)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                // Move to the home screen
-                                Toast.makeText(PlanInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
-                            }
+                        .addOnSuccessListener(unused -> {
+                            // Move to the home screen
+                            Toast.makeText(PlanInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -274,12 +272,9 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("token", sharedPreferences.getString("UserToken", ""));
 
                 dataRef.updateChildren(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Data saved successfully
-                                sendNotificationToMess();
-                            }
+                        .addOnSuccessListener(aVoid -> {
+                            // Data saved successfully
+                            sendNotificationToMess();
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override

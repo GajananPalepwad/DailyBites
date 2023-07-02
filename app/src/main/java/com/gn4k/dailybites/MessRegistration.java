@@ -39,8 +39,6 @@ public class MessRegistration extends AppCompatActivity {
     private CheckBox checkBox;
     private Button BTNregistor;
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -70,12 +68,9 @@ public class MessRegistration extends AppCompatActivity {
             email.setClickable(false);
         }
 
-        BTNregistor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getToken();
-                getRegister();
-            }
+        BTNregistor.setOnClickListener(v -> {
+            getToken();
+            getRegister();
         });
 
 
@@ -147,6 +142,7 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("mobileNo", getMobileNo);
                         data.put("password", getPassword);
                         data.put("token", tokenString);
+                        data.put("freeDish", "10");
                         data.put("wallet", "0.0");
                         data.put("withdrawPending", "0.0");
                         data.put("totalWithdraw", "0.0");
@@ -164,22 +160,16 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("isVerified","no");
 
                         dataRef.setValue(data)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        // Data saved successfully
-                                        Toast.makeText(MessRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(MessRegistration.this,MapToLocateMess.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
+                                .addOnSuccessListener(aVoid -> {
+                                    // Data saved successfully
+                                    Toast.makeText(MessRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MessRegistration.this,MapToLocateMess.class);
+                                    startActivity(intent);
+                                    finish();
                                 })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        // Error occurred while saving data
-                                        Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    }
-                                });
+                                .addOnFailureListener(e -> {
+                                    // Error occurred while saving data
+                                    Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    });
 
                         } else {
                             passwordDoNotMatch.setText("Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character");
@@ -207,16 +197,13 @@ public class MessRegistration extends AppCompatActivity {
 
     String tokenString="";
     private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    tokenString = task.getResult();
-                } else {
-                    // Handle the case when token retrieval fails
-                    Toast.makeText(MessRegistration.this, "Failed to retrieve token",
-                            Toast.LENGTH_LONG).show();
-                }
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                tokenString = task.getResult();
+            } else {
+                // Handle the case when token retrieval fails
+                Toast.makeText(MessRegistration.this, "Failed to retrieve token",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -237,11 +224,6 @@ public class MessRegistration extends AppCompatActivity {
     }
 
     public void signOut(){
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                finish();
-            }
-        });
+        gsc.signOut().addOnCompleteListener(task -> finish());
     }
 }

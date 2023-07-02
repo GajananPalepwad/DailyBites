@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,8 +60,9 @@ public class HomeFragment extends Fragment {
     ArrayList<MessModel> list, listDish;
     private TextView messName, planName, name, no, endDate;
     private ImageView planImg;
-    private String EndDate="";
+    ConstraintLayout offerCard;
     LoadingDialog loadingDialog;
+    SharedPreferences sharedPreferences;
     View view;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -75,16 +77,20 @@ public class HomeFragment extends Fragment {
 
         ImageView wallet = view.findViewById(R.id.wallet);
         ImageView notification = view.findViewById(R.id.notification);
-        ImageView offer2 = view.findViewById(R.id.imageView18);
-        LinearLayout offer1 = view.findViewById(R.id.offer1);
-        CardView offer, messCard;
 
-        offer = getActivity().findViewById(R.id.offer);
+        offerCard = view.findViewById(R.id.offer_layout);
+        offerCard.setOnClickListener(v -> openScanner(v));
+
+        if(!sharedPreferences.getString("planName","").equals("")
+                && !sharedPreferences.getString("freeDish","").equals("0")){
+            offerCard.setVisibility(View.VISIBLE);
+        } else if(sharedPreferences.getString("planName","").equals("")
+                || sharedPreferences.getString("freeDish","").equals("0")){
+            offerCard.setVisibility(View.GONE);
+        }
 
 
-        offer.setOnClickListener(v -> openScanner(v));
-        offer1.setOnClickListener(v -> openScanner(v));
-        offer2.setOnClickListener(v -> openScanner(v));
+
 
         wallet.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WalletForUser.class);
@@ -101,6 +107,18 @@ public class HomeFragment extends Fragment {
         setSubscriptionCard();
         endSubcription();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!sharedPreferences.getString("planName","").equals("")
+                && !sharedPreferences.getString("freeDish","").equals("0")){
+            offerCard.setVisibility(View.VISIBLE);
+        } else if(sharedPreferences.getString("planName","").equals("")
+                || sharedPreferences.getString("freeDish","").equals("0")){
+            offerCard.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -141,7 +159,7 @@ public class HomeFragment extends Fragment {
         myAdapter = new MyMessAdapterForHome(container.getContext(), getActivity(), loadingDialog,list);
         recyclerView.setAdapter(myAdapter);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
 
         database.addValueEventListener(new ValueEventListener() {
 
@@ -261,7 +279,7 @@ public class HomeFragment extends Fragment {
             messName.setText(sharedPreferences.getString("messName", ""));
             no.setText(sharedPreferences.getString("MessNo", "") + sharedPreferences.getString("UserMobileNo", ""));
             endDate.setText(convertDateFormat(sharedPreferences.getString("toDate", ""), "MM/dd/yyyy", "dd/MM"));
-            EndDate = sharedPreferences.getString("toDate", "");
+
 
             switch (sharedPreferences.getString("planName", "")) {
                 case "Diamond Plan":
@@ -329,7 +347,6 @@ public class HomeFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     // Error occurred while deleting the field
-                    System.out.println("Error deleting field: " + e.getMessage());
                 });
 
 

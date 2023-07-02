@@ -53,6 +53,8 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_PLANNAME = "planName";
     private static final String KEY_TODATE = "to";
     private static final String KEY_FROMDATE = "from";
+    private static final String KEY_FREEDISH = "freeDish";
+
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
@@ -183,6 +185,7 @@ public class UserLoginPage extends AppCompatActivity {
                             preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
                             preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
                             preferences.putString("fromDate", documentSnapshot.getString(KEY_FROMDATE));
+                            preferences.putString("freeDish", documentSnapshot.getString(KEY_FREEDISH));
                             preferences.putString("UserToken", tokenString);
                             preferences.apply();
                             if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){

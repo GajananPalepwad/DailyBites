@@ -145,7 +145,7 @@
                 android:layout_marginStart="15dp"
                 android:drawableLeft="@drawable/cal_icon"
                 android:drawablePadding="20dp"
-                android:text="Expires on 31 Jul, 2023, 11:59"
+                android:text="Expires on dd mmm, yyyy, hh:mm"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 

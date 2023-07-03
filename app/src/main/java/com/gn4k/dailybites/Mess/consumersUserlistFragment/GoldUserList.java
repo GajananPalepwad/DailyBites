@@ -2,10 +2,14 @@ package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.R;
@@ -53,6 +58,12 @@ public class GoldUserList extends Fragment {
         ArrayList<UserModelForMess> list = new ArrayList<>();
         UserListAdapter adapter = new UserListAdapter(container.getContext(), getActivity(), loadingDialog, list);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(model -> {
+            // Handle the item click event here
+            showDialogBox(model.name, "Email:- "+model.email+"\n"+"Address:- "+model.address+"\n", model.latitude, model.longitude);
+        });
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -72,4 +83,28 @@ public class GoldUserList extends Fragment {
 
         return view;
     }
+
+    private void openGoogleMaps(double latitude, double longitude) {
+        String uri = String.format("geo:%f,%f", latitude, longitude);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        getActivity().startActivity(intent);
+    }
+
+
+    private void showDialogBox(String title, String mbody, String latitude, String longitude) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        builder.setNegativeButton("Open in Map", (dialog, which) -> {
+            openGoogleMaps(Double.parseDouble(latitude), Double.parseDouble(longitude));
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }

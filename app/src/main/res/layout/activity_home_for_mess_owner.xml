@@ -25,18 +25,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom">
 
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ConsumersBtn"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginHorizontal="25dp"
                     android:layout_marginStart="25dp"
+                    android:layout_marginTop="20dp"
                     android:backgroundTint="@color/brandcolor"
-                    android:layout_marginTop="48dp"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView8" >
+                    app:layout_constraintTop_toBottomOf="@+id/oneDayUsers">
 
 
                     <ImageView
@@ -44,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/group"/>
+                        app:srcCompat="@drawable/group" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -65,7 +66,7 @@
                     android:layout_marginHorizontal="25dp"
                     android:outlineAmbientShadowColor="@color/white"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="2dp"
                     app:layout_constraintBottom_toTopOf="@+id/cardView8"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +168,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     app:cardCornerRadius="40dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cardView7"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -234,10 +235,10 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView7"
                     android:layout_width="match_parent"
-                    android:layout_height="355dp"
+                    android:layout_height="340dp"
                     android:backgroundTint="@color/brandcolor"
                     app:cardCornerRadius="40dp"
-                    app:cardElevation="3dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -250,11 +251,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@color/brandcolor"
-                    android:elevation="3dp"
+                    android:elevation="0dp"
                     app:layout_constraintBottom_toTopOf="@+id/cardView7"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/oneDayUsers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="One Day Users"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/alegreya_sc_black"
+                    android:background="@drawable/button_shape"
+                    app:layout_constraintEnd_toStartOf="@+id/walletM"
+                    app:layout_constraintStart_toStartOf="@+id/cardView8"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView8" />
+
+                <Button
+                    android:id="@+id/show_qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Show mess QR"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/alegreya_sc_black"
+                    android:background="@drawable/button_shape"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView8"
+                    app:layout_constraintStart_toEndOf="@+id/walletM"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView8" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/dailyMenu"
@@ -265,7 +292,7 @@
                     android:layout_marginTop="48dp"
                     android:backgroundTint="@color/brandcolor"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ConsumersBtn">
 
@@ -278,6 +305,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
+                    android:id="@+id/textView33"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alegreya_sc_black"
@@ -303,13 +331,13 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginHorizontal="25dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="25dp"
                     android:backgroundTint="@color/brandcolor"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView8"   >
+                    app:layout_constraintTop_toBottomOf="@+id/show_qr">
 
 
                     <ImageView
@@ -320,6 +348,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
+                    android:id="@+id/textView34"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alegreya_sc_black"
@@ -330,19 +359,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/walletM" />
 
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/walletM"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginHorizontal="25dp"
-                    android:layout_marginTop="48dp"
-                    app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    android:layout_marginTop="20dp"
                     android:backgroundTint="@color/brandcolor"
+                    app:cardCornerRadius="100dp"
+                    app:cardElevation="1dp"
                     app:layout_constraintEnd_toStartOf="@+id/sendMSG"
                     app:layout_constraintStart_toEndOf="@+id/ConsumersBtn"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView8"  >
+                    app:layout_constraintTop_toBottomOf="@+id/show_qr">
 
 
                     <ImageView
@@ -369,7 +397,7 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="25dp"
                     app:cardCornerRadius="13dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="2dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -389,7 +417,7 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="20dp"
                     app:cardCornerRadius="13dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="2dp"
                     app:layout_constraintEnd_toStartOf="@+id/homelag"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -409,7 +437,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="25dp"
                     app:cardCornerRadius="17dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="2dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -448,7 +476,7 @@
                     android:layout_marginTop="48dp"
                     android:layout_marginEnd="25dp"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     android:backgroundTint="@color/brandcolor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sendMSG"   >
@@ -469,7 +497,7 @@
                     android:layout_marginHorizontal="25dp"
                     android:layout_marginTop="48dp"
                     app:cardCornerRadius="100dp"
-                    app:cardElevation="20dp"
+                    app:cardElevation="1dp"
                     android:backgroundTint="@color/brandcolor"
                     app:layout_constraintEnd_toStartOf="@+id/settings"
                     app:layout_constraintStart_toEndOf="@+id/dailyMenu"
@@ -493,13 +521,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/dailyMenu" />
 
 
-
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/alegreya_sc_black"
                     android:text="@string/app_name"
                     android:textColor="@color/black"
@@ -507,7 +533,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/support" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView33" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

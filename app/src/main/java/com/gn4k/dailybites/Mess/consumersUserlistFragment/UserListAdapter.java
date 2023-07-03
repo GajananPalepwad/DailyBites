@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
     private Activity activity;
     private LoadingDialog loadingDialog;
     ArrayList<UserModelForMess> list;
+
+    public interface OnItemClickListener {
+        void onItemClick(UserModelForMess model);
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
 
     public UserListAdapter(Context context, Activity activity, LoadingDialog loadingDialog, ArrayList<UserModelForMess> list) {
         this.context = context;
@@ -46,6 +59,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
         holder.to.setText(model.toDate);
         holder.from.setText(model.fromDate);
         holder.mobileNo.setText(model.mobileNo);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(model);
+            }
+        });
+
 
     }
 

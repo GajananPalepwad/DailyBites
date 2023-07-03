@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.QrCodeGenerator;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.ConsumersList;
@@ -41,6 +42,7 @@ public class HomeForMessOwner extends AppCompatActivity {
     String mobileNo, aadhaarNo;
     int countD =0, countS = 0, countG =0, totalUsers = 0;
     RatingBar myRatingBar;
+    Button qr, oneDayUsers;
 
     LoadingDialog loadingDialog;
 
@@ -69,116 +71,85 @@ public class HomeForMessOwner extends AppCompatActivity {
         ratings = findViewById(R.id.ratingInNumber);
         myRatingBar = findViewById(R.id.myRatingBar);
         consumersBtn = findViewById(R.id.ConsumersBtn);
+        qr = findViewById(R.id.show_qr);
+        oneDayUsers = findViewById(R.id.oneDayUsers);
 
         getAllDataFromFirebase();
 
-        support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
+        qr. setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, QrCodeGenerator.class);
+            startActivity(intent);
         });
 
-        sendMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, SendNotificationToUser.class);
+        support.setOnClickListener(v -> {
+
+
+        });
+
+        sendMsg.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, SendNotificationToUser.class);
+            startActivity(intent);
+        });
+        consumersBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, ConsumersList.class);
+            startActivity(intent);
+        });
+        profile.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
+            startActivity(intent);
+        });
+
+        silver.setOnClickListener(v -> {
+            if(!aadhaarNo.equals("")) {
+                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                intent.putExtra("planName", "Silver");
                 startActivity(intent);
+            }else{
+                showLogoutDialogToCompleteProfile();
             }
         });
-        consumersBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, ConsumersList.class);
+
+        gold.setOnClickListener(v -> {
+            if(!aadhaarNo.equals("")) {
+                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                intent.putExtra("planName", "Gold");
                 startActivity(intent);
+            }else{
+                showLogoutDialogToCompleteProfile();
             }
         });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
+
+        diamond.setOnClickListener(v -> {
+            if(!aadhaarNo.equals("")) {
+                Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
+                intent.putExtra("planName", "Diamond");
                 startActivity(intent);
+            }else{
+                showLogoutDialogToCompleteProfile();
             }
         });
 
-        silver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!aadhaarNo.equals("")) {
-                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                    intent.putExtra("planName", "Silver");
-                    startActivity(intent);
-                }else{
-                    showLogoutDialogToCompleteProfile();
-                }
-            }
+        settings.setOnClickListener(v -> showSettingsBottomSheetDialog());
+
+        updateMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, AddToDaysMenu.class);
+            startActivity(intent);
         });
 
-        gold.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!aadhaarNo.equals("")) {
-                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                    intent.putExtra("planName", "Gold");
-                    startActivity(intent);
-                }else{
-                    showLogoutDialogToCompleteProfile();
-                }
-            }
+        wallet.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, WalletForMess.class);
+            startActivity(intent);
         });
 
-        diamond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!aadhaarNo.equals("")) {
-                    Intent intent = new Intent(HomeForMessOwner.this, MonthlyPlanEditor.class);
-                    intent.putExtra("planName", "Diamond");
-                    startActivity(intent);
-                }else{
-                    showLogoutDialogToCompleteProfile();
-                }
-            }
+        notification.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, NotificationForMess.class);
+            startActivity(intent);
         });
 
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSettingsBottomSheetDialog();
-            }
-        });
-
-        updateMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, AddToDaysMenu.class);
-                startActivity(intent);
-            }
-        });
-
-        wallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, WalletForMess.class);
-                startActivity(intent);
-            }
-        });
-
-        notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, NotificationForMess.class);
-                startActivity(intent);
-            }
-        });
-
-        homelag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
-                intent.putExtra("data", "settingsMess");
-                startActivity(intent);
-            }
+        homelag.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+            intent.putExtra("data", "settingsMess");
+            startActivity(intent);
         });
 
 
@@ -200,7 +171,7 @@ public class HomeForMessOwner extends AppCompatActivity {
                     if ((String) data.get("coverImage") != null || (String) data.get("messName")!= null) {
                         String url = (String) data.get("coverImage");
                         Glide.with(HomeForMessOwner.this).load(url).centerCrop().placeholder(R.drawable.cooking).into(profileImg);
-                        messName.setText((String) data.get("messName"));
+                        messName.setText(sharedPreferences.getString("MessName", ""));
                         ratings.setText((String) data.get("ratings"));
                         myRatingBar.setRating(Float. parseFloat((String) data.get("ratings")) );
                         aadhaarNo = (String) data.get("addharNo");
@@ -224,21 +195,9 @@ public class HomeForMessOwner extends AppCompatActivity {
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout?");
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Call the logout function
-                Logout();
-            }
-        });
+        builder.setPositiveButton("Yes", (dialog, which) -> Logout());
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Dismiss the dialog
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -251,15 +210,12 @@ public class HomeForMessOwner extends AppCompatActivity {
         builder.setTitle("Oops!!!");
         builder.setMessage("It seems like you haven't completed your profile.\nPress \"OK\" to Continue");
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Call the logout function
-                Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
-                startActivity(intent);
-                dialog.dismiss();
+        builder.setPositiveButton("Ok", (dialog, which) -> {
+            // Call the logout function
+            Intent intent = new Intent(HomeForMessOwner.this, ProfilePageForMess.class);
+            startActivity(intent);
+            dialog.dismiss();
 
-            }
         });
 
         AlertDialog dialog = builder.create();
@@ -300,48 +256,34 @@ public class HomeForMessOwner extends AppCompatActivity {
         View bottomSheetView = getLayoutInflater().inflate(R.layout.setting_bottomsheet_for_mess, (ConstraintLayout) findViewById(R.id.setting_sheet));
 
         // Find your button or any other view inside the BottomSheetDialog layout
-        CardView notifi = bottomSheetView.findViewById(R.id.notificationSettings);
-        CardView cache = bottomSheetView.findViewById(R.id.clearCache);
-        CardView lan = bottomSheetView.findViewById(R.id.lan);
-        CardView logOut = bottomSheetView.findViewById(R.id.logout);
+        ConstraintLayout notifi = bottomSheetView.findViewById(R.id.notificationSettings1);
+        ConstraintLayout cache = bottomSheetView.findViewById(R.id.clearCache1);
+        ConstraintLayout lan = bottomSheetView.findViewById(R.id.lan1);
+        ConstraintLayout logOut = bottomSheetView.findViewById(R.id.logout1);
         // Set click listener for the button inside the BottomSheetDialog
 
-        notifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                startActivity(intent);
-            }
+        notifi.setOnClickListener(v -> {
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
         });
 
 
-        cache.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle button click inside the BottomSheetDialog
-                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
-            }
+        cache.setOnClickListener(v -> {
+            // Handle button click inside the BottomSheetDialog
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
         });
 
-        lan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
-                intent.putExtra("data", "settingsMess");
-                startActivity(intent);
-            }
+        lan.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+            intent.putExtra("data", "settingsMess");
+            startActivity(intent);
         });
 
 
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutDialog();
-            }
-        });
+        logOut.setOnClickListener(v -> showLogoutDialog());
 
         // Create the BottomSheetDialog
         bottomSheetDialog = new BottomSheetDialog(HomeForMessOwner.this,R.style.AppBottomSheetDialogTheme);

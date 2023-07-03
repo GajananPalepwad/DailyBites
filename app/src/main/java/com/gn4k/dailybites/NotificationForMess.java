@@ -29,12 +29,7 @@ public class NotificationForMess extends AppCompatActivity {
         setContentView(R.layout.activity_notification_mess);
         CardView backBtn = findViewById(R.id.back);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
         new Bgthread(recentRecyclerView).start();

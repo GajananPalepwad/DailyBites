@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".SendMessegeToMess">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/wallet"
         android:layout_width="50dp"
@@ -13,8 +23,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
-        android:elevation="3dp"
+        app:cardElevation="2dp"
         android:backgroundTint="@color/brandcolor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,9 +44,8 @@
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
         android:backgroundTint="@color/brandcolor"
-        android:elevation="3dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/wallet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/wallet">
@@ -50,21 +58,20 @@
             app:srcCompat="@drawable/system_uicons_wrap_back" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="25dp"
-        android:inputType="number"
-        android:text="Send Messege to Mess Owner"
-        android:textColor="@color/black"
-        android:textSize="23dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="25dp"
+                android:text="Send Messege to Subscribed Mess Owner"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/wallet"
+                app:layout_constraintStart_toEndOf="@+id/back"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.cardview.widget.CardView
@@ -72,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
@@ -91,16 +98,16 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:text="Title"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="4dp"
                 android:background="@drawable/button_boarder"
@@ -125,8 +132,9 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:cardCornerRadius="15dp"
+        android:layout_marginTop="10dp"
         app:cardElevation="5dp"
-        android:layout_margin="25dp"
+        android:layout_marginHorizontal="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView20">
@@ -189,5 +197,97 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView210" />
 
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:text="One Day Plan"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/messName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Mess Name: "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView32"
+                app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Mess No: +91"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/messName"
+                app:layout_constraintTop_toBottomOf="@+id/messName" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="Scan the QR code present on Mess mobile before receiving the food"
+                android:textColor="#FF0000"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/number"
+                app:layout_constraintTop_toBottomOf="@+id/number" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/qr_scanner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_shape"
+                android:text="QR Scanner"
+                android:textAllCaps="false"
+                android:textColor="#191B1A"
+                android:textSize="19dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView13" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

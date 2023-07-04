@@ -51,6 +51,10 @@ public class UserRegistration extends AppCompatActivity {
     private static final String KEY_FROM = "from";
     private static final String KEY_MESS_NO = "messNo";
     private static final String KEY_MESS_NAME = "messName";
+    private static final String KEY_MESSNAME = "OneDayMessName";
+    private static final String KEY_MESSNO = "OneDayMessNo";
+    private static final String KEY_FORDATE = "OneDayForDate";
+    private static final String KEY_MESSTOKEN = "OneDayToken";
 
 
     private EditText name, mobileNo, email, password, ConfirmPassword;
@@ -158,6 +162,10 @@ public class UserRegistration extends AppCompatActivity {
                             userInfo.put(KEY_MESS_NO, "");
                             userInfo.put(KEY_PLAN_NAME, "");
                             userInfo.put(KEY_FROM, "");
+                            userInfo.put(KEY_MESSNAME, "");
+                            userInfo.put(KEY_MESSNO, "");
+                            userInfo.put(KEY_FORDATE, "");
+                            userInfo.put(KEY_MESSTOKEN, "");
                             userInfo.put(KEY_TO, "");
 
 
@@ -174,6 +182,10 @@ public class UserRegistration extends AppCompatActivity {
                             preferences.putString("MessNo", "");
                             preferences.putString("planName", "");
                             preferences.putString("toDate", "");
+                            preferences.putString("OneDayMessName","");
+                            preferences.putString("OneDayMessNo", "");
+                            preferences.putString("OneDayForDate", "");
+                            preferences.putString("OneDayToken", "");
                             preferences.apply();
 
                             db.collection("User").document(getEmail).set(userInfo).

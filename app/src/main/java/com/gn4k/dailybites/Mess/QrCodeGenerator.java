@@ -1,6 +1,7 @@
 package com.gn4k.dailybites.Mess;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ public class QrCodeGenerator extends AppCompatActivity {
     ImageView qrCode;
     TextView name;
     SharedPreferences sharedPreferences;
+    String qr_text="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +32,21 @@ public class QrCodeGenerator extends AppCompatActivity {
 
         qrCode = findViewById(R.id.qr_code);
         name = findViewById(R.id.messName);
+        CardView backBtn = findViewById(R.id.back);
+        backBtn.setOnClickListener(v -> onBackPressed());
+        Bundle bundle = getIntent().getExtras();
+        if(bundle.getString("qr_data").equals("offer")){
+            qr_text = sharedPreferences.getString("MessOwnerMobileNo", "");
+        }else{
+            qr_text = bundle.getString("qr_data");
+        }
 
         name.setText(sharedPreferences.getString("MessName", ""));
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
-            BitMatrix bitMatrix = multiFormatWriter.encode(sharedPreferences.getString("MessOwnerMobileNo", ""), BarcodeFormat.QR_CODE, 300, 300);
+
+            BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 300, 300);
 
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);

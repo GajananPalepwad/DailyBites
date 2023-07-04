@@ -59,6 +59,14 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_MESS_TOKEN = "messToken";
+    private static final String KEY_ONE_DAY_MESSNAME = "OneDayMessName";
+    private static final String KEY_ONE_DAY_MESSNO = "OneDayMessNo";
+    private static final String KEY_FORDATE = "OneDayForDate";
+    private static final String KEY_MESSTOKEN = "OneDayToken";
+    private static final String KEY_ORDER_ID = "OneDayOrderId";
+
+
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button login;
     private TextView pass;
@@ -166,110 +174,105 @@ public class UserLoginPage extends AppCompatActivity {
             getPassword = pass.getText().toString();
 
             DocumentReference emailRef = db.collection("User").document(getEmail);
-            emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
+            emailRef.get().addOnSuccessListener(documentSnapshot -> {
+                if(documentSnapshot.exists()){
 
-                        if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
+                    if(documentSnapshot.getString(KEY_PASSWORD).equals(getPassword)){
 
-                            SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
-                            SharedPreferences.Editor preferences = sharedPreferences.edit();
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+                        SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                            preferences.putString("UserEmail",getEmail);
-                            preferences.putString("UserPassword",getPassword);
-                            preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
-                            preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
-                            preferences.putString("messName", documentSnapshot.getString(KEY_MESSNAME));
-                            preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
-                            preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
-                            preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
-                            preferences.putString("fromDate", documentSnapshot.getString(KEY_FROMDATE));
-                            preferences.putString("freeDish", documentSnapshot.getString(KEY_FREEDISH));
-                            preferences.putString("UserToken", tokenString);
-                            preferences.apply();
-                            if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
+                        preferences.putString("UserEmail",getEmail);
+                        preferences.putString("UserPassword",getPassword);
+                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
+                        preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                        preferences.putString("messName", documentSnapshot.getString(KEY_MESSNAME));
+                        preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
+                        preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
+                        preferences.putString("toDate", documentSnapshot.getString(KEY_TODATE));
+                        preferences.putString("fromDate", documentSnapshot.getString(KEY_FROMDATE));
+                        preferences.putString("freeDish", documentSnapshot.getString(KEY_FREEDISH));
+                        preferences.putString("messToken", documentSnapshot.getString(KEY_MESS_TOKEN));
+                        preferences.putString("OneDayMessName",documentSnapshot.getString(KEY_ONE_DAY_MESSNAME));
+                        preferences.putString("OneDayMessNo", documentSnapshot.getString(KEY_ONE_DAY_MESSNO));
+                        preferences.putString("OneDayToken", documentSnapshot.getString(KEY_MESSTOKEN));
+                        preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ORDER_ID));
+                        preferences.putString("UserToken", tokenString);
+                        preferences.apply();
+
+                        if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){
+                            loadingDialog.stopLoading();
+                            Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
+                            startActivity(intent);
+                            return;
+                        }
+                        else{
+                            if(documentSnapshot.getDouble(KEY_LATITUDE)== 0 ){
                                 loadingDialog.stopLoading();
                                 Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
                                 startActivity(intent);
                                 return;
                             }
-                            else{
-                                if(documentSnapshot.getDouble(KEY_LATITUDE)== 0 ){
-                                    loadingDialog.stopLoading();
-                                    Intent intent = new Intent(UserLoginPage.this, MapActivityToChooseLocation.class);
-                                    startActivity(intent);
-                                    return;
-                                }
+                        }
+                        latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
+
+                        preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
+                        preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
+                        preferences.putString("UserAddress",getAddressFromLatLng(latLng));
+                        preferences.apply();
+
+                        String plan = "";
+                        String documentPlanName = documentSnapshot.getString(KEY_PLANNAME);
+                        if (!documentPlanName.equals("")) {
+                            if (documentPlanName.equals("Gold Plan")) {
+                                plan = "Goldplan";
+                            } else if (documentPlanName.equals("Silver Plan")) {
+                                plan = "Silverplan";
+                            } else if (documentPlanName.equals("Diamond Plan")) {
+                                plan = "Diamondplan";
                             }
-                            latLng = new LatLng(documentSnapshot.getDouble(KEY_LATITUDE), documentSnapshot.getDouble(KEY_LONGITUDE));
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference dataRef = ref.child("mess").
+                                    child(documentSnapshot.getString(KEY_MESSNO)).
+                                    child(plan).
+                                    child("Users").
+                                    child(sharedPreferences.getString("UserMobileNo", ""));
 
-                            preferences.putString("UserLatitude",documentSnapshot.getDouble(KEY_LATITUDE)+"");
-                            preferences.putString("UserLongitude",documentSnapshot.getDouble(KEY_LONGITUDE)+"");
-                            preferences.putString("UserAddress",getAddressFromLatLng(latLng));
-                            preferences.apply();
-
-                            String plan = "";
-                            String documentPlanName = documentSnapshot.getString(KEY_PLANNAME);
-                            if (!documentPlanName.equals("")) {
-                                if (documentPlanName.equals("Gold Plan")) {
-                                    plan = "Goldplan";
-                                } else if (documentPlanName.equals("Silver Plan")) {
-                                    plan = "Silverplan";
-                                } else if (documentPlanName.equals("Diamond Plan")) {
-                                    plan = "Diamondplan";
-                                }
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference dataRef = ref.child("mess").
-                                        child(documentSnapshot.getString(KEY_MESSNO)).
-                                        child(plan).
-                                        child("Users").
-                                        child(sharedPreferences.getString("UserMobileNo", ""));
-
-                                Map<String, Object> data = new HashMap<>();
-                                data.put("token", tokenString);
-                                dataRef.updateChildren(data)
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Error occurred while saving data
-                                                Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("token", tokenString);
+                            dataRef.updateChildren(data)
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Error occurred while saving data
+                                            Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
 
 //
 //                            if(!documentSnapshot.getString(KEY_PLANNAME).equals("")) {
 //
 //                            }
 
-                            Map<String, Object> userInfo = new HashMap<>();
-                            userInfo.put(KEY_TOKEN, tokenString);
-                            db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
-                                    addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            // Move to the home screen
-                                            loadingDialog.stopLoading();
-                                            Intent intent = new Intent(UserLoginPage.this,Home.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                        Map<String, Object> userInfo = new HashMap<>();
+                        userInfo.put(KEY_TOKEN, tokenString);
+                        db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
+                                addOnSuccessListener(unused -> {
+                                    // Move to the home screen
+                                    loadingDialog.stopLoading();
+                                    Intent intent = new Intent(UserLoginPage.this,Home.class);
+                                    startActivity(intent);
+                                    finish();
+                                }).addOnFailureListener(e -> Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show());
 
-                        }else{
-                            loadingDialog.stopLoading();
-                            Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
-                        }
                     }else{
                         loadingDialog.stopLoading();
-                        Toast.makeText(UserLoginPage.this, "Account not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserLoginPage.this, "Invalid Password", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    loadingDialog.stopLoading();
+                    Toast.makeText(UserLoginPage.this, "Account not found", Toast.LENGTH_SHORT).show();
                 }
             });
         }else{

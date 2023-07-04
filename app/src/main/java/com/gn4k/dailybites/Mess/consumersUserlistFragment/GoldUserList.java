@@ -84,8 +84,8 @@ public class GoldUserList extends Fragment {
         return view;
     }
 
-    private void openGoogleMaps(double latitude, double longitude) {
-        String uri = String.format("geo:%f,%f", latitude, longitude);
+    private void openGoogleMaps(String latitude, String longitude) {
+        String uri = "https://www.google.com/maps/dir/?api=1&destination=" + latitude + "," + longitude;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         intent.setPackage("com.google.android.apps.maps");
         getActivity().startActivity(intent);
@@ -99,12 +99,13 @@ public class GoldUserList extends Fragment {
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
         builder.setNegativeButton("Open in Map", (dialog, which) -> {
-            openGoogleMaps(Double.parseDouble(latitude), Double.parseDouble(longitude));
+            openGoogleMaps(latitude, longitude);
             dialog.dismiss();
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
 }

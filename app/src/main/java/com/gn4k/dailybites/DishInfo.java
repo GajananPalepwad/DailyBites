@@ -42,12 +42,10 @@ import java.util.Map;
 
 public class DishInfo extends AppCompatActivity implements PaymentResultListener{
 
-    private static final String KEY_MESSNAME = "messName";
-    private static final String KEY_MESSNO = "messNo";
-    private static final String KEY_PLANNAME = "planName";
-    private static final String KEY_FROMDATE = "from";
-    private static final String KEY_TODATE = "to";
-    private static final String KEY_MESSTOKEN = "messToken";
+    private static final String KEY_MESSNAME = "OneDayMessName";
+    private static final String KEY_MESSNO = "OneDayMessNo";
+    private static final String KEY_MESSTOKEN = "OneDayToken";
+    private static final String KEY_ORDER_ID = "OneDayOrderId";
     Bundle bundle;
     RadioButton withDeliveryRadioButton;
     RadioButton withoutDeliveryRadioButton;
@@ -78,32 +76,21 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
         withDeliveryRadioButton = findViewById(R.id.WithRadioButton);
         withoutDeliveryRadioButton = findViewById(R.id.WithOutRadioButton);
 //
-        CardView backBtn = findViewById(R.id.back);
+
         CardView notificationBtn = findViewById(R.id.notification);
         CardView walletBtn = findViewById(R.id.wallet);
 
+        CardView backBtn = findViewById(R.id.back);
+        backBtn.setOnClickListener(v -> onBackPressed());
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        notificationBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(DishInfo.this, SendMessegeToMess.class);
+            startActivity(intent);
         });
 
-        notificationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DishInfo.this, SendMessegeToMess.class);
-                startActivity(intent);
-            }
-        });
-
-        walletBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DishInfo.this, WalletForUser.class);
-                startActivity(intent);
-            }
+        walletBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(DishInfo.this, WalletForUser.class);
+            startActivity(intent);
         });
 
         TextView priceW = findViewById(R.id.Tv_prizeW);
@@ -178,21 +165,18 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
 
         Button buy = findViewById(R.id.buy);
 
-        buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+        buy.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
-                if(sharedPreferences.getString("planName", "").equals("")){
+            if(sharedPreferences.getString("OneDayMessName", "").equals("")){
 
-                    if (withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
-                        startPayment();
-                    } else {
-                        showInstructionDialogBox("Choose a option", "with delivery or without delivery");
-                    }
-                }else {
-                    showInstructionDialogBox("Plan Exist", "You already have an another plan....");
+                if (withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
+                    startPayment();
+                } else {
+                    showInstructionDialogBox("Choose a option", "with delivery or without delivery");
                 }
+            }else {
+                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
             }
         });
         loadingDialog.stopLoading();
@@ -246,47 +230,35 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put(KEY_MESSNAME, bundle.getString("messName"));
                 userInfo.put(KEY_MESSNO, bundle.getString("messMobile"));
-                userInfo.put(KEY_PLANNAME, "One day" + " Plan");
-                userInfo.put(KEY_FROMDATE, date);
+                userInfo.put(KEY_ORDER_ID, s);
                 userInfo.put(KEY_MESSTOKEN, token);
 
-                preferences.putString("messName", bundle.getString("messName"));
-                preferences.putString("MessNo", bundle.getString("messMobile"));
-                preferences.putString("planName", "One day" + " Plan");
-                preferences.putString("fromDate", date);
-                preferences.putString("toDate", date);
-                preferences.putString("token", token);
-
-                userInfo.put(KEY_TODATE, date);
+                preferences.putString("OneDayMessName", bundle.getString("messName"));
+                preferences.putString("OneDayMessNo", bundle.getString("messMobile"));
+                preferences.putString("OneDayOrderId", s);
+                preferences.putString("OneDayToken", token);
 
                 preferences.apply();
 
                 db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
                         .update(userInfo)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                // Move to the home screen
-                                Toast.makeText(DishInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
-                                sendNotificationToMess();
-                            }
+                        .addOnSuccessListener(unused -> {
+                            // Move to the home screen
+                            Toast.makeText(DishInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
+                            sendNotificationToMess();
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
-                            }
-                        });
+                        .addOnFailureListener(e -> showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours."));
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference dataRef = ref.child("mess").child(bundle.getString("messMobile")).child("OneDay" + "Plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
+                DatabaseReference dataRef = ref.child("mess").child(bundle.getString("messMobile")).child("OneDayPlan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("name", sharedPreferences.getString("UserName", ""));
                 data.put("email", sharedPreferences.getString("UserEmail", ""));
-                data.put("plan", "One Day" + " Plan");
+                data.put("plan", "One Day Plan");
                 data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
                 data.put("forDate", date);
+                data.put("time", time);
                 data.put("orderId", s);
                 data.put("delivery", delivery);
                 data.put("latitude", sharedPreferences.getString("UserLatitude", ""));

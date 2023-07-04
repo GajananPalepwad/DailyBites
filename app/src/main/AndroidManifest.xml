@@ -27,6 +27,9 @@
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
         <activity
+            android:name=".Mess.OneDayPlanClasses.OneDayUserList"
+            android:exported="false" />
+        <activity
             android:name=".Mess.QrCodeGenerator"
             android:exported="false" />
         <activity

@@ -75,9 +75,7 @@ public class OfferCodeScanner extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS,PERMISSION_ALL);
         }else {
 
-            scanner_btn.setOnClickListener(v -> {
-                scanCode();
-            });
+            scanner_btn.setOnClickListener(v -> scanCode());
 
 
         }

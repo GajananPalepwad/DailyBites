@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.Mess.OneDayPlanClasses.OneDayUserList;
 import com.gn4k.dailybites.Mess.QrCodeGenerator;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
@@ -76,14 +77,19 @@ public class HomeForMessOwner extends AppCompatActivity {
 
         getAllDataFromFirebase();
 
+        oneDayUsers. setOnClickListener(v -> {
+            Intent intent = new Intent(HomeForMessOwner.this, OneDayUserList.class);
+            startActivity(intent);
+        });
+
         qr. setOnClickListener(v -> {
             Intent intent = new Intent(HomeForMessOwner.this, QrCodeGenerator.class);
+            intent.putExtra("qr_data", "offer");
             startActivity(intent);
         });
 
         support.setOnClickListener(v -> {
-
-
+            
         });
 
         sendMsg.setOnClickListener(v -> {
@@ -189,7 +195,7 @@ public class HomeForMessOwner extends AppCompatActivity {
 
 
 
-    private void showLogoutDialog() {
+    public void showLogoutDialog(View V) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeForMessOwner.this);
         builder.setTitle("Logout");
@@ -283,16 +289,35 @@ public class HomeForMessOwner extends AppCompatActivity {
         });
 
 
-        logOut.setOnClickListener(v -> showLogoutDialog());
+        logOut.setOnClickListener(v -> showLogoutDialog(v));
 
         // Create the BottomSheetDialog
         bottomSheetDialog = new BottomSheetDialog(HomeForMessOwner.this,R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void n(View v){
+        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        startActivity(intent);
+    }
 
 
+    public void c(View v){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
+    }
 
+    public void cl(View v){
+        Intent intent = new Intent(HomeForMessOwner.this, LanguageChooser.class);
+        intent.putExtra("data", "settingsMess");
+        startActivity(intent);
+    }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void getCountOfUsers(){
 
         DatabaseReference databaseRefD = FirebaseDatabase.getInstance().getReference().

@@ -367,7 +367,6 @@ public class HomeFragment extends Fragment {
         if(!sharedPreferences.getString("planName", "").equals("")) {
             GetDateTime getDateTime = new GetDateTime(getActivity());
             getDateTime.getDateTime((date, time) -> {
-                if (!sharedPreferences.getString("planName", "").equals("One day Plan")) {
 
                     SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
                     try {
@@ -424,61 +423,7 @@ public class HomeFragment extends Fragment {
 
                         }
                     }catch (Exception ignored){}
-                } else {
-                    if (!sharedPreferences.getString("fromDate", "").equals(date)) {
 
-                        SharedPreferences.Editor preferences = sharedPreferences.edit();
-
-                        String plan = "";
-                        if (sharedPreferences.getString("planName", "").equals("Gold Plan")) {
-                            plan = "Goldplan";
-                        } else if (sharedPreferences.getString("planName", "").equals("Silver Plan")) {
-                            plan = "Silverplan";
-                        } else if (sharedPreferences.getString("planName", "").equals("Diamond Plan")) {
-                            plan = "Diamondplan";
-                        }
-
-                        FirebaseDatabase ref = FirebaseDatabase.getInstance();
-                        DatabaseReference dataRef = ref.getReference("mess").
-                                child(sharedPreferences.getString("MessNo", "")).
-                                child(plan).
-                                child("Users").
-                                child(sharedPreferences.getString("UserMobileNo", ""));
-                        dataRef.removeValue();
-
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> updates = new HashMap<>();
-                        updates.put("from", "");
-                        updates.put("to", "");
-                        updates.put("planName", "");
-                        updates.put("messNo", "");
-                        updates.put("messName", "");
-                        updates.put("messToken", "");
-
-                        db.collection("User").
-                                document(sharedPreferences.getString("UserEmail", "")).
-                                update(updates).
-                                addOnSuccessListener(aVoid -> {
-                                    // Field deleted successfully
-                                    showInstructionDialogBox("Plan Expired", "Your plan is Expired TODAY !!!");
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Error occurred while deleting the field
-                                    System.out.println("Error deleting field: " + e.getMessage());
-                                });
-
-
-                        preferences.putString("messName", "");
-                        preferences.putString("MessNo", "");
-                        preferences.putString("planName", "");
-                        preferences.putString("fromDate", "");
-                        preferences.putString("toDate", "");
-                        preferences.putString("messToken", "");
-                        preferences.apply();
-
-
-                    }
-                }
             });
         }
     }

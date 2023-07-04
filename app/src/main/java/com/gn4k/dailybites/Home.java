@@ -1,24 +1,18 @@
 package com.gn4k.dailybites;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
 import com.gn4k.dailybites.RoomForCalender.Calender;
 import com.gn4k.dailybites.RoomForCalender.CalenderDao;
 import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
-import com.gn4k.dailybites.RoomForRecent.Mess;
-import com.gn4k.dailybites.RoomForRecent.MessDao;
-import com.gn4k.dailybites.RoomForRecent.MessDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

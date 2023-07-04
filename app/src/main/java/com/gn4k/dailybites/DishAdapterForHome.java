@@ -9,15 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 
 import java.util.ArrayList;
 

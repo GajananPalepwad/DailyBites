@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.gn4k.dailybites.User.CaptureAct;
@@ -47,11 +48,14 @@ public class SendMessegeToMess extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor preferences;
     DatabaseReference db;
+    String oneDayMessNo="";
+    RatingsDialog ratingsDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_messege_to_mess);
         db = FirebaseDatabase.getInstance().getReference();
+        ratingsDialog = new RatingsDialog(SendMessegeToMess.this);
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
         name = findViewById(R.id.messName);
@@ -67,7 +71,7 @@ public class SendMessegeToMess extends AppCompatActivity {
 
         name.setText("Mess Name: "+sharedPreferences.getString("OneDayMessName", ""));
         no.setText("Mess No: +91 "+sharedPreferences.getString("OneDayMessNo", ""));
-
+        oneDayMessNo = sharedPreferences.getString("OneDayMessNo", "");
         backBtn.setOnClickListener(v -> onBackPressed());
 
         int PERMISSION_ALL = 1;
@@ -209,7 +213,11 @@ public class SendMessegeToMess extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(mbody);
-        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            dialog.dismiss();
+            RatingsDialog ratingsDialog = new RatingsDialog(SendMessegeToMess.this);
+            ratingsDialog.showDialog(oneDayMessNo);
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();

@@ -14,9 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.HomeForMessOwner;
-import com.gn4k.dailybites.MonthlyPlanEditor;
 import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -19,7 +18,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.Mess.AddToDaysMenu;
 import com.gn4k.dailybites.Mess.OneDayPlanClasses.OneDayUserList;
 import com.gn4k.dailybites.Mess.QrCodeGenerator;
@@ -74,6 +74,7 @@ public class HomeForMessOwner extends AppCompatActivity {
         consumersBtn = findViewById(R.id.ConsumersBtn);
         qr = findViewById(R.id.show_qr);
         oneDayUsers = findViewById(R.id.oneDayUsers);
+
 
         getAllDataFromFirebase();
 

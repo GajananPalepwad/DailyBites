@@ -11,7 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -22,10 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.User.OfferCodeScanner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +59,7 @@ public class HomeFragment extends Fragment {
     ArrayList<MessModel> list, listDish;
     private TextView messName, planName, name, no, endDate;
     private ImageView planImg;
-    ConstraintLayout offerCard;
+    ConstraintLayout offerCard, messCard;
     LoadingDialog loadingDialog;
     SharedPreferences sharedPreferences;
     View view;
@@ -81,6 +80,22 @@ public class HomeFragment extends Fragment {
         offerCard = view.findViewById(R.id.offer_layout);
         offerCard.setOnClickListener(v -> openScanner(v));
 
+        messCard = view.findViewById(R.id.messCardLayout);
+
+        sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+        messCard.setOnClickListener(v->{
+            if(sharedPreferences.getString("isRating", "").equals("1")){
+
+                RatingsDialog ratingsDialog = new RatingsDialog(getActivity());
+                ratingsDialog.showDialog(sharedPreferences.getString("MessNo", ""));
+                preferences.putString("isRating", "0");
+                preferences.apply();
+
+            }
+        });
+
         if(!sharedPreferences.getString("planName","").equals("")
                 && !sharedPreferences.getString("freeDish","").equals("0")){
             offerCard.setVisibility(View.VISIBLE);
@@ -88,7 +103,6 @@ public class HomeFragment extends Fragment {
                 || sharedPreferences.getString("freeDish","").equals("0")){
             offerCard.setVisibility(View.GONE);
         }
-
 
 
 
@@ -159,7 +173,7 @@ public class HomeFragment extends Fragment {
         myAdapter = new MyMessAdapterForHome(container.getContext(), getActivity(), loadingDialog,list);
         recyclerView.setAdapter(myAdapter);
 
-        sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+
 
         database.addValueEventListener(new ValueEventListener() {
 

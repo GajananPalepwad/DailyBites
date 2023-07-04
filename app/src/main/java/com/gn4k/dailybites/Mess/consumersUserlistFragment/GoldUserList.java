@@ -2,7 +2,6 @@ package com.gn4k.dailybites.Mess.consumersUserlistFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -17,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

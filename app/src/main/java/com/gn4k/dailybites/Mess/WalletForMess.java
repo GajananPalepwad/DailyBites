@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.GetDateTime;
 
 import com.gn4k.dailybites.R;

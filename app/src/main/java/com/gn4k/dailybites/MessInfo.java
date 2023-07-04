@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.RoomForRecent.Mess;
 import com.gn4k.dailybites.RoomForRecent.MessDao;
 import com.gn4k.dailybites.RoomForRecent.MessDatabase;

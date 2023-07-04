@@ -17,9 +17,9 @@
                     android:id="@+id/textView29"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="20dp"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:text="Give Ratings to your mess"
@@ -28,47 +28,64 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RadioGroup
+                    android:id="@+id/radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/textView29"
                     app:layout_constraintStart_toStartOf="@+id/textView29"
                     app:layout_constraintTop_toBottomOf="@+id/textView29">
 
                         <RadioButton
-                            android:id="@+id/radioButton"
+                            android:id="@+id/five"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:drawableStart="@drawable/five_stars"
-                            android:text=" 5" />
+                            android:buttonTint="@color/black"
+                            android:drawableStart="@drawable/five_stars" />
 
                         <RadioButton
-                            android:id="@+id/radioButton2"
+                            android:id="@+id/four"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:drawableStart="@drawable/four_stars"
-                            android:text=" 4" />
+                            android:buttonTint="@color/black"
+                            android:drawableStart="@drawable/four_stars" />
 
                         <RadioButton
-                            android:id="@+id/radioButton3"
+                            android:id="@+id/three"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:drawableStart="@drawable/three_stars"
-                            android:text=" 3" />
+                            android:buttonTint="@color/black"
+                            android:drawableStart="@drawable/three_stars" />
 
                         <RadioButton
-                            android:id="@+id/radioButton4"
+                            android:id="@+id/two"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:drawableStart="@drawable/two_stars"
-                            android:text=" 2" />
+                            android:buttonTint="@color/black"
+                            android:drawableStart="@drawable/two_stars" />
 
                         <RadioButton
-                            android:id="@+id/radioButton5"
+                            android:id="@+id/one"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:drawableStart="@drawable/one_star"
-                            android:text=" 1" />
+                            android:buttonTint="@color/black"
+                            android:drawableStart="@drawable/one_star" />
                 </RadioGroup>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_shape"
+                    android:backgroundTint="@color/brandcolor"
+                    android:text="Submit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.Mess.SendNotificationToUser;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,7 +23,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -33,7 +31,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -198,6 +195,7 @@ public class UserLoginPage extends AppCompatActivity {
                         preferences.putString("OneDayToken", documentSnapshot.getString(KEY_MESSTOKEN));
                         preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ORDER_ID));
                         preferences.putString("UserToken", tokenString);
+                        preferences.putString("isRating", "1");
                         preferences.apply();
 
                         if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){

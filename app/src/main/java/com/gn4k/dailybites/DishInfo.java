@@ -19,11 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.Mess.WalletForMess;
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

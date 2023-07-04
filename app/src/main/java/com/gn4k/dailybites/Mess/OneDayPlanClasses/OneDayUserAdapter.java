@@ -1,6 +1,5 @@
 package com.gn4k.dailybites.Mess.OneDayPlanClasses;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,15 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
-import com.gn4k.dailybites.HomeForMessOwner;
 import com.gn4k.dailybites.Mess.QrCodeGenerator;
-import com.gn4k.dailybites.Mess.consumersUserlistFragment.UserModelForMess;
 import com.gn4k.dailybites.R;
 
 import java.util.ArrayList;

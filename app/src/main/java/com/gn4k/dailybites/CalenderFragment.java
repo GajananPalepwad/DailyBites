@@ -1,7 +1,10 @@
 package com.gn4k.dailybites;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.widget.NestedScrollView;
@@ -16,7 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gn4k.dailybites.Animatin.LoadingDialog;
+import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.RoomForCalender.Calender;
 import com.gn4k.dailybites.RoomForCalender.CalenderDao;
 import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;
@@ -47,6 +51,19 @@ public class CalenderFragment extends Fragment {
         recentRecyclerView = view.findViewById(R.id.recyclerViewCalender);
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.startLoading();
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+        SharedPreferences.Editor preferences = sharedPreferences.edit();
+
+        if(sharedPreferences.getString("isRating", "").equals("1")){
+
+            RatingsDialog ratingsDialog = new RatingsDialog(getActivity());
+            ratingsDialog.showDialog(sharedPreferences.getString("MessNo", ""));
+            preferences.putString("isRating", "0");
+            preferences.apply();
+
+        }
+
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
 
         text = view.findViewById(R.id.text);

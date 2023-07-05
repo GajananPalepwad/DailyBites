@@ -74,7 +74,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Login"
+                android:text="@string/login"
                 android:textColor="#191B1A"
                 android:textSize="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Email"
+                android:text="@string/email"
                 app:layout_constraintBottom_toTopOf="@+id/email"
                 app:layout_constraintStart_toStartOf="@+id/email" />
 
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Password"
+                android:text="@string/password"
                 app:layout_constraintStart_toStartOf="@+id/password1"
                 app:layout_constraintTop_toTopOf="@+id/password1" />
 
@@ -140,7 +140,7 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/button_shape"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Login"
+                android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="#191B1A"
                 android:textSize="19dp"
@@ -160,7 +160,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Don't  have  account?"
+                android:text="@string/don_t_have_account"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Register"
+                android:text="@string/register"
                 android:textColor="#191B1A"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"

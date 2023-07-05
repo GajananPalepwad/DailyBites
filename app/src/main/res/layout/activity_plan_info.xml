@@ -102,7 +102,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:inputType="number"
-        android:text="Plan Includes"
+        android:text="@string/plan_includes"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -323,7 +323,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:inputType="number"
-        android:text="Plan Description"
+        android:text="@string/plan_description"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -356,7 +356,7 @@
             android:ems="10"
             android:textColor="@color/black"
             android:gravity="start|top"
-            android:text="Description...."
+            android:text="@string/description"
             android:padding="10dp" />
     </androidx.cardview.widget.CardView>
 
@@ -366,7 +366,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_shape"
-        android:text="Subscribe"
+        android:text="@string/subscribe"
         android:textAllCaps="false"
         android:textColor="#191B1A"
         android:textSize="19dp"

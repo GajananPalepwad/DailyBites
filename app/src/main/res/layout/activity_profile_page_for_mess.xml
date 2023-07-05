@@ -14,7 +14,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="2dp"
         android:backgroundTint="@color/brandcolor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,7 +34,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="2dp"
         android:backgroundTint="@color/brandcolor"
         app:layout_constraintBottom_toBottomOf="@+id/wallet"
         app:layout_constraintEnd_toStartOf="@id/wallet"
@@ -56,7 +56,7 @@
         android:layout_marginStart="30dp"
         app:cardCornerRadius="35dp"
         android:backgroundTint="@color/brandcolor"
-        app:cardElevation="18dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/notification"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/notification">
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="10dp"
+                app:cardElevation="2dp"
                 app:cardCornerRadius="30dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Mess  Name"
+                        android:text="@string/mess_name"
                         app:layout_constraintStart_toStartOf="@+id/messName"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Mess  owner  name"
+                        android:text="@string/mess_owner"
                         app:layout_constraintStart_toStartOf="@+id/ownerName"
                         app:layout_constraintTop_toBottomOf="@id/messName" />
 
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Number"
+                        android:text="@string/number"
                         app:layout_constraintStart_toStartOf="@+id/number"
                         app:layout_constraintTop_toBottomOf="@+id/ownerName" />
 
@@ -184,7 +184,7 @@
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Update"
+                        android:text="@string/update"
                         android:textAllCaps="false"
                         android:textColor="#191B1A"
                         android:textSize="19dp"
@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="10dp"
+                app:cardElevation="3dp"
                 app:cardCornerRadius="30dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -219,7 +219,7 @@
                         android:layout_marginStart="40dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="40dp"
-                        android:text="Click below button to updated your location"
+                        android:text="@string/click_below_button_to_updated_your_location"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20dp"
@@ -237,7 +237,7 @@
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Location"
+                        android:text="@string/location"
                         android:textAllCaps="false"
                         android:textColor="#191B1A"
                         android:textSize="19dp"
@@ -257,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginHorizontal="30dp"
-                app:cardElevation="10dp"
+                app:cardElevation="3dp"
                 app:cardCornerRadius="30dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -291,7 +291,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Upload Cover Image"
+                        android:text="@string/upload_cover_image"
                         android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold"
@@ -303,7 +303,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="Click the yellow button to upload"
+                        android:text="@string/click_the_yellow_button_to_upload"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -317,7 +317,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Aaddhaar  Number"
+                        android:text="@string/aaddhaar_number"
                         app:layout_constraintStart_toStartOf="@+id/addhar"
                         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -341,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Bank  account  number"
+                        android:text="@string/bank_account_number"
                         app:layout_constraintStart_toStartOf="@+id/BAnumber"
                         app:layout_constraintTop_toBottomOf="@id/addhar" />
 
@@ -364,7 +364,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="IFSC"
+                        android:text="@string/ifsc"
                         app:layout_constraintStart_toStartOf="@+id/ifsc"
                         app:layout_constraintTop_toBottomOf="@id/BAnumber" />
 
@@ -387,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Account  holder  name"
+                        android:text="@string/account_holder_name"
                         app:layout_constraintStart_toStartOf="@+id/AHname"
                         app:layout_constraintTop_toBottomOf="@id/ifsc" />
 
@@ -409,7 +409,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Bank  Name"
+                        android:text="@string/bank_name"
                         app:layout_constraintStart_toStartOf="@+id/bankName"
                         app:layout_constraintTop_toBottomOf="@id/AHname" />
 
@@ -434,7 +434,7 @@
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Update"
+                        android:text="@string/update"
                         android:textAllCaps="false"
                         android:textColor="#191B1A"
                         android:textSize="19dp"

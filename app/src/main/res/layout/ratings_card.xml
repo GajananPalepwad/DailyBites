@@ -22,7 +22,7 @@
                     android:layout_marginEnd="20dp"
                     android:textColor="@color/black"
                     android:textSize="20dp"
-                    android:text="Give Ratings to your mess"
+                    android:text="@string/give_ratings_to_your_mess"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -82,7 +82,7 @@
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/button_shape"
                     android:backgroundTint="@color/brandcolor"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

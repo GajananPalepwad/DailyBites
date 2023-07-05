@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="25dp"
-                android:text="One token remaining for this month"
+                android:text="@string/one_token_remaining_for_this_month"
                 android:textColor="@color/black"
                 android:textSize="30dp"
                 android:textStyle="bold"
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Use in any partner food provider mess"
+                android:text="@string/use_in_any_partner_food_provider_mess"
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="@+id/textView30"
@@ -81,7 +81,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="1. Go on home page, look the menu of one day plans and choose any mess which you like.\n\n2. Go there and ask for QR code, after scanning you can enjoy your free meal. "
+                android:text="@string/_1_go_on_home_page_look_the_menu_of_one_day_plans_and_choose_any_mess_which_you_like_n_n2_go_there_and_ask_for_qr_code_after_scanning_you_can_enjoy_your_free_meal"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView21"
@@ -107,7 +107,7 @@
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="25dp"
                 android:background="@drawable/button_boarder"
-                android:text="Scan QR to Use"
+                android:text="@string/scan_qr_to_use"
                 android:textAllCaps="false"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -170,7 +170,7 @@
                 android:layout_marginTop="8dp"
                 android:drawableLeft="@drawable/ex_icon"
                 android:drawablePadding="20dp"
-                android:text="Offer Details"
+                android:text="@string/offer_details"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 
@@ -194,7 +194,7 @@
                 android:layout_marginStart="15dp"
                 android:drawableLeft="@drawable/page_icon"
                 android:drawablePadding="20dp"
-                android:text="About Us"
+                android:text="@string/about_us"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 

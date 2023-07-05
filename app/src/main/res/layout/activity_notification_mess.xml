@@ -45,7 +45,7 @@
         android:elevation="5dp"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="Notification"
+        android:text="@string/notification"
         android:textColor="#FFFFFF"
         android:textSize="23dp"
         android:textStyle="bold"

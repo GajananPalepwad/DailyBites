@@ -84,7 +84,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:elevation="20dp"
-                    android:text="Mess Name"
+                    android:text="@string/mess_name"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/Subscribed"
@@ -126,7 +126,7 @@
                     android:elevation="20dp"
                     android:textAllCaps="true"
                     android:layout_marginTop="10dp"
-                    android:text="P L A N  N A M E"
+                    android:text="@string/p_l_a_n_n_a_m_e"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="@+id/messNameH"
                     app:layout_constraintTop_toBottomOf="@+id/messNameH" />
@@ -222,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="You have a free Token"
+                        android:text="@string/you_have_a_free_token"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -230,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="CLAM NOW >"
+                        android:text="@string/clam_now"
                         android:textColor="#2BA4FF"
                         android:textStyle="bold" />
 
@@ -264,7 +264,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
-                android:text="Mess List  ->"
+                android:text="@string/mess_list"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
@@ -287,7 +287,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
-                android:text="OneDay Plans  ->"
+                android:text="@string/oneday_plans"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 

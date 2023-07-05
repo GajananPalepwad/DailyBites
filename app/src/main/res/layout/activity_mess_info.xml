@@ -268,7 +268,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
-                android:text="Monthly Plans  ->"
+                android:text="@string/monthly_plans"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
@@ -487,7 +487,7 @@
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
                 android:layout_marginBottom="5dp"
-                android:text="Contact Info  ->"
+                android:text="@string/contact_info"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
@@ -546,7 +546,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingHorizontal="15dp"
-                android:text="Location  ->"
+                android:text="@string/location"
                 android:textColor="#191B1A"
                 android:textSize="20dp" />
 
@@ -590,7 +590,7 @@
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_shape"
-                android:text="Show Path in Map" />
+                android:text="@string/show_path_in_map" />
 
             <!--            <TextView-->
 <!--                android:id="@+id/Photos"-->

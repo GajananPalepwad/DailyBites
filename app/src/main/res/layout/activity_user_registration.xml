@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:fontFamily="@font/alegreya_sc_black"
-        android:text="User"
+        android:text="@string/user"
         android:textAlignment="center"
         android:textColor="#191B1A"
         android:textSize="35dp"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:fontFamily="@font/alegreya_sc_black"
-        android:text="Registration"
+        android:text="@string/registration"
         android:textAlignment="center"
         android:textColor="#191B1A"
         android:textSize="35dp"
@@ -65,7 +65,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
             android:orientation="vertical">
 
             <View
@@ -77,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="30dp"
                 app:cardElevation="10dp"
                 app:cardCornerRadius="30dp">
 
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Name"
+                        android:text="@string/name"
                         app:layout_constraintStart_toStartOf="@+id/name"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Mobile Number"
+                        android:text="@string/mobile_number"
                         app:layout_constraintStart_toStartOf="@+id/phoneNo"
                         app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Email"
+                        android:text="@string/email"
                         app:layout_constraintStart_toStartOf="@+id/email"
                         app:layout_constraintTop_toBottomOf="@id/phoneNo" />
 
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Password"
+                        android:text="@string/password"
                         app:layout_constraintStart_toStartOf="@+id/password"
                         app:layout_constraintTop_toBottomOf="@id/email" />
 
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Confirm Password"
+                        android:text="@string/confirm_password"
                         app:layout_constraintStart_toStartOf="@+id/passwordConfi"
                         app:layout_constraintTop_toBottomOf="@id/password" />
 
@@ -203,7 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="I agree to "
+                        android:text="@string/i_agree_to"
                         app:layout_constraintStart_toStartOf="@+id/passwordConfi"
                         app:layout_constraintTop_toBottomOf="@+id/passwarning" />
 
@@ -212,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Term of Service"
+                        android:text="@string/term_of_service"
                         android:textColor="@color/brandcolor"
                         app:layout_constraintBottom_toBottomOf="@+id/checkBox"
                         app:layout_constraintStart_toEndOf="@+id/checkBox"
@@ -238,7 +238,7 @@
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="Register"
+                        android:text="@string/register"
                         android:textAllCaps="false"
                         android:textColor="#191B1A"
                         android:textSize="19dp"

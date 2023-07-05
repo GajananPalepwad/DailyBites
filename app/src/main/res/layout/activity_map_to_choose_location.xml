@@ -68,7 +68,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:paddingVertical="10dp"
-                android:text="Select your location"
+                android:text="@string/select_your_location"
                 android:textColor="#191B1A"
                 android:textSize="23dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Your Address"
+                android:text="@string/your_address"
                 app:layout_constraintStart_toStartOf="@+id/address"
                 app:layout_constraintTop_toBottomOf="@id/textView" />
 
@@ -120,7 +120,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/button_shape"
                 android:fontFamily="@font/alegreya_sc_black"
-                android:text="Confirm Location"
+                android:text="@string/confirm_location"
                 android:textAllCaps="false"
                 android:textColor="#191B1A"
                 android:textSize="19dp"

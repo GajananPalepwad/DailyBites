@@ -63,20 +63,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <TextView
                     android:id="@+id/Messlist"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/alegreya_sc_black"
                     android:paddingHorizontal="7dp"
-                    android:text="Recently  Visited"
+                    android:text="@string/recently_visited"
                     android:textColor="#191B1A"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/imageView17"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewRecent"
@@ -97,7 +98,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/alegreya_sc_black"
                     android:paddingHorizontal="7dp"
-                    android:text="Wishlist"
+                    android:text="@string/wishlist"
                     android:textColor="#191B1A"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"

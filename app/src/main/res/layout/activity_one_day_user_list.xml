@@ -45,7 +45,7 @@
         android:elevation="5dp"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="One Day User"
+        android:text="@string/one_day_user"
         android:textColor="#FFFFFF"
         android:textSize="23dp"
         android:textStyle="bold"

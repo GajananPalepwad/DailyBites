@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animation.LoadingDialog;
@@ -26,7 +28,15 @@ import com.gn4k.dailybites.Mess.QrCodeGenerator;
 import com.gn4k.dailybites.Mess.SendNotificationToUser;
 import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.ConsumersList;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
+import com.google.android.play.core.install.model.ActivityResult;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +56,8 @@ public class HomeForMessOwner extends AppCompatActivity {
     Button qr, oneDayUsers;
 
     LoadingDialog loadingDialog;
+
+    private static final int MY_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +87,7 @@ public class HomeForMessOwner extends AppCompatActivity {
         qr = findViewById(R.id.show_qr);
         oneDayUsers = findViewById(R.id.oneDayUsers);
 
-
+        checkForAppUpdate();
         getAllDataFromFirebase();
 
         oneDayUsers. setOnClickListener(v -> {
@@ -377,9 +389,9 @@ public class HomeForMessOwner extends AppCompatActivity {
                     countS = (int) dataSnapshot.getChildrenCount();
                     totalUsers = totalUsers + countS;
                     subscribers.setText(""+totalUsers);
-                    loadingDialog.stopLoading();
                     // Use the 'count' variable containing the number of child nodes
                 }
+                loadingDialog.stopLoading();
             }
 
             @Override
@@ -388,6 +400,51 @@ public class HomeForMessOwner extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkForAppUpdate(){
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+
+// Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+// Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // This example applies an immediate update. To apply a flexible update
+                    // instead, pass in AppUpdateType.FLEXIBLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                // Request the update.
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            // an activity result launcher registered via registerForActivityResult
+                            AppUpdateType.IMMEDIATE,
+                            // Or pass 'AppUpdateType.FLEXIBLE' to newBuilder() for
+                            this,
+                            // flexible updates.
+                            MY_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+//                Toast.makeText(this, "NOT", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != MY_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(this, requestCode + "\n" + resultCode, Toast.LENGTH_SHORT).show();
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+            }
+        }
     }
 
 }

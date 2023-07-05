@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,12 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
     public void onBindViewHolder(@NonNull DishAdapterForHome.MyViewHolder holder, int position) {
 
         MessModel messmodel = list.get(position);
+        if(messmodel.getMenu().equals("") || messmodel.getMenu()==null) {
+            ViewGroup.LayoutParams layoutParams = holder.card.getLayoutParams();
+            layoutParams.height = 0;
+            holder.card.setLayoutParams(layoutParams);
+        }
+
         holder.menu.setText(messmodel.getMenu());
         holder.dishprice.setText("₹"+messmodel.getDishPrize());
         holder.ratings.setText(messmodel.getRatings());
@@ -82,44 +89,9 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
                 context.startActivity(intent);
 
             }
-
         });
-
-
     }
 
-
-//
-//    private void showSettingsBottomSheetDialog(BottomSheetDialog bottomSheetDialog ) {
-//
-//        // Inflate the layout for the BottomSheetDialog
-//        View bottomSheetView = inflaterH.inflate(R.layout.dishlist_bottomsheet, (ConstraintLayout) view.findViewById(R.id.dish_sheet));
-//
-//        ImageView cover = bottomSheetView.findViewById(R.id.coverImgB);
-//        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(cover);
-//
-//        TextView menu = bottomSheetView.findViewById(R.id.menuB);
-//        menu.setText(messmodel.getToDayDish());
-//
-//        RatingBar myRatingBar = bottomSheetView.findViewById(R.id.myRatingBarB);
-//        myRatingBar.setRating(Float. parseFloat(messmodel.getRatings()));
-//
-//        TextView priceW = bottomSheetView.findViewById(R.id.Tv_prizeW);
-//        if (messmodel.isDelivery.equals("no")){
-//            priceW.setText("Not Available");
-//        }else {
-//            priceW.setText("₹"+(Integer.parseInt(messmodel.getDishPrize())+40)+"");
-//        }
-//
-//        TextView priceWO = bottomSheetView.findViewById(R.id.Tv_prizeWO);
-//        priceWO.setText("₹"+messmodel.getDishPrize());
-//
-//
-//        bottomSheetDialog.setContentView(bottomSheetView);
-//        bottomSheetDialog.show();
-//
-//
-//    }
 
 
     @Override
@@ -130,9 +102,8 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView menu, ver, dishprice, ratings;
-
         RatingBar myRating;
-
+        CardView card;
         ImageView coverImg;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -143,6 +114,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
             dishprice = itemView.findViewById(R.id.price);
             ratings = itemView.findViewById(R.id.ratings);
             myRating = itemView.findViewById(R.id.myRatingBarC);
+            card = itemView.findViewById(R.id.cardView);
 
 
 

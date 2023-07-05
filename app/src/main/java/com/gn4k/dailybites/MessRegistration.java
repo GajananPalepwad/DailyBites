@@ -146,7 +146,6 @@ public class MessRegistration extends AppCompatActivity {
                         data.put("wallet", "0.0");
                         data.put("withdrawPending", "0.0");
                         data.put("totalWithdraw", "0.0");
-                        data.put("toDayDish", "");
                         data.put("ratings", "0.0");
                         data.put("menu", "");
                         data.put("isDelivery", "");

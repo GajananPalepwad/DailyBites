@@ -14,7 +14,7 @@
         android:layout_height="220dp"
         android:layout_gravity="center_horizontal"
         android:clipToOutline="true"
-        android:elevation="4dp"
+        android:elevation="1dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:background="@drawable/bottom_rounded_corners"
@@ -30,7 +30,7 @@
         android:layout_height="120dp"
         android:layout_margin="30dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="10dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageMessFood"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -71,6 +71,7 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="6dp"
+                app:cardElevation="0dp"
                 android:backgroundTint="#252525"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -187,7 +188,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -206,7 +207,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/like"
         app:layout_constraintEnd_toStartOf="@id/like"
         app:layout_constraintTop_toTopOf="@+id/like">
@@ -226,7 +227,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/share"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/share">
@@ -292,8 +293,7 @@
                         android:layout_height="230dp"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginTop="10dp"
-                        android:elevation="70dp"
-                        app:cardElevation="10dp"
+                        app:cardElevation="3dp"
                         android:layout_marginBottom="20dp"
                         app:cardCornerRadius="25dp">
 
@@ -357,8 +357,7 @@
                         android:layout_height="230dp"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginVertical="10dp"
-                        app:cardElevation="10dp"
-                        android:elevation="70dp"
+                        app:cardElevation="3dp"
                         app:cardCornerRadius="25dp">
 
 
@@ -421,8 +420,7 @@
                         android:layout_height="230dp"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginVertical="10dp"
-                        app:cardElevation="10dp"
-                        android:elevation="70dp"
+                        app:cardElevation="3dp"
                         app:cardCornerRadius="25dp">
 
 
@@ -484,7 +482,66 @@
             </HorizontalScrollView>
 
             <TextView
-                android:id="@+id/Location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alegreya_sc_black"
+                android:paddingHorizontal="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="Contact Info  ->"
+                android:textColor="#191B1A"
+                android:textSize="20dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mobileNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
+                        android:paddingHorizontal="25dp"
+                        android:text="Mobile no: +91 "
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="6dp"
+                        app:cardElevation="0dp"
+                        android:backgroundTint="#252525"/>
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:paddingHorizontal="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Email: "
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"/>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alegreya_sc_black"
@@ -502,7 +559,7 @@
                 android:layout_marginBottom="20dp"
                 app:cardBackgroundColor="@color/brandcolor"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="30dp"
+                app:cardElevation="3dp"
                 app:layout_constraintBottom_toTopOf="@+id/cardView6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -523,9 +580,19 @@
                         app:liteMode="false"/>
 
                 </androidx.cardview.widget.CardView>
+
             </androidx.cardview.widget.CardView>
 
-<!--            <TextView-->
+            <Button
+                android:id="@+id/openMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_shape"
+                android:text="Show Path in Map" />
+
+            <!--            <TextView-->
 <!--                android:id="@+id/Photos"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->

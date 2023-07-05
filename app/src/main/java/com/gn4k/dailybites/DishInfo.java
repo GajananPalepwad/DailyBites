@@ -34,6 +34,7 @@ import com.razorpay.PaymentResultListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
     Bundle bundle;
     RadioButton withDeliveryRadioButton;
     RadioButton withoutDeliveryRadioButton;
-    int planPrice = 0;
-    String token="", delivery="no";
+    int planPrice = 0, priceInRupee;
+    String token="", delivery="no", walletAmount;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     LoadingDialog loadingDialog;
@@ -96,6 +97,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
             withDeliveryRadioButton.setEnabled(false);
             withoutDeliveryRadioButton.setChecked(true);
             planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
+            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"));
         }else {
             priceW.setText("₹"+(Integer.parseInt(bundle.getString("messDishPrize"))+40)+"");
         }
@@ -117,6 +119,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
                     ratings.setText((String) data.get("ratings"));
                     myRatingBar.setRating(Float.parseFloat((String) data.get("ratings")));
                     token = (String) data.get("token");
+                    walletAmount = (String) data.get("wallet");
                 }
             }
             @Override
@@ -125,6 +128,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
 
         withDeliveryRadioButton.setOnClickListener(v -> {
             planPrice = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
+            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"))+40;
             delivery = "yes";
             // Set 'With Delivery' radio button as checked
             withDeliveryRadioButton.setChecked(true);
@@ -134,6 +138,7 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
 
         withoutDeliveryRadioButton.setOnClickListener(v -> {
             planPrice = Integer.parseInt(bundle.getString("messDishPrize"))*100;
+            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"));
             delivery = "no";
             // Set 'Without Delivery' radio button as checked
             withoutDeliveryRadioButton.setChecked(true);
@@ -266,6 +271,11 @@ public class DishInfo extends AppCompatActivity implements PaymentResultListener
 
 
                 dataRef.updateChildren(data)
+                        .addOnSuccessListener(aVoid ->{
+                            DatabaseReference dataRef2 = ref.child("mess").child(bundle.getString("messMobile")).child("wallet");
+                            double finalAmount = Double.parseDouble(walletAmount) + priceInRupee;
+                            dataRef2.setValue(new DecimalFormat("#####.##").format(finalAmount));
+                        })
                         .addOnFailureListener(e -> {
                             // Error occurred while saving data
                             showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");

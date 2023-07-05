@@ -10,8 +10,10 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +47,7 @@ import java.util.Locale;
 public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
     private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList;
-    TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS;
+    TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS, mobileNo, email;
     boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true;
     ImageView cover, isVeg;
     String messName, address, token ,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
@@ -57,6 +59,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     private double mlatitude;  // Your latitude value
     private double mlongitude; // Your longitude value
     LoadingDialog loadingDialog;
+
+    Button showMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,9 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
         loadingDialog  = new LoadingDialog(this);
         loadingDialog.startLoading();
-
+        showMap = findViewById(R.id.openMap);
+        mobileNo = findViewById(R.id.mobileNo);
+        email = findViewById(R.id.email);
         back = findViewById(R.id.back);
         addToWishList = findViewById(R.id.like);
         diamondCard = findViewById(R.id.diamond);
@@ -89,70 +95,66 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         mapView.getMapAsync(this);
 
         nestedScrollView = findViewById(R.id.nestedScrollView);
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY+1 > previousScrollY) {
-                    // Scrolling down
-                    slideUp(infoCard);
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY+1 > previousScrollY) {
+                // Scrolling down
+                slideUp(infoCard);
 
-                } else if (scrollY-1 < previousScrollY) {
-                    // Scrolling up
-                    slideDown(infoCard);
-                }
-                previousScrollY = scrollY;
+            } else if (scrollY-1 < previousScrollY) {
+                // Scrolling up
+                slideDown(infoCard);
+            }
+            previousScrollY = scrollY;
+        });
+
+        mobileNo.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + messMobile));
+            startActivity(intent);
+        });
+
+        showMap.setOnClickListener(v -> {
+            String uri = "https://www.google.com/maps/dir/?api=1&destination=" + messLatitude + "," + messLongitude;
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            intent.setPackage("com.google.android.apps.maps");
+            startActivity(intent);
+        });
+
+        diamondCard.setOnClickListener(v -> {
+            if(isDPlanPresent) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Diamond");
+                intent.putExtra("mobileNo", messMobile);
+                intent.putExtra("messName", messName);
+                intent.putExtra("token",token);
+                startActivity(intent);
             }
         });
 
-        diamondCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isDPlanPresent) {
-                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                    intent.putExtra("plan", "Diamond");
-                    intent.putExtra("mobileNo", messMobile);
-                    intent.putExtra("messName", messName);
-                    intent.putExtra("token",token);
-                    startActivity(intent);
-                }
+        goldCard.setOnClickListener(v -> {
+            if(isGPlanPresent) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Gold");
+                intent.putExtra("mobileNo", messMobile);
+                intent.putExtra("messName", messName);
+                intent.putExtra("token",token);
+                startActivity(intent);
             }
         });
 
-        goldCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isGPlanPresent) {
-                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                    intent.putExtra("plan", "Gold");
-                    intent.putExtra("mobileNo", messMobile);
-                    intent.putExtra("messName", messName);
-                    intent.putExtra("token",token);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        silverCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isSPlanPresent) {
-                    Intent intent = new Intent(MessInfo.this, PlanInfo.class);
-                    intent.putExtra("plan", "Silver");
-                    intent.putExtra("mobileNo", messMobile);
-                    intent.putExtra("messName", messName);
-                    intent.putExtra("token",token);
-                    startActivity(intent);
-                }
+        silverCard.setOnClickListener(v -> {
+            if(isSPlanPresent) {
+                Intent intent = new Intent(MessInfo.this, PlanInfo.class);
+                intent.putExtra("plan", "Silver");
+                intent.putExtra("mobileNo", messMobile);
+                intent.putExtra("messName", messName);
+                intent.putExtra("token",token);
+                startActivity(intent);
             }
         });
 
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        back.setOnClickListener(v -> onBackPressed());
 
         addToWishList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,10 +162,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 new BgThreadWishlist().start();
                 Toast.makeText(MessInfo.this, "Added in wishlist", Toast.LENGTH_SHORT).show();
             }
-
         });
-
-//        loadingDialog.stopLoading();
     }
 
 
@@ -193,7 +192,6 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 }else{
                     messDao.insert(new Mess(nextUid, messName, messMobile, urlCover));
                 }
-
             }
         }
     }
@@ -220,14 +218,9 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                 if (!wishlistDao.isExistByWishlistNo(messMobile)) {
                     wishlistDao.insert(new Wishlist(nextUid, messName, messMobile, urlCover, verifyString));
                 }
-
-
             }
         }
     }
-
-
-
 
 
     private void updateAccordingToFirebase(){
@@ -276,6 +269,8 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
                         }
 
                         tvRatings.setText((String) data.get("ratings"));
+                        mobileNo.setText("Mobile no: +91 "+(String) data.get("mobileNo"));
+                        email.setText("Email: "+(String) data.get("email"));
                         token=(String) data.get("token");
 
                         if(((String) data.get("isVerified")).equals("yes")){

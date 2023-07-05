@@ -32,6 +32,7 @@ import com.razorpay.PaymentResultListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,8 +52,9 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private TextView TVplanName, evprice, evdescription, TVveg, TVdelivery, TVbreakfast;
     private ImageView planImage, isVeg;
     private CardView back;
-    private String planName, mobileNo, messName, token;
+    private String planName, mobileNo, messName, token, walletAmount;
     private int planPrize;
+    private double prizeInRupee;
     private Button subscribe;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     LoadingDialog loadingDialog;
@@ -76,25 +78,17 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
         TVbreakfast = findViewById(R.id.breakfast);
         TVdelivery = findViewById(R.id.isdelivery);
 
-        subscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+        subscribe.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
-                if(sharedPreferences.getString("planName", "").equals("")) {
-                    startPayment();
-                }else {
-                    showInstructionDialogBox("Plan Exist", "You already have an another plan....");
-                }
+            if(sharedPreferences.getString("planName", "").equals("")) {
+                startPayment();
+            }else {
+                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        back.setOnClickListener(v -> onBackPressed());
 
 
 
@@ -146,8 +140,10 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 if (snapshot.exists()) {
                     HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                     evdescription.setText((String) data.get("description"));
+                    walletAmount = String.valueOf(data.get("price"));
                     evprice.setText("₹" + String.valueOf(data.get("price")));
                     planPrize = Integer.parseInt(String.valueOf(data.get("price")))*100;
+                    prizeInRupee = Integer.parseInt(String.valueOf(data.get("price")));
                     if (((String) data.get("isNonVegInclude")).equals("yes")) {
                         TVveg.setText("Non-Veg");
                         isVeg.setImageResource(R.drawable.nonveg);
@@ -263,9 +259,13 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 data.put("toDate", nextMonthDateString);
                 data.put("token", sharedPreferences.getString("UserToken", ""));
 
+
                 dataRef.updateChildren(data)
                         .addOnSuccessListener(aVoid -> {
                             // Data saved successfully
+                            DatabaseReference dataRef2 = ref.child("mess").child(mobileNo).child("wallet");
+                            double finalAmount = Double.parseDouble(walletAmount) + prizeInRupee;
+                            dataRef2.setValue(new DecimalFormat("#####.##").format(finalAmount));
                             sendNotificationToMess();
                         })
                         .addOnFailureListener(new OnFailureListener() {

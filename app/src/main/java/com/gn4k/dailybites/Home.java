@@ -112,17 +112,17 @@ public class  Home extends AppCompatActivity {
                         HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
                         menu = String.valueOf(data.get("menu"));
 
-                        GetDateTime getDateTime = new GetDateTime(activity);
-                        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-                            @Override
-                            public void onGetDateTime(String date2, String time) {
+                        if(menu.equals("") || menu==null) {
+                        }else{
+                            GetDateTime getDateTime = new GetDateTime(activity);
+                            getDateTime.getDateTime((date2, time) -> {
 
                                 date = date2;
                                 ValuesLocal values = new ValuesLocal();
                                 day = values.DateToWeekDate(date);
                                 new CalenderBgthread().start();
-                            }
-                        });
+                            });
+                        }
 
                     }
                 }

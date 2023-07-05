@@ -1,10 +1,12 @@
 package com.gn4k.dailybites;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -22,11 +24,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.User.OfferCodeScanner;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +62,7 @@ public class HomeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private int previousScrollY = 0;
     RecyclerView recyclerView, recyclerViewforDish;
-    DatabaseReference database, databaseD;
+    DatabaseReference database;
     MyMessAdapterForHome myAdapter;
     DishAdapterForHome dishAdapter;
     ArrayList<MessModel> list, listDish;
@@ -62,6 +71,7 @@ public class HomeFragment extends Fragment {
     ConstraintLayout offerCard, messCard;
     LoadingDialog loadingDialog;
     SharedPreferences sharedPreferences;
+    private static final int MY_REQUEST_CODE = 100;
     View view;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -119,6 +129,7 @@ public class HomeFragment extends Fragment {
 
 
         setSubscriptionCard();
+        checkForAppUpdate();
         endSubcription();
 
     }
@@ -164,7 +175,6 @@ public class HomeFragment extends Fragment {
         recyclerViewforDish = view.findViewById(R.id.recyclerViewDish);
 
         database = FirebaseDatabase.getInstance().getReference("mess");
-        databaseD = FirebaseDatabase.getInstance().getReference("mess");
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -193,12 +203,7 @@ public class HomeFragment extends Fragment {
                             mess.getLatitude(), mess.getLongitude());
                     mess.setDistance(distance);
                 }
-                Collections.sort(list, new Comparator<MessModel>() {
-                    @Override
-                    public int compare(MessModel mess1, MessModel mess2) {
-                        return Double.compare(mess1.getDistance(), mess2.getDistance());
-                    }
-                });
+                Collections.sort(list, Comparator.comparingDouble(MessModel::getDistance));
 
                 myAdapter.notifyDataSetChanged();
 
@@ -220,7 +225,7 @@ public class HomeFragment extends Fragment {
         dishAdapter = new DishAdapterForHome(container.getContext(), getActivity(), loadingDialog,list,view,getLayoutInflater());
         recyclerViewforDish.setAdapter(dishAdapter);
 
-        databaseD.addValueEventListener(new ValueEventListener() {
+        database.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -228,7 +233,9 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
 
                     MessModel user = dataSnapshot.getValue(MessModel.class);
+
                     listDish.add(user);
+
                 }
 
                 for (MessModel mess : listDish) {
@@ -238,12 +245,7 @@ public class HomeFragment extends Fragment {
                             mess.getLatitude(), mess.getLongitude());
                     mess.setDistance(distance);
                 }
-                Collections.sort(listDish, new Comparator<MessModel>() {
-                    @Override
-                    public int compare(MessModel mess1, MessModel mess2) {
-                        return Double.compare(mess1.getDistance(), mess2.getDistance());
-                    }
-                });
+                Collections.sort(listDish, Comparator.comparingDouble(MessModel::getDistance));
 
                 dishAdapter.notifyDataSetChanged();
 
@@ -457,6 +459,51 @@ public class HomeFragment extends Fragment {
         dialog.show();
     }
 
+
+    private void checkForAppUpdate(){
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(getContext());
+
+// Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+// Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // This example applies an immediate update. To apply a flexible update
+                    // instead, pass in AppUpdateType.FLEXIBLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                // Request the update.
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            // an activity result launcher registered via registerForActivityResult
+                            AppUpdateType.IMMEDIATE,
+                            // Or pass 'AppUpdateType.FLEXIBLE' to newBuilder() for
+                            getActivity(),
+                            // flexible updates.
+                            MY_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                Toast.makeText(getActivity(), "NOT", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != MY_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(getContext(), requestCode + "\n" + resultCode, Toast.LENGTH_SHORT).show();
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+            }
+        }
+    }
 
     // Method to hide the bottom navigation bar with animation
     private void hideNavigationBar(View view) {

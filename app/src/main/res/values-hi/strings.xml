@@ -17,7 +17,7 @@
     <string name="daily_menu">दैनिक मेनू</string>
     <string name="support">सहायता</string>
     <string name="settings">"सेटिंग्स "</string>
-    <string name="consumers">उपभोक्ता</string>
+    <string name="consumers">"उपभोक्ता  "</string>
     <string name="wallet">वॉलेट</string>
     <string name="send_message">मेसेज भेजें</string>
     <string name="one_day_users">एक दिवसीय उपयोगकर्ता</string>
@@ -50,12 +50,12 @@
     <string name="home_delivery">होम डेलीवेरी</string>
     <string name="add_description">विवरण जोड़ें....</string>
     <string name="update">अपडेट</string>
-    <string name="notification">नोटफकैशन</string>
+    <string name="notification">नोटफीकेशन</string>
     <string name="one_token_remaining_for_this_month">इस माह के लिए एक टोकन शेष है</string>
     <string name="use_in_any_partner_food_provider_mess">किसी भी भागीदार भोजन प्रदाता मेस में उपयोग करें</string>
     <string name="_1_go_on_home_page_look_the_menu_of_one_day_plans_and_choose_any_mess_which_you_like_n_n2_go_there_and_ask_for_qr_code_after_scanning_you_can_enjoy_your_free_meal">1. होम पेज पर जाएं, एक दिवसीय योजनाओं का मेनू देखें और अपनी पसंद की कोई भी मेस  चुनें। \n2. वहां जाएं और क्यूआर कोड मांगें, स्कैन करने के बाद आप अपने मुफ्त भोजन का आनंद ले सकते हैं।</string>
     <string name="scan_qr_to_use">उपयोग करने के लिए QR स्कैन करें</string>
-    <string name="offer_details">प्रस्ताव विवरण</string>
+    <string name="offer_details">ऑफर विवरण</string>
     <string name="about_us">हमारे बारे में</string>
     <string name="one_day_user">एक दिवसीय उपयोगकर्ता</string>
     <string name="plan_includes">योजना में शामिल है</string>
@@ -69,7 +69,7 @@
     <string name="click_the_yellow_button_to_upload">अपलोड करने के लिए पीले बटन पर क्लिक करें</string>
     <string name="aaddhaar_number">आधार कार्ड नंबर</string>
     <string name="bank_account_number">बैंक खाता संख्या</string>
-    <string name="ifsc">आईएफएससी</string>
+    <string name="ifsc">IFSC</string>
     <string name="bank_name">बैंक का नाम</string>
     <string name="account_holder_name">खाता धारक का नाम</string>
     <string name="mess_qr_code">"मेस का QR कोड "</string>
@@ -85,8 +85,8 @@
     <string name="send">भेजिए</string>
     <string name="user">उपयोगकर्ता</string>
     <string name="current_balance">वर्तमान शेष</string>
-    <string name="withdraw_pending">निकासी लंबित है</string>
-    <string name="transaction_history">लेन-देन इतिहास</string>
+    <string name="withdraw_pending">निकासी है</string>
+    <string name="transaction_history">लेन-देन</string>
     <string name="total_deposit">कुल जमा</string>
     <string name="coming_soon">जल्द आ रहा है</string>
     <string name="deposit">जमा करे</string>
@@ -104,6 +104,6 @@
     <string name="proceed">आगे बढ़ना</string>
     <string name="give_ratings_to_your_mess">अपनी मेस  को रेटिंग दें</string>
     <string name="submit">"सबमिट "</string>
-    <string name="clear_cache">कैश को साफ़ करें</string>
+    <string name="clear_cache">कैचे को साफ़ करें</string>
     <string name="language">भाषा</string>
 </resources>

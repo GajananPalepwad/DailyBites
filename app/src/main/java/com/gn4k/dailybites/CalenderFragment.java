@@ -53,14 +53,11 @@ public class CalenderFragment extends Fragment {
         loadingDialog.startLoading();
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
-        SharedPreferences.Editor preferences = sharedPreferences.edit();
 
         if(sharedPreferences.getString("isRating", "").equals("1")){
 
             RatingsDialog ratingsDialog = new RatingsDialog(getActivity());
-            ratingsDialog.showDialog(sharedPreferences.getString("MessNo", ""));
-            preferences.putString("isRating", "0");
-            preferences.apply();
+            ratingsDialog.showDialog(sharedPreferences.getString("MessNo", ""), sharedPreferences);
 
         }
 

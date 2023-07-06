@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="6dp"
         android:layout_margin="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,13 +28,14 @@
     <ImageView
         android:id="@+id/imageView19"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/foodcover" />
+        app:srcCompat="@drawable/indian_food_art" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView12"

@@ -59,7 +59,7 @@
     <string name="notification">Notification</string>
     <string name="one_token_remaining_for_this_month">One token remaining for this month</string>
     <string name="use_in_any_partner_food_provider_mess">Use in any partner food provider mess</string>
-    <string name="_1_go_on_home_page_look_the_menu_of_one_day_plans_and_choose_any_mess_which_you_like_n_n2_go_there_and_ask_for_qr_code_after_scanning_you_can_enjoy_your_free_meal">1. Go on home page, look the menu of one day plans and choose any mess which you like.  2. Go there and ask for QR code, after scanning you can enjoy your free meal.</string>
+    <string name="_1_go_on_home_page_look_the_menu_of_one_day_plans_and_choose_any_mess_which_you_like_n_n2_go_there_and_ask_for_qr_code_after_scanning_you_can_enjoy_your_free_meal">1. Go on home page, look the menu of one day plans and choose any mess which you like.  \n\n2. Go there and ask for QR code, after scanning you can enjoy your free meal.</string>
     <string name="scan_qr_to_use">Scan QR to Use</string>
     <string name="offer_details">Offer Details</string>
     <string name="about_us">About Us</string>

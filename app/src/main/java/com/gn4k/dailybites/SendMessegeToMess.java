@@ -216,7 +216,7 @@ public class SendMessegeToMess extends AppCompatActivity {
         builder.setPositiveButton("OK", (dialog, which) -> {
             dialog.dismiss();
             RatingsDialog ratingsDialog = new RatingsDialog(SendMessegeToMess.this);
-            ratingsDialog.showDialog(oneDayMessNo);
+            ratingsDialog.showDialog(oneDayMessNo,sharedPreferences);
         });
 
         AlertDialog dialog = builder.create();

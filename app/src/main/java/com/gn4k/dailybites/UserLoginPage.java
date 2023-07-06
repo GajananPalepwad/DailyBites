@@ -59,7 +59,7 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_MESS_TOKEN = "messToken";
     private static final String KEY_ONE_DAY_MESSNAME = "OneDayMessName";
     private static final String KEY_ONE_DAY_MESSNO = "OneDayMessNo";
-    private static final String KEY_FORDATE = "OneDayForDate";
+    private static final String KEY_RATING = "isRating";
     private static final String KEY_MESSTOKEN = "OneDayToken";
     private static final String KEY_ORDER_ID = "OneDayOrderId";
 
@@ -194,8 +194,8 @@ public class UserLoginPage extends AppCompatActivity {
                         preferences.putString("OneDayMessNo", documentSnapshot.getString(KEY_ONE_DAY_MESSNO));
                         preferences.putString("OneDayToken", documentSnapshot.getString(KEY_MESSTOKEN));
                         preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ORDER_ID));
+                        preferences.putString("isRating", documentSnapshot.getString(KEY_RATING));
                         preferences.putString("UserToken", tokenString);
-                        preferences.putString("isRating", "1");
                         preferences.apply();
 
                         if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){

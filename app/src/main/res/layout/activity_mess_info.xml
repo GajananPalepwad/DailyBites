@@ -14,14 +14,14 @@
         android:layout_height="220dp"
         android:layout_gravity="center_horizontal"
         android:clipToOutline="true"
-        android:elevation="1dp"
+        android:elevation="3dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:background="@drawable/bottom_rounded_corners"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/foodcover" />
+        app:srcCompat="@drawable/indian_food_art" />
 
 
     <androidx.cardview.widget.CardView

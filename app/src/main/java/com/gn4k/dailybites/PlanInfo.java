@@ -49,6 +49,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private static final String KEY_MESSTOKEN = "messToken";
     private static final String KEY_FREEDISH = "freeDish";
     private static final String KEY_TODATE = "to";
+    private static final String KEY_RATING = "isRating";
     private TextView TVplanName, evprice, evdescription, TVveg, TVdelivery, TVbreakfast;
     private ImageView planImage, isVeg;
     private CardView back;
@@ -215,6 +216,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
                 userInfo.put(KEY_FROMDATE, date);
                 userInfo.put(KEY_MESSTOKEN, token);
                 userInfo.put(KEY_FREEDISH, "1");
+                userInfo.put(KEY_RATING, "1");
 
                 preferences.putString("messName", messName);
                 preferences.putString("MessNo", mobileNo);

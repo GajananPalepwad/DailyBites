@@ -85,6 +85,8 @@ public class HomeFragment extends Fragment {
         planImg = getActivity().findViewById(R.id.planImg);
 
         ImageView wallet = view.findViewById(R.id.wallet);
+        ImageView listInfo = view.findViewById(R.id.listInfo);
+        ImageView oneDaylistInfo = view.findViewById(R.id.oneDaylistInfo);
         ImageView notification = view.findViewById(R.id.notification);
 
         offerCard = view.findViewById(R.id.offer_layout);
@@ -113,6 +115,13 @@ public class HomeFragment extends Fragment {
         }
 
 
+        listInfo.setOnClickListener(v->{
+            showInstructionDialogBox("","Mess list shortlisted according to distance between your location to mess location");
+        });
+
+        oneDaylistInfo.setOnClickListener(v->{
+            showInstructionDialogBox("","OneDay plan list shortlisted according to distance between your location to mess location");
+        });
 
         wallet.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WalletForUser.class);

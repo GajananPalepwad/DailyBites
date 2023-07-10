@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -11,13 +11,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.GetDateTime;
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;

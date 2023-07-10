@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.room.Room;
 
 
-import com.gn4k.dailybites.NotificationForMess;
+import com.gn4k.dailybites.Mess.NotificationForMess;
 import com.gn4k.dailybites.R;
 
 import com.gn4k.dailybites.RoomForNotification.NotificationDao;

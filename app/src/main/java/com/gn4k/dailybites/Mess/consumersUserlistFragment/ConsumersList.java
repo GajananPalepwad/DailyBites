@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.gn4k.dailybites.Mess.WalletForMess;
-import com.gn4k.dailybites.NotificationForMess;
+import com.gn4k.dailybites.Mess.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

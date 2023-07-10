@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
-import com.gn4k.dailybites.HomeForMessOwner;
-import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.android.gms.tasks.OnFailureListener;

@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.MessModel;
+import com.gn4k.dailybites.R;
 
 import java.util.ArrayList;
 

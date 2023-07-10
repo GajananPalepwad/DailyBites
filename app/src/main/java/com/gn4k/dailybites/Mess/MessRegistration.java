@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,27 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.TermAndConditions;
+import com.gn4k.dailybites.User.UserRegistration;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -35,7 +32,7 @@ import java.util.Map;
 public class MessRegistration extends AppCompatActivity {
 
     private EditText name, mobileNo, email,messName, password, ConfirmPassword;
-    private TextView passwordDoNotMatch;
+    private TextView passwordDoNotMatch, tos;
     private CheckBox checkBox;
     private Button BTNregistor;
 
@@ -56,6 +53,7 @@ public class MessRegistration extends AppCompatActivity {
         passwordDoNotMatch = findViewById(R.id.passwarning);
         checkBox = findViewById(R.id.checkBox);
         BTNregistor = findViewById(R.id.registration);
+        tos = findViewById(R.id.tos);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -73,6 +71,10 @@ public class MessRegistration extends AppCompatActivity {
             getRegister();
         });
 
+        tos.setOnClickListener(v -> {
+            Intent intent = new Intent(MessRegistration.this, TermAndConditions.class);
+            startActivity(intent);
+        });
 
 
     }
@@ -162,7 +164,7 @@ public class MessRegistration extends AppCompatActivity {
                                 .addOnSuccessListener(aVoid -> {
                                     // Data saved successfully
                                     Toast.makeText(MessRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(MessRegistration.this,MapToLocateMess.class);
+                                    Intent intent = new Intent(MessRegistration.this, MapToLocateMess.class);
                                     startActivity(intent);
                                     finish();
                                 })

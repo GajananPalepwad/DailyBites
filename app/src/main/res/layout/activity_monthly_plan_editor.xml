@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MonthlyPlanEditor">
+    tools:context=".Mess.MonthlyPlanEditor">
 
     <ImageView
         android:id="@+id/planImage"

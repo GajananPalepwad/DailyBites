@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -13,23 +13,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.RatingsDialog;
-import com.gn4k.dailybites.Mess.SendNotificationToUser;
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
-import com.gn4k.dailybites.User.CaptureAct;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.pdf417.decoder.ec.ModulusGF;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".User.HomeFragment">
 
     <TextView
         android:id="@+id/tooltext"
@@ -301,15 +301,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/Dishlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/alegreya_sc_black"
-                android:paddingHorizontal="15dp"
-                android:text="@string/oneday_plans"
-                android:textColor="#191B1A"
-                android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/Dishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/alegreya_sc_black"
+                    android:paddingHorizontal="15dp"
+                    android:text="@string/oneday_plans"
+                    android:textColor="#191B1A"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/oneDaylistInfo"

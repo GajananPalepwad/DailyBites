@@ -1,8 +1,11 @@
-package com.gn4k.dailybites;
-//This map is for user only
-//This map is for user only
-//This map is for user only
-//This map is for user only
+package com.gn4k.dailybites.Mess;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,16 +19,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
-
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,12 +29,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,26 +43,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MapActivityToChooseLocation extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
     private EditText addressT;
+
     private SearchView searchView;
-    private double latitude;
-    private double longitude;
+
+    private double latitude = 0;
+    private double longitude = 0;
     private String addressPreference;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final String KEY_LATITUDE = "latitude";
-    private static final String KEY_LONGITUDE = "longitude";
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_to_choose_location);
+        setContentView(R.layout.activity_map_to_locate_mess);
+
 
         // Initialize views
         mapView = findViewById(R.id.mapView);
@@ -98,66 +94,67 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
             }
         });
 
-        // Submit button listener
         submitAndMoveToNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Save user location and address to shared preferences
+                SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+                SharedPreferences.Editor preferences = sharedPreferences.edit();
 
                 if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
                     if(latitude !=0 && longitude !=0) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                    SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                    preferences.putString("UserLatitude", latitude + "");
-                    preferences.putString("UserLongitude", longitude + "");
-                    preferences.putString("UserAddress", addressPreference);
-                    preferences.apply();
+                        preferences.putString("MessOwnerLatitude", latitude + "");
+                        preferences.putString("MessOwnerLongitude", longitude + "");
+                        preferences.putString("MessOwnerAddress", addressPreference);
+                        preferences.apply();
+                        // Update user information in Firebase database
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
-                    // Update user information in Firestore database
-                    Map<String, Object> userInfo = new HashMap<>();
-                    userInfo.put(KEY_LATITUDE, latitude);
-                    userInfo.put(KEY_LONGITUDE, longitude);
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("latitude", latitude);
+                        data.put("longitude", longitude);
 
-                    db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
-                            addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    // Move to the home screen
-                                    Intent intent = new Intent(MapActivityToChooseLocation.this, Home.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MapActivityToChooseLocation.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-            }else {
-                        showInstructionDialogBox();
-                Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
-            }
-        }else {
-                    showInstructionDialogBox();
-            Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
-        }
+                        dataRef.updateChildren(data)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // Move to the home screen
+                                        Intent intent = new Intent(MapToLocateMess.this, HomeForMessOwner.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Error occurred while saving data
+                                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }else {
+                        Toast.makeText(MapToLocateMess.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(MapToLocateMess.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        // Show instruction dialog box
-        showInstructionDialogBox();
 
+        showInstructionDialogBox();
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-        googleMap.setOnMapClickListener(this);
+        googleMap.setOnMapClickListener((GoogleMap.OnMapClickListener) this);
 
         // Call a method to request and handle location updates
         requestLocationUpdates();
     }
+
 
     @Override
     public void onMapClick(LatLng latLng) {
@@ -181,7 +178,7 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
 
         // Display a Toast message
 //        String message = "Clicked location - Latitude: " + latitude + ", Longitude: " + longitude;
-//        Toast.makeText(MapActivityToChooseLocation.this, message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MapToLocateMess.this, message, Toast.LENGTH_SHORT).show();
 
         // Get the address from the clicked location
         getAddressFromLatLng(latLng);
@@ -231,7 +228,6 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         }
     }
 
-    // Move the map to a specific location
     private void moveMapToLocation(LatLng latLng) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
         if (marker != null) {
@@ -243,14 +239,12 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
                 .snippet("Latitude: " + latLng.latitude + ", Longitude: " + latLng.longitude);
         marker = googleMap.addMarker(markerOptions);
     }
-
-    // Request location updates and handle the location result
     private void requestLocationUpdates() {
         // Check for location permissions
-        if (ContextCompat.checkSelfPermission(MapActivityToChooseLocation.this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(MapToLocateMess.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Request location permissions
-            ActivityCompat.requestPermissions(MapActivityToChooseLocation.this,
+            ActivityCompat.requestPermissions(MapToLocateMess.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_PERMISSION_REQUEST_CODE);
             return;
@@ -261,9 +255,9 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
 
         // Get the last known location
         FusedLocationProviderClient fusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(MapActivityToChooseLocation.this);
+                LocationServices.getFusedLocationProviderClient(MapToLocateMess.this);
         fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(MapActivityToChooseLocation.this, new OnSuccessListener<Location>() {
+                .addOnSuccessListener(MapToLocateMess.this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
@@ -291,7 +285,7 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
                 });
     }
 
-    // Get the address from the given LatLng object
+
     private void getAddressFromLatLng(LatLng latLng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -307,7 +301,6 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         }
     }
 
-    // Handle the result of the location permission request
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -338,4 +331,5 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }

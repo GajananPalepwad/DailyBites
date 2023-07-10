@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
-import com.gn4k.dailybites.Mess.WalletForMess;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

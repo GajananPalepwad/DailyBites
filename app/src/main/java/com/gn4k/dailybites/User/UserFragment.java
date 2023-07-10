@@ -1,8 +1,7 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -23,6 +22,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gn4k.dailybites.GetDateTime;
+import com.gn4k.dailybites.LanguageChooser;
+import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.User.ProfileForUsers;
+import com.gn4k.dailybites.User.SendMessegeToMess;
+import com.gn4k.dailybites.User.WalletForUser;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
@@ -111,7 +116,7 @@ public class UserFragment extends Fragment {
 
 
         persnolInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(),ProfileForUsers.class);
+            Intent intent = new Intent(getActivity(), ProfileForUsers.class);
             startActivity(intent);
             getActivity();
         });

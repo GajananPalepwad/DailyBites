@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -28,7 +28,10 @@ import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Animation.RatingsDialog;
-import com.gn4k.dailybites.User.OfferCodeScanner;
+import com.gn4k.dailybites.GetDateTime;
+import com.gn4k.dailybites.MessModel;
+import com.gn4k.dailybites.MyMessAdapterForHome;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;

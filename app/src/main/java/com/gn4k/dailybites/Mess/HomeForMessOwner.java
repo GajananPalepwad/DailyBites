@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,20 +21,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animation.LoadingDialog;
-import com.gn4k.dailybites.Animation.RatingsDialog;
-import com.gn4k.dailybites.Mess.AddToDaysMenu;
+import com.gn4k.dailybites.LanguageChooser;
 import com.gn4k.dailybites.Mess.OneDayPlanClasses.OneDayUserList;
-import com.gn4k.dailybites.Mess.QrCodeGenerator;
-import com.gn4k.dailybites.Mess.SendNotificationToUser;
-import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.ConsumersList;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.appupdate.AppUpdateOptions;
-import com.google.android.play.core.install.model.ActivityResult;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.database.DataSnapshot;

@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.Home;
+import com.gn4k.dailybites.LanguageChooser;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -51,7 +54,6 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_TODATE = "to";
     private static final String KEY_FROMDATE = "from";
     private static final String KEY_FREEDISH = "freeDish";
-
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
@@ -90,30 +92,29 @@ public class UserLoginPage extends AppCompatActivity {
         client = GoogleSignIn.getClient(this, options);
 
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingDialog.startLoading();
-                getToken();
-                checkValidationToLogin();
+        login.setOnClickListener(v -> {
+            loadingDialog.startLoading();
+            getToken();
+            checkValidationToLogin();
 
-            }
         });
 
-        registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingDialog.startLoading();
-                getToken();
-                setRegistration(v);
-            }
+        registration.setOnClickListener(v -> {
+            loadingDialog.startLoading();
+            getToken();
+            setRegistration(v);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(UserLoginPage.this,LanguageChooser.class);
+        Intent intent = new Intent(UserLoginPage.this, LanguageChooser.class);
         startActivity(intent);
         finish();
     }
@@ -130,25 +131,23 @@ public class UserLoginPage extends AppCompatActivity {
 
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            loadingDialog.stopLoading();
             loadingDialog.startLoading();
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                loadingDialog.startLoading();
+
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                        .addOnCompleteListener(task1 -> {
 
-                                if (task.isSuccessful()) {
-                                    loadingDialog.stopLoading();
-                                    Intent intent = new Intent(getApplicationContext(), UserRegistration.class);
-                                    startActivity(intent);
+                            if (task1.isSuccessful()) {
+                                loadingDialog.stopLoading();
+                                Intent intent = new Intent(getApplicationContext(), UserRegistration.class);
+                                startActivity(intent);
 
-                                } else {
-                                    loadingDialog.stopLoading();
-                                    Toast.makeText(UserLoginPage.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                            } else {
+                                loadingDialog.stopLoading();
+                                Toast.makeText(UserLoginPage.this, task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -239,19 +238,12 @@ public class UserLoginPage extends AppCompatActivity {
                             Map<String, Object> data = new HashMap<>();
                             data.put("token", tokenString);
                             dataRef.updateChildren(data)
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // Error occurred while saving data
-                                            Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                        }
+                                    .addOnFailureListener(e -> {
+                                        // Error occurred while saving data
+                                        Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                                     });
                         }
 
-//
-//                            if(!documentSnapshot.getString(KEY_PLANNAME).equals("")) {
-//
-//                            }
 
                         Map<String, Object> userInfo = new HashMap<>();
                         userInfo.put(KEY_TOKEN, tokenString);
@@ -259,7 +251,7 @@ public class UserLoginPage extends AppCompatActivity {
                                 addOnSuccessListener(unused -> {
                                     // Move to the home screen
                                     loadingDialog.stopLoading();
-                                    Intent intent = new Intent(UserLoginPage.this,Home.class);
+                                    Intent intent = new Intent(UserLoginPage.this, Home.class);
                                     startActivity(intent);
                                     finish();
                                 }).addOnFailureListener(e -> Toast.makeText(UserLoginPage.this, "Something went wrong", Toast.LENGTH_SHORT).show());
@@ -298,16 +290,12 @@ public class UserLoginPage extends AppCompatActivity {
 
     String tokenString="";
     private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    tokenString = task.getResult();
-                } else {
-                    // Handle the case when token retrieval fails
-                    Toast.makeText(UserLoginPage.this, "Failed to retrieve token",
-                            Toast.LENGTH_LONG).show();
-                }
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                tokenString = task.getResult();
+            } else {
+                // Handle the case when token retrieval fails
+                Toast.makeText(UserLoginPage.this, "Failed to retrieve token", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Animation.RatingsDialog;
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForCalender.Calender;
 import com.gn4k.dailybites.RoomForCalender.CalenderDao;
 import com.gn4k.dailybites.RoomForCalender.CalenderDatabase;

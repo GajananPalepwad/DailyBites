@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.User.MessInfo;
 
 import java.util.ArrayList;
 

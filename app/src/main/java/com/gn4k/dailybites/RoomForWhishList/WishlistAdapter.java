@@ -8,18 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
-import com.gn4k.dailybites.MessInfo;
+import com.gn4k.dailybites.User.MessInfo;
 import com.gn4k.dailybites.R;
-import com.gn4k.dailybites.RoomForRecent.Mess;
-import com.gn4k.dailybites.RoomForRecent.MessDao;
-import com.gn4k.dailybites.RoomForRecent.MessDatabase;
 
 import java.util.List;
 

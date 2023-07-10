@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForRecent.Mess;
 import com.gn4k.dailybites.RoomForRecent.MessDao;
 import com.gn4k.dailybites.RoomForRecent.MessDatabase;
@@ -25,6 +26,8 @@ import com.gn4k.dailybites.RoomForWhishList.Wishlist;
 import com.gn4k.dailybites.RoomForWhishList.WishlistAdapter;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDao;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDatabase;
+import com.gn4k.dailybites.User.SendMessegeToMess;
+import com.gn4k.dailybites.User.WalletForUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Collections;

@@ -27,6 +27,12 @@
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
         <activity
+            android:name=".TermAndConditions"
+            android:exported="false" />
+        <activity
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
             android:name=".Mess.OneDayPlanClasses.OneDayUserList"
             android:exported="false" />
         <activity
@@ -36,7 +42,7 @@
             android:name=".User.OfferCodeScanner"
             android:exported="false" />
         <activity
-            android:name=".SendMessegeToMess"
+            android:name=".User.SendMessegeToMess"
             android:exported="false" />
         <activity
             android:name=".Mess.SendNotificationToUser"
@@ -51,49 +57,49 @@
             android:name=".Mess.consumersUserlistFragment.ConsumersList"
             android:exported="false" />
         <activity
-            android:name=".NotificationForMess"
+            android:name=".Mess.NotificationForMess"
             android:exported="false" />
         <activity
-            android:name=".WalletForUser"
+            android:name=".User.WalletForUser"
             android:exported="false" />
         <activity
-            android:name=".DishInfo"
+            android:name=".User.DishInfo"
             android:exported="false" />
         <activity
-            android:name=".ProfileForUsers"
+            android:name=".User.ProfileForUsers"
             android:exported="false" />
         <activity
-            android:name=".PlanInfo"
+            android:name=".User.PlanInfo"
             android:exported="false" />
         <activity
-            android:name=".ProfilePageForMess"
+            android:name=".Mess.ProfilePageForMess"
             android:exported="false" />
         <activity
-            android:name=".MonthlyPlanEditor"
+            android:name=".Mess.MonthlyPlanEditor"
             android:exported="false" />
         <activity
-            android:name=".HomeForMessOwner"
+            android:name=".Mess.HomeForMessOwner"
             android:exported="false" />
         <activity
-            android:name=".MapToLocateMess"
+            android:name=".Mess.MapToLocateMess"
             android:exported="false" />
         <activity
-            android:name=".MessRegistration"
+            android:name=".Mess.MessRegistration"
             android:exported="false" />
         <activity
-            android:name=".MapActivityToChooseLocation"
+            android:name=".User.MapActivityToChooseLocation"
             android:exported="false" />
         <activity
-            android:name=".UserRegistration"
+            android:name=".User.UserRegistration"
             android:exported="false" />
         <activity
-            android:name=".MessInfo"
+            android:name=".User.MessInfo"
             android:exported="false" />
         <activity
-            android:name=".MessOnwnerLoginPage"
+            android:name=".Mess.MessOnwnerLoginPage"
             android:exported="false" />
         <activity
-            android:name=".UserLoginPage"
+            android:name=".User.UserLoginPage"
             android:exported="false" />
         <activity
             android:name=".LanguageChooser"

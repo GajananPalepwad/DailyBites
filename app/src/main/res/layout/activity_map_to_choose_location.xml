@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDFCFC"
-    tools:context=".MapActivityToChooseLocation">
+    tools:context=".User.MapActivityToChooseLocation">
 
 <!--    This map is for user only-->
 <!--    This map is for user only-->

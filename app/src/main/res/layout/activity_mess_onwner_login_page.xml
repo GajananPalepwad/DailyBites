@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EDEBEB"
-    tools:context=".MessOnwnerLoginPage">
+    tools:context=".Mess.MessOnwnerLoginPage">
 
 
     <androidx.cardview.widget.CardView

@@ -2,13 +2,14 @@ package com.gn4k.dailybites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Toast;
+
+import com.gn4k.dailybites.Mess.HomeForMessOwner;
+import com.gn4k.dailybites.Mess.MapToLocateMess;
+import com.gn4k.dailybites.User.MapActivityToChooseLocation;
 
 import java.util.Locale;
 
@@ -62,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
                         sharedPreferencesMess.getString("MessOwnerLongitude","").isEmpty() ||
                         sharedPreferencesMess.getString("MessOwnerLatitude","").isEmpty()) {
 
-                    Intent intent = new Intent(MainActivity.this,MapToLocateMess.class);
+                    Intent intent = new Intent(MainActivity.this, MapToLocateMess.class);
                     startActivity(intent);
                     finish();
 
                 }else{
-                    Intent intent = new Intent(MainActivity.this,HomeForMessOwner.class);
+                    Intent intent = new Intent(MainActivity.this, HomeForMessOwner.class);
                     startActivity(intent);
                     finish();
                 }

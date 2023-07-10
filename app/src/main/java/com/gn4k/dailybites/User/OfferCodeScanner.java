@@ -9,17 +9,16 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.gn4k.dailybites.PlanInfo;
+import com.gn4k.dailybites.AboutUs;
 import com.gn4k.dailybites.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.Result;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -50,6 +48,7 @@ public class OfferCodeScanner extends AppCompatActivity {
         Button scanner_btn = findViewById(R.id.scanner);
         CardView backBtn = findViewById(R.id.back);
         TextView dateExpire = findViewById(R.id.expired_date);
+        TextView aboutUs = findViewById(R.id.aboutUs);
 
         sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
@@ -66,6 +65,11 @@ public class OfferCodeScanner extends AppCompatActivity {
 
         backBtn.setOnClickListener(v -> onBackPressed());
 
+        aboutUs.setOnClickListener(v -> {
+            Intent intent = new Intent(OfferCodeScanner.this, AboutUs.class);
+            startActivity(intent);
+        });
+
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {
                 Manifest.permission.CAMERA,
@@ -74,10 +78,7 @@ public class OfferCodeScanner extends AppCompatActivity {
         if(!hasPermission(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS,PERMISSION_ALL);
         }else {
-
             scanner_btn.setOnClickListener(v -> scanCode());
-
-
         }
 
     }

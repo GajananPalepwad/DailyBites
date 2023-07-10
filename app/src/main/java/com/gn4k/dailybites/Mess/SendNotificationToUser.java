@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gn4k.dailybites.NotificationForMess;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.firebase.database.DataSnapshot;

@@ -1,15 +1,11 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,20 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gn4k.dailybites.Mess.SendNotificationToUser;
+import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.TermAndConditions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,7 +50,7 @@ public class UserRegistration extends AppCompatActivity {
 
 
     private EditText name, mobileNo, email, password, ConfirmPassword;
-    private TextView passwordDoNotMatch;
+    private TextView passwordDoNotMatch, tos;
     private CheckBox checkBox;
     private Button BTNregistor;
 
@@ -82,6 +74,7 @@ public class UserRegistration extends AppCompatActivity {
         passwordDoNotMatch = findViewById(R.id.passwarning);
         checkBox = findViewById(R.id.checkBox);
         BTNregistor = findViewById(R.id.registration);
+        tos = findViewById(R.id.tos);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -98,14 +91,14 @@ public class UserRegistration extends AppCompatActivity {
             email.setClickable(false);
         }
 
+        tos.setOnClickListener(v -> {
+            Intent intent = new Intent(UserRegistration.this, TermAndConditions.class);
+            startActivity(intent);
+        });
 
-
-        BTNregistor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getToken();
-                getRegister();
-            }
+        BTNregistor.setOnClickListener(v -> {
+            getToken();
+            getRegister();
         });
 
     }
@@ -120,14 +113,11 @@ public class UserRegistration extends AppCompatActivity {
 
             String getEmail = email.getText().toString();
             DocumentReference emailRef = db.collection("User").document(getEmail);
-            emailRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (!documentSnapshot.exists()) {
-                        checkAllParametersToRegistration();
-                    } else {
-                        Toast.makeText(UserRegistration.this, "Account already exists.", Toast.LENGTH_SHORT).show();
-                    }
+            emailRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (!documentSnapshot.exists()) {
+                    checkAllParametersToRegistration();
+                } else {
+                    Toast.makeText(UserRegistration.this, "Account already exists.", Toast.LENGTH_SHORT).show();
                 }
             });
     }
@@ -190,25 +180,15 @@ public class UserRegistration extends AppCompatActivity {
 
                             db.collection("User").document(getEmail).set(userInfo).
 
-                                    addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
+                                    addOnSuccessListener(unused -> {
 
-                                            Toast.makeText(UserRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(UserRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                                            Intent intent = new Intent(UserRegistration.this,MapActivityToChooseLocation.class);
-                                            startActivity(intent);
-                                            finish();
+                                        Intent intent = new Intent(UserRegistration.this, MapActivityToChooseLocation.class);
+                                        startActivity(intent);
+                                        finish();
 
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            Toast.makeText(UserRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    });
+                                    }).addOnFailureListener(e -> Toast.makeText(UserRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show());
                         } else {
                             passwordDoNotMatch.setText("Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character");
                         }
@@ -232,16 +212,13 @@ public class UserRegistration extends AppCompatActivity {
 
     String tokenString="";
     private void getToken() {
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    tokenString = task.getResult();
-                } else {
-                    // Handle the case when token retrieval fails
-                    Toast.makeText(UserRegistration.this, "Failed to retrieve token",
-                            Toast.LENGTH_LONG).show();
-                }
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                tokenString = task.getResult();
+            } else {
+                // Handle the case when token retrieval fails
+                Toast.makeText(UserRegistration.this, "Failed to retrieve token",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -254,12 +231,7 @@ public class UserRegistration extends AppCompatActivity {
 
 
     public void signOut(){
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                finish();
-            }
-        });
+        gsc.signOut().addOnCompleteListener(task -> finish());
     }
 
 }

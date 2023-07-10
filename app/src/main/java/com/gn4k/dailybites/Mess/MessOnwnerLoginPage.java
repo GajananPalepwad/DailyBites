@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.LanguageChooser;
+import com.gn4k.dailybites.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -68,12 +70,9 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
 
 
 
-        registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRegistration(v);
-                loadingDialog.startLoading();
-            }
+        registration.setOnClickListener(v -> {
+            loadingDialog.startLoading();
+            setRegistration(v);
         });
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +90,7 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(MessOnwnerLoginPage.this,LanguageChooser.class);
+        Intent intent = new Intent(MessOnwnerLoginPage.this, LanguageChooser.class);
         startActivity(intent);
         finish();
     }
@@ -107,25 +106,23 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
 
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            loadingDialog.stopLoading();
             loadingDialog.startLoading();
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                        .addOnCompleteListener(task1 -> {
 
-                                if (task.isSuccessful()) {
-                                    loadingDialog.stopLoading();
-                                    Intent intent = new Intent(getApplicationContext(), MessRegistration.class);
-                                    startActivity(intent);
+                            if (task1.isSuccessful()) {
+                                loadingDialog.stopLoading();
+                                Intent intent = new Intent(getApplicationContext(), MessRegistration.class);
+                                startActivity(intent);
 
-                                } else {
-                                    loadingDialog.stopLoading();
-                                    Toast.makeText(MessOnwnerLoginPage.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                            } else {
+                                loadingDialog.stopLoading();
+                                Toast.makeText(MessOnwnerLoginPage.this, task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 

@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.User;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForRecent.Mess;
 import com.gn4k.dailybites.RoomForRecent.MessDao;
 import com.gn4k.dailybites.RoomForRecent.MessDatabase;

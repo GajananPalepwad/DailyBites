@@ -1,4 +1,4 @@
-package com.gn4k.dailybites;
+package com.gn4k.dailybites.Mess;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -6,11 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
+import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForNotification.NotificationAdapter;
 import com.gn4k.dailybites.RoomForNotification.NotificationDao;
 import com.gn4k.dailybites.RoomForNotification.NotificationData;

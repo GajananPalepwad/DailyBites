@@ -27,6 +27,9 @@
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
         <activity
+            android:name=".OpenSourceLibraries"
+            android:exported="false" />
+        <activity
             android:name=".TermAndConditions"
             android:exported="false" />
         <activity

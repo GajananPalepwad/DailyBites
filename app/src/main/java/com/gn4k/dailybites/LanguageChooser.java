@@ -84,6 +84,11 @@ public class LanguageChooser extends AppCompatActivity {
             }
         });
 
+        kannada.setOnClickListener(v ->{
+            Intent intent = new Intent(LanguageChooser.this, OpenSourceLibraries.class);
+            startActivity(intent);
+        });
+
 
     }
 

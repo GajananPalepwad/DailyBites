@@ -497,7 +497,7 @@ public class HomeFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }else{
-                Toast.makeText(getActivity(), "NOT", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "NOT", Toast.LENGTH_SHORT).show();
             }
         });
     }

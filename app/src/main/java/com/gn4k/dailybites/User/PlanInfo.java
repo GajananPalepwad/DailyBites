@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -40,6 +41,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import tech.nimbbl.checkout.sdk.NimbblCheckoutSDK;
 
 public class PlanInfo extends AppCompatActivity implements PaymentResultListener {
 
@@ -83,11 +86,14 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
         subscribe.setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
-            if(sharedPreferences.getString("planName", "").equals("")) {
-                startPayment();
-            }else {
-                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
-            }
+            Intent intent = new Intent(PlanInfo.this, PaymentOptions.class);
+            startActivity(intent);
+
+//            if(sharedPreferences.getString("planName", "").equals("")) {
+//                startPayment();
+//            }else {
+//                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
+//            }
         });
 
         back.setOnClickListener(v -> onBackPressed());
@@ -166,6 +172,17 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             }
         });
     }
+
+
+//    public void startPayment1() {
+//        NimbblCheckoutSDK.getInstance().init(this);
+//
+//        NimblCheckoutOptions.Builder builder = new NimblCheckoutOptions.Builder();
+//        NimblCheckoutOptions options = builder.setPackageName("<application package name>").setOrderId(orderId).setToken("<Auth Token generated in Step 2>");
+////orderId you will receive in previous step
+//        NimbblCheckoutSDK.getInstance().checkout(options);
+//
+//    }
 
     public void startPayment() { //Payment gateway opener method
 

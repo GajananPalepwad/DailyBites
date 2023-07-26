@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bell_pin_fill" />
+                app:srcCompat="@drawable/bell_icon" />
 
             <ImageView
                 android:layout_width="wrap_content"

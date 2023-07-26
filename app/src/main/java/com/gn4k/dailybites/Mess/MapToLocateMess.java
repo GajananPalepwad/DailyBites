@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -56,12 +57,13 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
     private double longitude = 0;
     private String addressPreference;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_to_locate_mess);
-
+        loadingDialog = new LoadingDialog(this);
 
         // Initialize views
         mapView = findViewById(R.id.mapView);
@@ -94,51 +96,45 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        submitAndMoveToNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Save user location and address to shared preferences
-                SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
-                SharedPreferences.Editor preferences = sharedPreferences.edit();
+        submitAndMoveToNext.setOnClickListener(v -> {
+            // Save user location and address to shared preferences
 
-                if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
-                    if(latitude !=0 && longitude !=0) {
+            SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
+            SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("MessOwnerLatitude", latitude + "");
-                        preferences.putString("MessOwnerLongitude", longitude + "");
-                        preferences.putString("MessOwnerAddress", addressPreference);
-                        preferences.apply();
-                        // Update user information in Firebase database
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+            if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
+                if(latitude !=0 && longitude !=0) {
+                    loadingDialog.startLoading();
+                    preferences.putString("MessOwnerLatitude", latitude + "");
+                    preferences.putString("MessOwnerLongitude", longitude + "");
+                    preferences.putString("MessOwnerAddress", addressPreference);
+                    preferences.apply();
+                    // Update user information in Firebase database
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
 
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("latitude", latitude);
-                        data.put("longitude", longitude);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("latitude", latitude);
+                    data.put("longitude", longitude);
 
-                        dataRef.updateChildren(data)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        // Move to the home screen
-                                        Intent intent = new Intent(MapToLocateMess.this, HomeForMessOwner.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        // Error occurred while saving data
-                                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }else {
-                        Toast.makeText(MapToLocateMess.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
-                    }
+                    dataRef.updateChildren(data)
+                            .addOnSuccessListener(aVoid -> {
+                                // Move to the home screen
+                                loadingDialog.stopLoading();
+                                Intent intent = new Intent(MapToLocateMess.this, HomeForMessOwner.class);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                // Error occurred while saving data
+                                loadingDialog.stopLoading();
+                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            });
                 }else {
                     Toast.makeText(MapToLocateMess.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
                 }
+            }else {
+                Toast.makeText(MapToLocateMess.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -215,8 +211,8 @@ public class MapToLocateMess extends AppCompatActivity implements OnMapReadyCall
             List<Address> addresses = geocoder.getFromLocationName(query, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
-                double latitude = address.getLatitude();
-                double longitude = address.getLongitude();
+                latitude = address.getLatitude();
+                longitude = address.getLongitude();
                 LatLng latLng = new LatLng(latitude, longitude);
                 moveMapToLocation(latLng);
                 getAddressFromLatLng(latLng);

@@ -28,7 +28,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/wallet_alt_fill" />
+            app:srcCompat="@drawable/wallet_icon" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -49,7 +49,7 @@
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/bell_pin_fill" />
+            app:srcCompat="@drawable/bell_icon" />
     </androidx.cardview.widget.CardView>
 
 
@@ -334,7 +334,7 @@
         android:backgroundTint="@color/brandcolor"
         android:drawablePadding="13dp"
         android:paddingHorizontal="13dp"
-        android:text="@string/one_time_pass"
+        android:text="@string/order_now"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="20dp"

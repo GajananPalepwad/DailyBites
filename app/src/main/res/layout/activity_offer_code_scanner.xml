@@ -137,6 +137,18 @@
             android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/calendar_icon" />
+
             <TextView
                 android:id="@+id/expired_date"
                 android:layout_width="match_parent"
@@ -144,11 +156,11 @@
                 android:layout_gravity="left"
                 android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:drawableLeft="@drawable/cal_icon"
-                android:drawablePadding="20dp"
                 android:text="Expires on dd mmm, yyyy, hh:mm"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
+
+        </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -161,6 +173,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/address" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/info_icon" />
 
             <TextView
                 android:id="@+id/offerDetails"
@@ -169,12 +192,11 @@
                 android:layout_gravity="left"
                 android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:drawableLeft="@drawable/ex_icon"
-                android:drawablePadding="20dp"
                 android:text="@string/offer_details"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 
+        </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -186,6 +208,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/address" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="15dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/aboutus_icon" />
+
+
             <TextView
                 android:id="@+id/aboutUs"
                 android:layout_width="match_parent"
@@ -193,11 +229,11 @@
                 android:layout_gravity="left"
                 android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:drawableLeft="@drawable/page_icon"
-                android:drawablePadding="20dp"
                 android:text="@string/about_us"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
+
+        </LinearLayout>
 
 
 

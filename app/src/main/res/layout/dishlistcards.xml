@@ -67,7 +67,7 @@
             android:layout_marginTop="3dp"
             app:layout_constraintStart_toEndOf="@+id/coverImg"
             app:layout_constraintTop_toBottomOf="@+id/menu"
-            app:srcCompat="@drawable/_595571" />
+            app:srcCompat="@drawable/green_tick_icon" />
 
         <TextView
             android:id="@+id/ratings"

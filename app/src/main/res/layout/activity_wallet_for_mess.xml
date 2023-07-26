@@ -149,38 +149,14 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="20dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="15dp"
-                            android:backgroundTint="@color/white"
-                            app:cardCornerRadius="40dp"
+                            android:src="@drawable/info_icon"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:layout_gravity="center"
-                                android:backgroundTint="#111E30"
-                                app:cardCornerRadius="40dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="1dp"
-                                    android:text="i"
-                                    android:textAlignment="center"
-                                    android:textColor="@color/white" />
-
-                            </androidx.cardview.widget.CardView>
-
-
-                        </androidx.cardview.widget.CardView>
+                            app:layout_constraintTop_toTopOf="parent"/>
 
 
                         <TextView

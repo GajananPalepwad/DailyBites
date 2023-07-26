@@ -97,120 +97,109 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Retro Fit:"
                 android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:justificationMode="inter_word"
                 android:text="@string/retro_fit"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="13dp"/>
+                android:textSize="13sp"/>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Figma:"
                 android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:justificationMode="inter_word"
                 android:text="@string/figma"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="13dp"/>
+                android:textSize="13sp"/>
 
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Glide:"
                 android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:justificationMode="inter_word"
                 android:text="@string/glide"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="13dp"/>
+                android:textSize="13sp"/>
 
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Firebase:"
                 android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:justificationMode="inter_word"
                 android:text="@string/firebase"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="13dp"/>
+                android:textSize="13sp"/>
 
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/alegreya_sc_black"
                 android:text="Razorpay:"
                 android:textColor="@color/black"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="25dp"
                 android:justificationMode="inter_word"
                 android:text="@string/razorpay"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="13dp"
-                tools:targetApi="o" />
+                android:textSize="13sp"/>
 
 
 

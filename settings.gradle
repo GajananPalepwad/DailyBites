@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
         //scanner code
         maven { url 'https://jitpack.io' }
+        maven { url "https://gitlab.com/api/v4/projects/25847308/packages/maven" }
     }
 }
 rootProject.name = "Daily Bites"

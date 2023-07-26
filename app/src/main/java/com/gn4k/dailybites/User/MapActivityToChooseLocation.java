@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Home;
 import com.gn4k.dailybites.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,12 +65,13 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
     private static final String KEY_LONGITUDE = "longitude";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_to_choose_location);
-
+        loadingDialog = new LoadingDialog(this);
         // Initialize views
         mapView = findViewById(R.id.mapView);
         addressT = findViewById(R.id.address);
@@ -102,50 +104,43 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         });
 
         // Submit button listener
-        submitAndMoveToNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Save user location and address to shared preferences
+        submitAndMoveToNext.setOnClickListener(v -> {
+            // Save user location and address to shared preferences
 
-                if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
-                    if(latitude !=0 && longitude !=0) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                    SharedPreferences.Editor preferences = sharedPreferences.edit();
+            if(!String.valueOf(latitude).isEmpty() && !String.valueOf(longitude).isEmpty()) {
+                if(latitude !=0 && longitude !=0) {
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                SharedPreferences.Editor preferences = sharedPreferences.edit();
+                loadingDialog.startLoading();
+                preferences.putString("UserLatitude", latitude + "");
+                preferences.putString("UserLongitude", longitude + "");
+                preferences.putString("UserAddress", addressPreference);
+                preferences.apply();
 
-                    preferences.putString("UserLatitude", latitude + "");
-                    preferences.putString("UserLongitude", longitude + "");
-                    preferences.putString("UserAddress", addressPreference);
-                    preferences.apply();
+                // Update user information in Firestore database
+                Map<String, Object> userInfo = new HashMap<>();
+                userInfo.put(KEY_LATITUDE, latitude);
+                userInfo.put(KEY_LONGITUDE, longitude);
 
-                    // Update user information in Firestore database
-                    Map<String, Object> userInfo = new HashMap<>();
-                    userInfo.put(KEY_LATITUDE, latitude);
-                    userInfo.put(KEY_LONGITUDE, longitude);
-
-                    db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
-                            addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    // Move to the home screen
-                                    Intent intent = new Intent(MapActivityToChooseLocation.this, Home.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MapActivityToChooseLocation.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-            }else {
-                        showInstructionDialogBox();
-                Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
-            }
+                db.collection("User").document(sharedPreferences.getString("UserEmail", "")).update(userInfo).
+                        addOnSuccessListener(unused -> {
+                            // Move to the home screen
+                            loadingDialog.stopLoading();
+                            Intent intent = new Intent(MapActivityToChooseLocation.this, Home.class);
+                            startActivity(intent);
+                            finish();
+                        }).addOnFailureListener(e -> {
+                            loadingDialog.stopLoading();
+                            Toast.makeText(MapActivityToChooseLocation.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        });
         }else {
                     showInstructionDialogBox();
             Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
         }
-            }
+    }else {
+                showInstructionDialogBox();
+        Toast.makeText(MapActivityToChooseLocation.this, "Please click on your Location in map", Toast.LENGTH_SHORT).show();
+    }
         });
 
         // Show instruction dialog box
@@ -221,8 +216,8 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
             List<Address> addresses = geocoder.getFromLocationName(query, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
-                double latitude = address.getLatitude();
-                double longitude = address.getLongitude();
+                latitude = address.getLatitude();
+                longitude = address.getLongitude();
                 LatLng latLng = new LatLng(latitude, longitude);
                 moveMapToLocation(latLng);
                 getAddressFromLatLng(latLng);
@@ -266,30 +261,27 @@ public class MapActivityToChooseLocation extends AppCompatActivity implements On
         FusedLocationProviderClient fusedLocationClient =
                 LocationServices.getFusedLocationProviderClient(MapActivityToChooseLocation.this);
         fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(MapActivityToChooseLocation.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            // Use the user's last known location
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            LatLng latLng = new LatLng(latitude, longitude);
-                            getAddressFromLatLng(latLng);
+                .addOnSuccessListener(MapActivityToChooseLocation.this, location -> {
+                    if (location != null) {
+                        // Use the user's last known location
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        getAddressFromLatLng(latLng);
 
-                            // Create a marker at the current location
-                            MarkerOptions markerOptions = new MarkerOptions()
-                                    .position(latLng)
-                                    .title("Clicked location")
-                                    .snippet("Latitude: " + latitude + ", Longitude: " + longitude);
-                            marker = googleMap.addMarker(markerOptions);
+                        // Create a marker at the current location
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(latLng)
+                                .title("Clicked location")
+                                .snippet("Latitude: " + latitude + ", Longitude: " + longitude);
+                        marker = googleMap.addMarker(markerOptions);
 
-                            // Move the camera to the user's location
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-                        } else {
-                            // If the user's location is not available, set a default location
-                            LatLng defaultLatLng = new LatLng(20.5937, 78.9629); // Default location (India)
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 5f));
-                        }
+                        // Move the camera to the user's location
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                    } else {
+                        // If the user's location is not available, set a default location
+                        LatLng defaultLatLng = new LatLng(20.5937, 78.9629); // Default location (India)
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 5f));
                     }
                 });
     }

@@ -24,13 +24,13 @@
 
     <ImageView
         android:id="@+id/wallet"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:layout_marginRight="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/tooltext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tooltext"
-        app:srcCompat="@drawable/wallet_alt_fill" />
+        app:srcCompat="@drawable/wallet_icon" />
 
     <ImageView
         android:id="@+id/notification"
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/wallet"
         app:layout_constraintEnd_toStartOf="@+id/wallet"
         app:layout_constraintTop_toTopOf="@+id/wallet"
-        app:srcCompat="@drawable/bell_pin_fill" />
+        app:srcCompat="@drawable/send_icon" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -274,8 +274,8 @@
 
                 <ImageView
                     android:id="@+id/listInfo"
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/info_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -316,8 +316,8 @@
 
                 <ImageView
                     android:id="@+id/oneDaylistInfo"
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/info_icon"
                     app:layout_constraintBottom_toBottomOf="parent"

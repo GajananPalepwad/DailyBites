@@ -62,13 +62,13 @@
 
         <ImageView
             android:id="@+id/verImg"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/ver"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ver"
-            app:srcCompat="@drawable/_595571" />
+            app:srcCompat="@drawable/green_tick_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

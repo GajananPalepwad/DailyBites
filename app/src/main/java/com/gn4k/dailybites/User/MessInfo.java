@@ -261,7 +261,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
 
                             if (urlCover != null) {
-                                Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.silver).into(cover);
+                                Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.indian_food_art).into(cover);
 
                                 //sending data to room database for recent
                                 num = Long.parseLong(messMobile);

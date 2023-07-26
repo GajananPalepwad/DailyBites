@@ -34,7 +34,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/wallet_alt_fill" />
+            app:srcCompat="@drawable/wallet_icon" />
     </androidx.cardview.widget.CardView>
 
 

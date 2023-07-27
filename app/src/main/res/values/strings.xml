@@ -48,8 +48,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="i_agree_to">I agree to </string>
-    <string name="term_of_service">Term of Service</string>
+    <string name="i_agree_to">I agree to <font fgcolor="#FDD500">Term of Service</font></string>
     <string name="rate_of_plan">Rate  of  plan</string>
     <string name="non_veg_include">Non-veg  include</string>
     <string name="breakfast_include">BreakFast  include</string>
@@ -100,8 +99,8 @@
     <string name="p_l_a_n_n_a_m_e">P L A N  N A M E</string>
     <string name="you_have_a_free_token">You have a free Token</string>
     <string name="clam_now"><![CDATA[CLAIM NOW >]]></string>
-    <string name="mess_list"><![CDATA[Mess  List ->]]></string>
-    <string name="oneday_plans"><![CDATA[OneDay  Plans ->]]></string>
+    <string name="mess_list"><![CDATA[Mess  List ]]></string>
+    <string name="oneday_plans"><![CDATA[OneDay  Plans ]]></string>
     <string name="recently_visited">Recently  Visited</string>
     <string name="wishlist">Wishlist</string>
     <string name="personal_information">Personal Information</string>

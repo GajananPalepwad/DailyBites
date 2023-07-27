@@ -233,12 +233,13 @@
                     <TextView
                         android:id="@+id/tos"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:alpha="0"
                         android:fontFamily="@font/alegreya_sc_black"
-                        android:text="@string/term_of_service"
+                        android:text="I agree to Term of Service"
                         android:textColor="@color/brandcolor"
                         app:layout_constraintBottom_toBottomOf="@+id/checkBox"
-                        app:layout_constraintStart_toEndOf="@+id/checkBox"
+                        app:layout_constraintEnd_toEndOf="@+id/checkBox"
                         app:layout_constraintTop_toTopOf="@+id/checkBox" />
 
                     <TextView

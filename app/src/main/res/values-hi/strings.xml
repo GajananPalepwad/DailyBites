@@ -42,8 +42,7 @@
     <string name="mobile_number">मोबाइल नंबर</string>
     <string name="email">ईमेल</string>
     <string name="confirm_password">पासवर्ड की पुष्टि कीजिये</string>
-    <string name="i_agree_to">"सहमत हूं  "</string>
-    <string name="term_of_service">सेवा की अवधि</string>
+    <string name="i_agree_to">मैं सेवा की <font fgcolor="#FDD500">शर्तों से सहमत हूं</font></string>
     <string name="rate_of_plan">योजना की दर</string>
     <string name="non_veg_include">नॉनवेज शामिल है</string>
     <string name="breakfast_include">नाश्ता शामिल है</string>
@@ -94,8 +93,8 @@
     <string name="p_l_a_n_n_a_m_e">P L A N  N A M E</string>
     <string name="you_have_a_free_token">आपके पास एक निःशुल्क टोकन है</string>
     <string name="clam_now"><![CDATA[आभी ले  ->]]></string>
-    <string name="mess_list"><![CDATA[मेस यादी  ->]]></string>
-    <string name="oneday_plans"><![CDATA[एक दिवशीय योजना  ->]]></string>
+    <string name="mess_list"><![CDATA[मेस यादी  ]]></string>
+    <string name="oneday_plans"><![CDATA[एक दिवशीय योजना  ]]></string>
     <string name="recently_visited">हाल ही में देखा  गया</string>
     <string name="wishlist">इच्छा-सूची</string>
     <string name="personal_information">व्यक्तिगत जानकारी</string>

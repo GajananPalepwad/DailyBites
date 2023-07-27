@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/group" />
+                        app:srcCompat="@drawable/team_icon" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -300,7 +300,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/date_range" />
+                        app:srcCompat="@drawable/calendar_icon" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -344,7 +344,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/chat_plus_fill" />
+                        app:srcCompat="@drawable/send_icon" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -407,7 +407,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="9dp"
-                        app:srcCompat="@drawable/language" />
+                        app:srcCompat="@drawable/languages_icon" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -427,7 +427,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="9dp"
-                        app:srcCompat="@drawable/gridicons_bell__1_" />
+                        app:srcCompat="@drawable/bell_icon" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -486,7 +486,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/setting_fill" />
+                        app:srcCompat="@drawable/settings_icon_png" />
                 </androidx.cardview.widget.CardView>
 
 
@@ -507,7 +507,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        app:srcCompat="@drawable/mdi_support" />
+                        app:srcCompat="@drawable/customer_service_icon" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView

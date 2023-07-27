@@ -88,7 +88,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
             Intent intent = new Intent(PlanInfo.this, PaymentOptions.class);
             startActivity(intent);
-
+//            startPayment();
 //            if(sharedPreferences.getString("planName", "").equals("")) {
 //                startPayment();
 //            }else {

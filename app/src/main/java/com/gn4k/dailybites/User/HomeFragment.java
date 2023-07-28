@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -98,6 +99,16 @@ public class HomeFragment extends Fragment {
         messCard = view.findViewById(R.id.messCardLayout);
 
         sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
+
+
+//        InboxReader inboxReader = new InboxReader(getContext());
+//
+//        Cursor cursor = inboxReader.getInboxMessages();
+//
+//        cursor.moveToFirst();
+//        Toast.makeText(getContext(), ""+inboxReader.getMessageBody(cursor), Toast.LENGTH_SHORT).show();
+
+
 
 
         messCard.setOnClickListener(v->{

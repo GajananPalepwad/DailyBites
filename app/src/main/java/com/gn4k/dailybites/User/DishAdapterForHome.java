@@ -64,7 +64,7 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
         holder.dishprice.setText("₹"+messmodel.getDishPrize());
         holder.ratings.setText(messmodel.getRatings());
         holder.myRating.setRating(Float. parseFloat(messmodel.getRatings()));
-        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.silver).into(holder.coverImg);
+        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.indian_food_art).into(holder.coverImg);
         if(messmodel.getIsVerified().equals("yes")) {
             holder.ver.setText("Verified");
         }else{

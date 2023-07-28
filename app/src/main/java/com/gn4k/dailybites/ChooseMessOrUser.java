@@ -34,6 +34,9 @@ public class ChooseMessOrUser extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
 
+
+
+
         user.setOnClickListener(v -> {
 
             Intent intent = new Intent(ChooseMessOrUser.this, UserLoginPage.class);

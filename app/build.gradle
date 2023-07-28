@@ -70,7 +70,4 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.play:app-update:2.1.0'
 
-    implementation 'tech.nimbbl.sdk:nimbbl-checkout-sdk:2.0.1'
-
-
 }

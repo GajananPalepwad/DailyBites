@@ -42,7 +42,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import tech.nimbbl.checkout.sdk.NimbblCheckoutSDK;
 
 public class PlanInfo extends AppCompatActivity implements PaymentResultListener {
 

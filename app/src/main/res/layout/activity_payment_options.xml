@@ -35,7 +35,7 @@
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/system_uicons_wrap_back" />
+            app:srcCompat="@drawable/back_icon" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -67,6 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/planImage" />
 
     <TextView
+        android:id="@+id/tvPlanPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -169,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:text="1%"
+                        android:text="0%"
                         android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -181,7 +182,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/withdrawBtn"
+                android:id="@+id/btnPay"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="15dp"

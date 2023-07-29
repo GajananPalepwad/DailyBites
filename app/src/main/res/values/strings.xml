@@ -92,7 +92,7 @@
     <string name="current_balance">Current Balance</string>
     <string name="withdraw_pending">Withdraw Pending</string>
     <string name="transaction_history">Transaction History</string>
-    <string name="total_deposit">Total Deposit</string>
+    <string name="pending_balance">Total Pending</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="deposit">Add Balance</string>
     <string name="everyday_menu_will_show_here">Everyday menu will show here</string>

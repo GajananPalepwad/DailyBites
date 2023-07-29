@@ -330,7 +330,7 @@ public class WalletForMess extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Move to the home screen
-                        showInstructionDialogBox("Payment Under Process", "You will receive you amount in bank account within 48 Hours");
+                        showInstructionDialogBox("Payment Under Process", "You will receive amount in bank account within 48 Hours");
                         updateAccordingtofirebase();
                         gettime();
                     }
@@ -387,12 +387,7 @@ public class WalletForMess extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(mbody);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();

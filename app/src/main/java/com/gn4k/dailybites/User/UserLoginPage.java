@@ -1,6 +1,5 @@
 package com.gn4k.dailybites.User;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,11 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
@@ -62,8 +58,8 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_ONE_DAY_MESSNAME = "OneDayMessName";
     private static final String KEY_ONE_DAY_MESSNO = "OneDayMessNo";
     private static final String KEY_RATING = "isRating";
-    private static final String KEY_MESSTOKEN = "OneDayToken";
-    private static final String KEY_ORDER_ID = "OneDayOrderId";
+    private static final String KEY_ONE_DAY_MESS_TOKEN = "OneDayToken";
+    private static final String KEY_ONE_DAY_ORDER_ID = "OneDayOrderId";
 
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -178,10 +174,10 @@ public class UserLoginPage extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
 
-                        preferences.putString("UserEmail",getEmail);
-                        preferences.putString("UserPassword",getPassword);
-                        preferences.putString("UserMobileNo",documentSnapshot.getString(KEY_MOBILE_NO)+"");
-                        preferences.putString("UserName",documentSnapshot.getString(KEY_NAME));
+                        preferences.putString("UserEmail", getEmail);
+                        preferences.putString("UserPassword", getPassword);
+                        preferences.putString("UserMobileNo", documentSnapshot.getString(KEY_MOBILE_NO)+"");
+                        preferences.putString("UserName", documentSnapshot.getString(KEY_NAME));
                         preferences.putString("messName", documentSnapshot.getString(KEY_MESSNAME));
                         preferences.putString("MessNo", documentSnapshot.getString(KEY_MESSNO));
                         preferences.putString("planName", documentSnapshot.getString(KEY_PLANNAME));
@@ -189,10 +185,10 @@ public class UserLoginPage extends AppCompatActivity {
                         preferences.putString("fromDate", documentSnapshot.getString(KEY_FROMDATE));
                         preferences.putString("freeDish", documentSnapshot.getString(KEY_FREEDISH));
                         preferences.putString("messToken", documentSnapshot.getString(KEY_MESS_TOKEN));
-                        preferences.putString("OneDayMessName",documentSnapshot.getString(KEY_ONE_DAY_MESSNAME));
+                        preferences.putString("OneDayMessName", documentSnapshot.getString(KEY_ONE_DAY_MESSNAME));
                         preferences.putString("OneDayMessNo", documentSnapshot.getString(KEY_ONE_DAY_MESSNO));
-                        preferences.putString("OneDayToken", documentSnapshot.getString(KEY_MESSTOKEN));
-                        preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ORDER_ID));
+                        preferences.putString("OneDayToken", documentSnapshot.getString(KEY_ONE_DAY_MESS_TOKEN));
+                        preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ONE_DAY_ORDER_ID));
                         preferences.putString("isRating", documentSnapshot.getString(KEY_RATING));
                         preferences.putString("UserToken", tokenString);
                         preferences.apply();

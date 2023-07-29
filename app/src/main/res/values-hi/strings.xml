@@ -86,7 +86,7 @@
     <string name="current_balance">वर्तमान शेष</string>
     <string name="withdraw_pending">निकासी है</string>
     <string name="transaction_history">लेन-देन</string>
-    <string name="total_deposit">कुल जमा</string>
+    <string name="pending_balance">कुल लंबित</string>
     <string name="coming_soon">जल्द आ रहा है</string>
     <string name="deposit">जमा करे</string>
     <string name="everyday_menu_will_show_here">हर दिन का मेनू यहां दिखेगा</string>
@@ -106,4 +106,5 @@
     <string name="clear_cache">कैचे को साफ़ करें</string>
     <string name="language">भाषा</string>
     <string name="order_now">"अभी Order करे "</string>
+    <string name="please_choose_your_upi_app_and_accept_the_request_to_complete_payment">भुगतान पूरा करने के लिए कृपया अपना UPI ऐप चुनें</string>
 </resources>

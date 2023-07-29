@@ -1,12 +1,10 @@
 package com.gn4k.dailybites.User;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,12 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -43,10 +36,17 @@ public class UserRegistration extends AppCompatActivity {
     private static final String KEY_FROM = "from";
     private static final String KEY_MESS_NO = "messNo";
     private static final String KEY_MESS_NAME = "messName";
-    private static final String KEY_MESSNAME = "OneDayMessName";
-    private static final String KEY_MESSNO = "OneDayMessNo";
-    private static final String KEY_FORDATE = "OneDayForDate";
-    private static final String KEY_MESSTOKEN = "OneDayToken";
+    private static final String KEY_FREEDISH = "freeDish";
+    private static final String KEY_RATING = "isRating";
+    private static final String KEY_ONE_DAY_MESSNAME = "OneDayMessName";
+    private static final String KEY_ONE_DAY_MESSNO = "OneDayMessNo";
+    private static final String KEY_ONE_DAY_MESSTOKEN = "OneDayToken";
+    private static final String KEY_MESSTOKEN = "messToken";
+    private static final String KEY_ONE_DAY_MESS_ORDER_ID= "OneDayOrderId";
+    private static final String KEY_WALLET_BALANCE = "WalletBalance";//0
+    private static final String KEY_PENDING_BALANCE = "PendingDeposit";//0
+
+
 
 
     private EditText name, mobileNo, email, password, ConfirmPassword;
@@ -149,14 +149,20 @@ public class UserRegistration extends AppCompatActivity {
                             userInfo.put(KEY_PASSWORD, getPassword);
                             userInfo.put(KEY_TOKEN, tokenString);
                             userInfo.put(KEY_MESS_NAME, "");
+                            userInfo.put(KEY_FREEDISH, "0");
+                            userInfo.put(KEY_RATING, "0");
                             userInfo.put(KEY_MESS_NO, "");
                             userInfo.put(KEY_PLAN_NAME, "");
                             userInfo.put(KEY_FROM, "");
-                            userInfo.put(KEY_MESSNAME, "");
-                            userInfo.put(KEY_MESSNO, "");
-                            userInfo.put(KEY_FORDATE, "");
-                            userInfo.put(KEY_MESSTOKEN, "");
+                            userInfo.put(KEY_ONE_DAY_MESSNAME, "");
+                            userInfo.put(KEY_ONE_DAY_MESSNO, "");
+                            userInfo.put(KEY_ONE_DAY_MESSTOKEN, "");
                             userInfo.put(KEY_TO, "");
+                            userInfo.put(KEY_MESSTOKEN, "");
+                            userInfo.put(KEY_ONE_DAY_MESS_ORDER_ID, "");
+                            userInfo.put(KEY_WALLET_BALANCE, "0");
+                            userInfo.put(KEY_PENDING_BALANCE, "0");
+
 
 
                             //Saving the data to SharedPreference so we will not get data from Firestore.

@@ -53,7 +53,7 @@ public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdap
     @Override
     public MyRecentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.parent = parent; // Set the parent variable to the provided parent
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transition_history_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.withdraw_transition_history_card, parent, false);
         return new MyRecentViewHolder(view);
     }
 

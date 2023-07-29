@@ -12,13 +12,6 @@ import java.util.List;
 
 @Dao
 public interface WalletForMessDao {
-//    @Query("SELECT * FROM user")
-//    List<Mess> getAll();
-//
-//    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    List<User> loadAllByIds(int[] userIds);
-//
-
 
     @Query("SELECT * FROM WalletMess")
     List<WalletMess> getAllMess();

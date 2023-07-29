@@ -86,7 +86,7 @@
     <string name="current_balance">चालू शिल्लक</string>
     <string name="withdraw_pending">प्रलंबित आहे</string>
     <string name="transaction_history">व्यवहार</string>
-    <string name="total_deposit">एकूण ठेव</string>
+    <string name="pending_balance">एकूण प्रलंबित</string>
     <string name="coming_soon">लवकरच येत आहे</string>
     <string name="deposit">जमा करा</string>
     <string name="everyday_menu_will_show_here">दररोज मेनू येथे दर्शविला जाईल</string>
@@ -106,4 +106,5 @@
     <string name="clear_cache">कॅचे साफ करा</string>
     <string name="language">भाषा</string>
     <string name="order_now">"आता Order करा "</string>
+    <string name="please_choose_your_upi_app_and_accept_the_request_to_complete_payment">कृपया पेमेंट पूर्ण करण्यासाठी तुमचे UPI अॅप निवडा</string>
 </resources>

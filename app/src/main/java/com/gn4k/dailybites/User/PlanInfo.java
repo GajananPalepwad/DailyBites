@@ -58,7 +58,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private CardView back;
     private String planName, mobileNo, messName, token, walletAmount;
     private int planPrize;
-    private double prizeInRupee;
+    private int prizeInRupee;
     private Button subscribe;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     LoadingDialog loadingDialog;
@@ -86,6 +86,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
             Intent intent = new Intent(PlanInfo.this, PaymentOptions.class);
+            intent.putExtra("price", prizeInRupee+"");
             startActivity(intent);
 //            startPayment();
 //            if(sharedPreferences.getString("planName", "").equals("")) {
@@ -146,21 +147,32 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+
                     evdescription.setText((String) data.get("description"));
+
                     walletAmount = String.valueOf(data.get("price"));
+
                     evprice.setText("₹" + String.valueOf(data.get("price")));
+
                     planPrize = Integer.parseInt(String.valueOf(data.get("price")))*100;
+
                     prizeInRupee = Integer.parseInt(String.valueOf(data.get("price")));
+
+
+
                     if (((String) data.get("isNonVegInclude")).equals("yes")) {
                         TVveg.setText("Non-Veg");
                         isVeg.setImageResource(R.drawable.nonveg);
                     }
+
                     if (!((String) data.get("isHomeDeliveryAvailable")).equals("yes")) {
                         TVdelivery.setText("No Home Delivery");
                     }
+
                     if (((String) data.get("isBreakFastAvailable")).equals("yes")) {
                         TVbreakfast.setText("Breakfast Available");
                     }
+
                 } else {
                     Toast.makeText(PlanInfo.this, "Something went wrong!!!!", Toast.LENGTH_SHORT).show();
                 }

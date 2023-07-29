@@ -129,13 +129,10 @@ public class RecentFragment extends Fragment {
             List<Mess> mess = messDao.getAllMess();
             Collections.reverse(mess);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                    RecentAdapter recentAdapter = new RecentAdapter(getActivity(),mess);
-                    recyclerView.setAdapter(recentAdapter);
-                }
+            getActivity().runOnUiThread(() -> {
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                RecentAdapter recentAdapter = new RecentAdapter(getActivity(),mess);
+                recyclerView.setAdapter(recentAdapter);
             });
         }
     }
@@ -157,13 +154,10 @@ public class RecentFragment extends Fragment {
             List<Wishlist> mess = messDao.getAllWishlist();
             Collections.reverse(mess);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    WishlistAdapter wishlistAdapter = new WishlistAdapter(getActivity(),mess);
-                    recyclerView.setAdapter(wishlistAdapter);
-                }
+            getActivity().runOnUiThread(() -> {
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                WishlistAdapter wishlistAdapter = new WishlistAdapter(getActivity(),mess);
+                recyclerView.setAdapter(wishlistAdapter);
             });
         }
     }

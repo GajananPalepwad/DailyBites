@@ -67,7 +67,7 @@
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/system_uicons_wrap_back" />
+            app:srcCompat="@drawable/back_icon" />
     </androidx.cardview.widget.CardView>
 
 

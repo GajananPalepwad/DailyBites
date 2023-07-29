@@ -39,13 +39,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/wallet"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginRight="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tooltext"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tooltext"
-        app:srcCompat="@drawable/fa6_solid_coins" />
 </androidx.constraintlayout.widget.ConstraintLayout>

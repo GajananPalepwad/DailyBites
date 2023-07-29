@@ -28,12 +28,8 @@ import com.gn4k.dailybites.RoomForRecent.MessDatabase;
 import com.gn4k.dailybites.RoomForWhishList.Wishlist;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDao;
 import com.gn4k.dailybites.RoomForWhishList.WishlistDatabase;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
+public class MessInfo extends AppCompatActivity {
 
     private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList;
     TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS, mobileNo, email;
@@ -56,7 +52,6 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
     private int previousScrollY = 0;
     private long num;
     private GoogleMap googleMap;
-    private MapView mapView;
     private double mlatitude;  // Your latitude value
     private double mlongitude; // Your longitude value
     LoadingDialog loadingDialog;
@@ -91,9 +86,7 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
 
         updateAccordingToFirebase();
 
-        mapView = findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+
 
         nestedScrollView = findViewById(R.id.nestedScrollView);
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -389,41 +382,6 @@ public class MessInfo extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-
-        // Move the camera to the specified location
-        LatLng location = new LatLng(mlatitude, mlongitude);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f));
-
-        // Add a marker at the specified location
-        googleMap.addMarker(new MarkerOptions().position(location));
-    }
 
 
     private void slideDown(View view) {

@@ -87,7 +87,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyRecentVi
     @Override
     public void onBindViewHolder(@NonNull MyRecentViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.messName.setText(messList.get(position).getMessNameR());
-        Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.silver).into(holder.cover);
+        Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.indian_food_art).into(holder.cover);
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         DatabaseReference dbpath = db.child("mess").child(messList.get(position).getMessNoR());

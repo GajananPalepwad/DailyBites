@@ -170,7 +170,8 @@ public class MessRegistration extends AppCompatActivity {
                                 })
                                 .addOnFailureListener(e -> {
                                     // Error occurred while saving data
-                                    Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();                                    });
+                                    Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                });
 
                         } else {
                             passwordDoNotMatch.setText("Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character");

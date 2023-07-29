@@ -1,12 +1,15 @@
 package com.gn4k.dailybites.User;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,12 +23,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.InboxReader;
+import com.gn4k.dailybites.Mess.MapToLocateMess;
+import com.gn4k.dailybites.Mess.MessRegistration;
 import com.gn4k.dailybites.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class PaymentVerificationPage extends AppCompatActivity {
 
@@ -34,23 +47,32 @@ public class PaymentVerificationPage extends AppCompatActivity {
     ImageView qrCode;
     Cursor cursor;
     TextView tvAmount;
+    String amount;
+    String upi, preBalance;
+    String status = "under review";
 
 
+    SharedPreferences sharedPreferencesUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_verification_page);
 
+        sharedPreferencesUser = getSharedPreferences("UserData",MODE_PRIVATE);
         inboxReader = new InboxReader(PaymentVerificationPage.this);
         done = findViewById(R.id.btnDone);
         copy = findViewById(R.id.btnCopy);
+        cancel = findViewById(R.id.btnCancel );
+
         qrCode = findViewById(R.id.qr_code);
         tvAmount = findViewById(R.id.tvAmount);
 
 
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String amount = extras.getString("amount");
+        amount = extras.getString("amount");
+        upi = extras.getString("upi");
+        preBalance = extras.getString("preBalance");
 
         tvAmount.setText(getString(R.string.rupee)+ " " + amount);
 
@@ -72,7 +94,6 @@ public class PaymentVerificationPage extends AppCompatActivity {
 
 
 
-
         copy.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -84,56 +105,79 @@ public class PaymentVerificationPage extends AppCompatActivity {
         });
 
         done.setOnClickListener(v -> {
-            int permissionStatus = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS);
-            if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
-                cursor = inboxReader.getInboxMessages();
-                cursor.moveToFirst();
-                assert amount != null;
-                boolean contains = inboxReader.getMessageBody(cursor).contains(amount);
-                runOnUiThread(() -> {
-                    if (contains) {
-                        done.setText("Payment successful");
-                    } else {
-                        done.setText("Payment fail");
-                    }
-                });
-            }
+            sendForVerification();
         });
 
         cancel.setOnClickListener(v -> onBackPressed());
 
-
-
-
     }
 
+    private void sendForVerification(){
+
+        StringTokenizer tokenizer = new StringTokenizer(sharedPreferencesUser.getString("UserEmail",""), "@");
+        String username = tokenizer.nextToken();
 
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Thread thread = new Thread() {
-            public void run() {
-                try {
-                    sleep(8000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    cursor = inboxReader.getInboxMessages();
-                    cursor.moveToFirst();
-                    boolean contains = inboxReader.getMessageBody(cursor).contains("dailybites");
-                    runOnUiThread(() -> {
-                        if (contains) {
-                            done.setVisibility(View.VISIBLE);
-                        } else {
-                            done.setText("Payment fail");
-                        }
-                    });
-                }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dataRef = ref.child("DepositRequest").child(username);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", sharedPreferencesUser.getString("UserEmail",""));
+        data.put("mobileNo", sharedPreferencesUser.getString("UserMobileNo",""));
+        data.put("amount", amount);
+        data.put("upi", upi);
+        data.put("preBalance", preBalance);
+
+        int permissionStatus = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS);
+        if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
+            cursor = inboxReader.getInboxMessages();
+            cursor.moveToFirst();
+            assert amount != null;
+            boolean contains = inboxReader.getMessageBody(cursor).contains(amount);
+            if (contains) {
+                data.put("statue", "completed");
+                status = "completed";
+            } else {
+                data.put("statue", "review");
+                status = "under review";
             }
-        };
-        thread.start();
+        }else{
+            data.put("statue", "review");
+            status = "under review";
+        }
+
+        dataRef.setValue(data)
+                .addOnSuccessListener(aVoid -> {
+                    showInstructionDialogBox("Payment "+status,"You will receive amount in wallet within 30 Minute");
+                })
+                .addOnFailureListener(e -> {
+                    // Error occurred while saving data
+                    Toast.makeText(PaymentVerificationPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                });
+
     }
+
+    private void showInstructionDialogBox(String title, String mbody) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", (dialog, which) -> {
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("User").document(sharedPreferencesUser.getString("UserEmail",""));
+
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("PendingDeposit", amount+"");
+
+            docRef.update(updates);
+            onBackPressed();
+            finish();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 
 }

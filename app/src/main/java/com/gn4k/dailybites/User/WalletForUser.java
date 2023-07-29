@@ -51,11 +51,14 @@ public class WalletForUser extends AppCompatActivity {
 
             amount = edAmount.getText().toString();
             if(!amount.isEmpty()) {
-                Uri uri = Uri.parse("upi://pay?pa=dailybites.pay@ibl&pn=DailyBites&am=" + amount.replaceAll("\\s", "") + "&cu=INR");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+                Intent intent = new Intent(WalletForUser.this, PaymentVerificationPage.class);
+                intent.putExtra("amount", amount.replaceAll("\\s", ""));
+                dialog.dismiss();
                 startActivity(intent);
+
             }else{
-                Toast.makeText(this, "Please add AMOUNT", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please add Amount", Toast.LENGTH_SHORT).show();
             }
 
         });

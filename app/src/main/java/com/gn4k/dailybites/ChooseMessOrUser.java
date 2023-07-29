@@ -18,6 +18,8 @@ import com.gn4k.dailybites.User.UserLoginPage;
 public class ChooseMessOrUser extends AppCompatActivity {
 
     Button messOwner, user;
+    public static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
+
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,11 @@ public class ChooseMessOrUser extends AppCompatActivity {
         // If the permission is not granted, request it.
         if (permissionState == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+        }
+
+        int permissionStatus = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS);
+        if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_SMS}, MY_PERMISSIONS_REQUEST_READ_SMS);
         }
 
 

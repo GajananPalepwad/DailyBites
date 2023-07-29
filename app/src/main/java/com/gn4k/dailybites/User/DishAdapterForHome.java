@@ -40,15 +40,12 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
 
     }
 
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.dishlistcards,parent,false);
         return  new MyViewHolder(v);
     }
-
-    ;
 
     @Override
     public void onBindViewHolder(@NonNull DishAdapterForHome.MyViewHolder holder, int position) {
@@ -70,27 +67,24 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
         }else{
             holder.ver.setText("Not Verified");
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.itemView.setOnClickListener(v -> {
 
-                String latitude = String.valueOf(messmodel.getLatitude());
-                String longitude = String.valueOf(messmodel.getLongitude());
+            String latitude = String.valueOf(messmodel.getLatitude());
+            String longitude = String.valueOf(messmodel.getLongitude());
 
-                Intent intent = new Intent(context, DishInfo.class);
-                intent.putExtra("messMobile", messmodel.getMobileNo());
-                intent.putExtra("messName", messmodel.getMessName());
-                intent.putExtra("messIsDelivery", messmodel.getIsDelivery());
-                intent.putExtra("messCoverImage", messmodel.getCoverImage());
-                intent.putExtra("messRatings", messmodel.getRatings());
-                intent.putExtra("messDishPrize", messmodel.getDishPrize());
-                intent.putExtra("messToDayDish", messmodel.getMenu());
-                intent.putExtra("messLatitude", latitude);
-                intent.putExtra("messLongitude", longitude);
+            Intent intent = new Intent(context, DishInfo.class);
+            intent.putExtra("messMobile", messmodel.getMobileNo());
+            intent.putExtra("messName", messmodel.getMessName());
+            intent.putExtra("messIsDelivery", messmodel.getIsDelivery());
+            intent.putExtra("messCoverImage", messmodel.getCoverImage());
+            intent.putExtra("messRatings", messmodel.getRatings());
+            intent.putExtra("messDishPrize", messmodel.getDishPrize());
+            intent.putExtra("messToDayDish", messmodel.getMenu());
+            intent.putExtra("messLatitude", latitude);
+            intent.putExtra("messLongitude", longitude);
 
-                context.startActivity(intent);
+            context.startActivity(intent);
 
-            }
         });
     }
 

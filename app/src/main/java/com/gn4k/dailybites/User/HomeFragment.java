@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Animation.RatingsDialog;
 import com.gn4k.dailybites.GetDateTime;
+import com.gn4k.dailybites.InboxReader;
 import com.gn4k.dailybites.MessModel;
 import com.gn4k.dailybites.MyMessAdapterForHome;
 import com.gn4k.dailybites.R;
@@ -99,14 +100,6 @@ public class HomeFragment extends Fragment {
         messCard = view.findViewById(R.id.messCardLayout);
 
         sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
-
-
-//        InboxReader inboxReader = new InboxReader(getContext());
-//
-//        Cursor cursor = inboxReader.getInboxMessages();
-//
-//        cursor.moveToFirst();
-//        Toast.makeText(getContext(), ""+inboxReader.getMessageBody(cursor), Toast.LENGTH_SHORT).show();
 
 
 

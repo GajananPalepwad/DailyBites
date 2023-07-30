@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.content.DialogInterface;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +27,7 @@ import com.gn4k.dailybites.R;
 
 import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletDatabase;
 import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletForMessDao;
-import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletHistoryAdapter;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletWithdrawAdapter;
 import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletMess;
 
 
@@ -77,23 +75,15 @@ public class WalletForMess extends AppCompatActivity {
 
 
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
 
 
-        withdrawbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Double.parseDouble(balanceString)>1.0){
-                    showPasswordBottomSheetDialog();
-                }else{
-                    showInstructionDialogBox("Not enough Balance", "You should have balance more that ₹1 to withdraw");
-                }
+        withdrawbtn.setOnClickListener(v -> {
+            if(Double.parseDouble(balanceString)>1.0){
+                showPasswordBottomSheetDialog();
+            }else{
+                showInstructionDialogBox("Not enough Balance", "You should have balance more that ₹1 to withdraw");
             }
         });
         updateAccordingtofirebase();
@@ -119,13 +109,10 @@ public class WalletForMess extends AppCompatActivity {
             List<WalletMess> mess = messDao.getAllMess();
             Collections.reverse(mess);
 
-            WalletForMess.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(WalletForMess.this));
-                    WalletHistoryAdapter WalletAdapter = new WalletHistoryAdapter(WalletForMess.this,mess);
-                    recyclerView.setAdapter(WalletAdapter);
-                }
+            WalletForMess.this.runOnUiThread(() -> {
+                recyclerView.setLayoutManager(new LinearLayoutManager(WalletForMess.this));
+                WalletWithdrawAdapter WalletAdapter = new WalletWithdrawAdapter(WalletForMess.this,mess);
+                recyclerView.setAdapter(WalletAdapter);
             });
         }
     }
@@ -133,39 +120,36 @@ public class WalletForMess extends AppCompatActivity {
 
     private void gettime(){
         GetDateTime getDateTime = new GetDateTime(WalletForMess.this);
-        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-            @Override
-            public void onGetDateTime(String date2, String time) {
-                DateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-                DateFormat outputDateFormat = new SimpleDateFormat("dd MMM yy");
-                String finalDate="", finalTime="";
-                try {
-                    Date date3 = inputDateFormat.parse(date2);
-                    String formattedDate = outputDateFormat.format(date3);
-                    finalDate = formattedDate;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                DateFormat inputTimeFormat = new SimpleDateFormat("HH:mm");
-                DateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a");
-
-                try {
-                    Date Time = inputTimeFormat.parse(time);
-                    String formattedTime = outputTimeFormat.format(Time);
-                    finalTime = formattedTime.toUpperCase();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                date = finalDate + ", " + finalTime;
-                new PendingAddBgthread().start();
+        getDateTime.getDateTime((date2, time) -> {
+            DateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat outputDateFormat = new SimpleDateFormat("dd MMM yy");
+            String finalDate="", finalTime="";
+            try {
+                Date date3 = inputDateFormat.parse(date2);
+                String formattedDate = outputDateFormat.format(date3);
+                finalDate = formattedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
+            DateFormat inputTimeFormat = new SimpleDateFormat("HH:mm");
+            DateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a");
+
+            try {
+                Date Time = inputTimeFormat.parse(time);
+                String formattedTime = outputTimeFormat.format(Time);
+                finalTime = formattedTime.toUpperCase();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            date = finalDate + ", " + finalTime;
+            new PendingAddBgthread().start();
         });
 
     }
 
 
-    class PendingAddBgthread extends Thread { // to add a mess in recent list in room database
+    class PendingAddBgthread extends Thread {
         public void run() {
             super.run();
 
@@ -187,9 +171,9 @@ public class WalletForMess extends AppCompatActivity {
                 if (messDao.isExistByMessNo(date)) {
                     WalletMess existingDate = messDao.getMessByUid(date);
                     messDao.delete(existingDate);
-                    messDao.insert(new WalletMess(nextUid, "Pending", date, "₹"+pendingString));
+                    messDao.insert(new WalletMess(nextUid, "Under Review", date, "₹"+pendingString));
                 } else {
-                    messDao.insert(new WalletMess(nextUid, "Pending", date, "₹"+pendingString));
+                    messDao.insert(new WalletMess(nextUid, "Under Review", date, "₹"+pendingString));
                 }
 
             }
@@ -229,7 +213,7 @@ public class WalletForMess extends AppCompatActivity {
 
     }
 
-    class CompletedAddBgthread extends Thread { // to add a mess in recent list in room database
+    class CompletedAddBgthread extends Thread {
         public void run() {
             super.run();
 
@@ -245,23 +229,23 @@ public class WalletForMess extends AppCompatActivity {
             if (lastUid == 0) {
                 // Database is empty, set initial uid to 1
                 int initialUid = 1;
-                messDao.insert(new WalletMess(initialUid,"Completed", date, "₹"+S));
+                messDao.insert(new WalletMess(initialUid,"Completed", date, "₹"+ PreviousWithdraw));
             } else {
                 long nextUid = lastUid + 1;
 
                 if (messDao.isExistByMessNo(date)) {
                     WalletMess existingDate = messDao.getMessByUid(date);
                     messDao.delete(existingDate);
-                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+S));
+                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+ PreviousWithdraw));
                 } else {
-                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+S));
+                    messDao.insert(new WalletMess(nextUid, "Completed", date, "₹"+ PreviousWithdraw));
                 }
 
             }
         }
     }
 
-    String S;
+    String PreviousWithdraw;
 
     private void updateAccordingtofirebase(){
 
@@ -282,8 +266,8 @@ public class WalletForMess extends AppCompatActivity {
 
                     balance.setText("₹"+balanceString);
                     pending.setText("₹"+pendingString);
-                    S = sharedPreferences.getString("PreviousWithdraw", "");
-                    if( ("₹"+pendingString).equals("₹0.0") && !S.equals("₹0.0")){
+                    PreviousWithdraw = sharedPreferences.getString("PreviousWithdraw", "");
+                    if( ("₹"+pendingString).equals("₹0.0") && !PreviousWithdraw.equals("₹0.0")){
                         SharedPreferences.Editor preferences = sharedPreferences.edit();
                         getTimeForCompletePayment();
                         preferences.putString("PreviousWithdraw", "₹0.0");

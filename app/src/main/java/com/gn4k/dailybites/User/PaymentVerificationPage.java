@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.room.Room;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -23,10 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.GetDateTime;
 import com.gn4k.dailybites.InboxReader;
 import com.gn4k.dailybites.Mess.MapToLocateMess;
 import com.gn4k.dailybites.Mess.MessRegistration;
+import com.gn4k.dailybites.Mess.WalletForMess;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletDatabase;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletForMessDao;
+import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletMess;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +47,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -52,18 +62,24 @@ public class PaymentVerificationPage extends AppCompatActivity {
     ImageView qrCode;
     Cursor cursor;
     TextView tvAmount;
-    String amount;
-    String upi, preBalance;
+    String amount, date;
+    String upi, preBalance, totalPending;
     String status = "under review";
 
 
     SharedPreferences sharedPreferencesUser;
+    SharedPreferences.Editor preferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_verification_page);
 
         sharedPreferencesUser = getSharedPreferences("UserData",MODE_PRIVATE);
+        preferences = sharedPreferencesUser.edit();
+
+
         inboxReader = new InboxReader(PaymentVerificationPage.this);
         done = findViewById(R.id.btnDone);
         copy = findViewById(R.id.btnCopy);
@@ -78,6 +94,7 @@ public class PaymentVerificationPage extends AppCompatActivity {
         amount = extras.getString("amount");
         upi = extras.getString("upi");
         preBalance = extras.getString("preBalance");
+        totalPending = extras.getString("pendingBalance");
 
         tvAmount.setText(getString(R.string.rupee)+ " " + amount);
 
@@ -114,8 +131,74 @@ public class PaymentVerificationPage extends AppCompatActivity {
         });
 
         cancel.setOnClickListener(v -> onBackPressed());
+//        new PendingAddBgthread().start();
+    }
+
+
+    class PendingAddBgthread extends Thread {
+        public void run() {
+            super.run();
+
+            WalletDatabase messdb = Room.databaseBuilder(getApplicationContext(),
+                    WalletDatabase.class, "WalletView_DB").build();
+
+            WalletForMessDao messDao = messdb.walletDao();
+
+            long lastUid = messDao.getLastMessUid();
+
+
+            if (lastUid == 0) {
+                // Database is empty, set initial uid to 1
+                int initialUid = 1;
+                messDao.insert(new WalletMess(initialUid,"Under Review", date, "₹"+amount));
+            } else {
+                long nextUid = lastUid + 1;
+
+                if (messDao.isExistByMessNo(date)) {
+                    WalletMess existingDate = messDao.getMessByUid(date);
+                    messDao.delete(existingDate);
+                    messDao.insert(new WalletMess(nextUid, "Under Review", date, "₹"+amount));
+                } else {
+                    messDao.insert(new WalletMess(nextUid, "Under Review", date, "₹"+amount));
+                }
+
+            }
+        }
+    }
+
+
+    private void gettime(){
+        GetDateTime getDateTime = new GetDateTime(PaymentVerificationPage.this);
+        getDateTime.getDateTime((date2, time) -> {
+            DateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat outputDateFormat = new SimpleDateFormat("dd MMM yy");
+            String finalDate="", finalTime="";
+            try {
+                Date date3 = inputDateFormat.parse(date2);
+                String formattedDate = outputDateFormat.format(date3);
+                finalDate = formattedDate;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            DateFormat inputTimeFormat = new SimpleDateFormat("HH:mm");
+            DateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a");
+
+            try {
+                Date Time = inputTimeFormat.parse(time);
+                String formattedTime = outputTimeFormat.format(Time);
+                finalTime = formattedTime.toUpperCase();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            date = finalDate + ", " + finalTime;
+            new PendingAddBgthread().start();
+        });
 
     }
+
+
+
 
     private void sendForVerification(){
 
@@ -153,7 +236,7 @@ public class PaymentVerificationPage extends AppCompatActivity {
 
         dataRef.setValue(data)
                 .addOnSuccessListener(aVoid -> {
-                    showInstructionDialogBox("Payment "+status,"You will receive amount in wallet within 30 Minute");
+                    showInstructionDialogBox("Payment "+status,"You will receive amount in wallet within 30 Minute\n\nClick on OK to Confirm");
                 })
                 .addOnFailureListener(e -> {
                     // Error occurred while saving data
@@ -175,6 +258,15 @@ public class PaymentVerificationPage extends AppCompatActivity {
             updates.put("PendingDeposit", amount+"");
 
             docRef.update(updates);
+
+            if(totalPending.equals("0")){
+                gettime();
+            }
+
+            preferences.putString("previousPendingDeposit", amount);
+            preferences.putString("previousBalance", preBalance);
+            preferences.apply();
+
             notifyAdmin();
             onBackPressed();
             finish();

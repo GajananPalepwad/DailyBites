@@ -18,13 +18,13 @@ import com.gn4k.dailybites.R;
 import java.util.List;
 
 // MessAdapter class
-public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdapter.MyRecentViewHolder> {
+public class WalletDepositeAdapter extends RecyclerView.Adapter<WalletDepositeAdapter.MyRecentViewHolder> {
 
 
     List<WalletMess> messList;
     Context context;
     ViewGroup parent;
-    public WalletHistoryAdapter(Context context, List<WalletMess> messList) {
+    public WalletDepositeAdapter(Context context, List<WalletMess> messList) {
         this.context = context;
         this.messList = messList;
     }
@@ -53,7 +53,7 @@ public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdap
     @Override
     public MyRecentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.parent = parent; // Set the parent variable to the provided parent
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.withdraw_transition_history_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.deposite_transition_history_card, parent, false);
         return new MyRecentViewHolder(view);
     }
 
@@ -65,12 +65,15 @@ public class WalletHistoryAdapter extends RecyclerView.Adapter<WalletHistoryAdap
         holder.amount.setText(messList.get(position).getAmount());
         holder.status.setText(messList.get(position).getStatus());
 
-        if(messList.get(position).getStatus().equals("Pending")) {
+        if(messList.get(position).getStatus().equals("Under Review")) {
             holder.StatusImg.setImageResource(R.drawable.pending_payment);
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentYellow));
         } else if (messList.get(position).getStatus().equals("Completed")) {
             holder.StatusImg.setImageResource(R.drawable.done_payment);
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentGreen));
+        } else if (messList.get(position).getStatus().equals("Rejected")) {
+            holder.StatusImg.setImageResource(R.drawable.rejected_payment);
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentRed));
         }
 
 

@@ -87,20 +87,17 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyRece
     public void onBindViewHolder(@NonNull MyRecentViewHolder holder, @SuppressLint("RecyclerView") int position) {
         this.holder = holder;
         holder.messName.setText(messList.get(position).getMessNameR());
-        Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.silver).into(holder.cover);
+        Glide.with(parent.getContext()).load(messList.get(position).getUrlCover()).centerCrop().placeholder(R.drawable.indian_food_art).into(holder.cover);
         holder.verify.setText(messList.get(position).getIsVerify());
         id = messList.get(position).getMessNoR();
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessInfo.class);
-                intent.putExtra("messMobile", messList.get(position).getMessNoR());
-                intent.putExtra("messName", messList.get(position).getMessNameR());
-                intent.putExtra("messLatitude", "");
-                intent.putExtra("messLongitude", "");
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MessInfo.class);
+            intent.putExtra("messMobile", messList.get(position).getMessNoR());
+            intent.putExtra("messName", messList.get(position).getMessNameR());
+            intent.putExtra("messLatitude", "");
+            intent.putExtra("messLongitude", "");
+            context.startActivity(intent);
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {

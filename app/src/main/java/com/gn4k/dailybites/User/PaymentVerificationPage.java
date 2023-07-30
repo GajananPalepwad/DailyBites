@@ -1,5 +1,6 @@
 package com.gn4k.dailybites.User;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,8 +27,12 @@ import com.gn4k.dailybites.InboxReader;
 import com.gn4k.dailybites.Mess.MapToLocateMess;
 import com.gn4k.dailybites.Mess.MessRegistration;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
@@ -76,7 +81,7 @@ public class PaymentVerificationPage extends AppCompatActivity {
 
         tvAmount.setText(getString(R.string.rupee)+ " " + amount);
 
-        String url = "upi://pay?pa=9975413723@paytm&pn=DailyBites&cu=INR&am=" + amount;
+        String url = "upi://pay?pa=dailybites.pay@ibl&pn=DailyBites&cu=INR&am=" + amount;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try{
@@ -170,6 +175,7 @@ public class PaymentVerificationPage extends AppCompatActivity {
             updates.put("PendingDeposit", amount+"");
 
             docRef.update(updates);
+            notifyAdmin();
             onBackPressed();
             finish();
         });
@@ -178,6 +184,34 @@ public class PaymentVerificationPage extends AppCompatActivity {
         dialog.show();
     }
 
+    private void notifyAdmin(){
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbpath = db.child("Admin");
+        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                    String token = (String) data.get("token");
+
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                            token,
+                            upi,
+                            "Requested to add "+amount+" rupee",
+                            getApplicationContext(),
+                            PaymentVerificationPage.this);
+
+                    notificationsSender.SendNotifications();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
 
 }

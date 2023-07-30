@@ -166,33 +166,24 @@ public class UserFragment extends Fragment {
         CardView lan = bottomSheetView.findViewById(R.id.lan);
         // Set click listener for the button inside the BottomSheetDialog
 
-        notifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
-                startActivity(intent);
-            }
+        notifi.setOnClickListener(v -> {
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
+            startActivity(intent);
         });
 
 
-        cache.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle button click inside the BottomSheetDialog
-                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.parse("package:" + requireActivity().getPackageName()));
-                startActivity(intent);
-            }
+        cache.setOnClickListener(v -> {
+            // Handle button click inside the BottomSheetDialog
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + requireActivity().getPackageName()));
+            startActivity(intent);
         });
 
-        lan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LanguageChooser.class);
-                intent.putExtra("data", "settings");
-                startActivity(intent);
-            }
+        lan.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LanguageChooser.class);
+            intent.putExtra("data", "settings");
+            startActivity(intent);
         });
 
         // Create the BottomSheetDialog

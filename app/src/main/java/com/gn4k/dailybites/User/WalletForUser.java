@@ -28,13 +28,20 @@ public class WalletForUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_for_user);
+
         CardView backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(v -> onBackPressed());
+
         Button deposit = findViewById(R.id.deposite);
+
         tvBalance = findViewById(R.id.tvBalance);
+
         tvTotalPending = findViewById(R.id.tvTotalPending);
+
         sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
+
         deposit.setOnClickListener(v -> addAmountPopUp());
+
         setDataAccordingToFirebase();
 
     }

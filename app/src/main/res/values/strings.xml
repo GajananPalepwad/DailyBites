@@ -127,6 +127,7 @@
     <string name="please_choose_your_upi_app_and_accept_the_request_to_complete_payment">Please choose your UPI app to complete payment</string>
     <string name="upi" translatable="false">dailybites.pay@ibl</string>
     <string name="rupee" translatable="false">₹</string>
+    <string name="wallet_balance">Wallet Balance</string>
 
 
 </resources>

@@ -83,12 +83,10 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
         TVdelivery = findViewById(R.id.isdelivery);
 
         subscribe.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
 
             Intent intent = new Intent(PlanInfo.this, PaymentOptions.class);
             intent.putExtra("price", prizeInRupee+"");
             startActivity(intent);
-//            startPayment();
 //            if(sharedPreferences.getString("planName", "").equals("")) {
 //                startPayment();
 //            }else {

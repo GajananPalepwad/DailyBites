@@ -107,4 +107,5 @@
     <string name="language">भाषा</string>
     <string name="order_now">"अभी Order करे "</string>
     <string name="please_choose_your_upi_app_and_accept_the_request_to_complete_payment">भुगतान पूरा करने के लिए कृपया अपना UPI ऐप चुनें</string>
+    <string name="wallet_balance">वॉलेट बैलेंस</string>
 </resources>

@@ -62,6 +62,7 @@ public class UserFragment extends Fragment {
         TextView address = view.findViewById(R.id.address);
         TextView MessName = view.findViewById(R.id.messNameU);
         TextView daysRemain = view.findViewById(R.id.daysRemain);
+        TextView walletBalance = view.findViewById(R.id.tvWalletBalance);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);
 
@@ -70,11 +71,9 @@ public class UserFragment extends Fragment {
         if(!sharedPreferences.getString("messName","").equals("")) {
             MessName.setText(sharedPreferences.getString("messName", ""));
         }
+        walletBalance.setText(getString(R.string.rupee)+" "+sharedPreferences.getString("previousBalance", "")+ "\nWallet");
 
 
-        if(sharedPreferences.getString("planName", "").equals("One day Plan")){
-            daysRemain.setText(1+ " Day Left");
-        }else {
 
             GetDateTime getDateTime = new GetDateTime(getActivity());
             getDateTime.getDateTime((date, time) -> {
@@ -96,10 +95,13 @@ public class UserFragment extends Fragment {
                     long diffInMilliSec = givenDate.getTime() - currentDate.getTime();
                     remainingDays = TimeUnit.DAYS.convert(diffInMilliSec, TimeUnit.MILLISECONDS);
                 }
-                daysRemain.setText(remainingDays + " Days Left");
+                if(remainingDays==-1) {
+                    daysRemain.setText("0 Days Left");
+                }else {
+                    daysRemain.setText(remainingDays + " Days Left");
+                }
 
             });
-        }
 
         ImageView wallet = view.findViewById(R.id.wallet);
 

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,32 +17,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
-import com.gn4k.dailybites.GetDateTime;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-
-public class PlanInfo extends AppCompatActivity implements PaymentResultListener {
+public class PlanInfo extends AppCompatActivity {
+    //         implements PaymentResultListener^
 
     private static final String KEY_MESSNAME = "messName";
     private static final String KEY_MESSNO = "messNo";
@@ -56,9 +46,9 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     private TextView TVplanName, evprice, evdescription, TVveg, TVdelivery, TVbreakfast;
     private ImageView planImage, isVeg;
     private CardView back;
-    private String planName, mobileNo, messName, token, walletAmount;
+    private String planName, mobileNo, messName, messToken, walletAmount;
     private int planPrize;
-    private int prizeInRupee;
+    private int priceInRupee;
     private Button subscribe;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     LoadingDialog loadingDialog;
@@ -84,14 +74,22 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
         subscribe.setOnClickListener(v -> {
 
+            SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+
+            if(sharedPreferences.getString("planName", "").equals("")) {
+
             Intent intent = new Intent(PlanInfo.this, PaymentOptions.class);
-            intent.putExtra("price", prizeInRupee+"");
+            intent.putExtra("price", priceInRupee +"");
+            intent.putExtra("planName",planName);
+            intent.putExtra("messMobileNo",mobileNo);
+            intent.putExtra("messToken", messToken);
+            intent.putExtra("messWalletAmount",walletAmount);
+            intent.putExtra("messName",messName);
             startActivity(intent);
-//            if(sharedPreferences.getString("planName", "").equals("")) {
-//                startPayment();
-//            }else {
-//                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
-//            }
+
+            }else {
+                showInstructionDialogBox("Plan Exist", "You already have an another plan....");
+            }
         });
 
         back.setOnClickListener(v -> onBackPressed());
@@ -108,7 +106,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
             planName = bundle.getString("plan");
             mobileNo = bundle.getString("mobileNo");
             messName = bundle.getString("messName");
-            token = bundle.getString("token");
+            messToken = bundle.getString("token");
         }
         TVplanName.setText(planName + " Plan");
 
@@ -154,7 +152,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
 
                     planPrize = Integer.parseInt(String.valueOf(data.get("price")))*100;
 
-                    prizeInRupee = Integer.parseInt(String.valueOf(data.get("price")));
+                    priceInRupee = Integer.parseInt(String.valueOf(data.get("price")));
 
 
 
@@ -183,138 +181,118 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     }
 
 
-//    public void startPayment1() {
-//        NimbblCheckoutSDK.getInstance().init(this);
+
+//    public void startPayment() { //Payment gateway opener method
 //
-//        NimblCheckoutOptions.Builder builder = new NimblCheckoutOptions.Builder();
-//        NimblCheckoutOptions options = builder.setPackageName("<application package name>").setOrderId(orderId).setToken("<Auth Token generated in Step 2>");
-////orderId you will receive in previous step
-//        NimbblCheckoutSDK.getInstance().checkout(options);
+//        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+//        String mobileNo = sharedPreferences.getString("UserMobileNo", "");
+//        String email = sharedPreferences.getString("UserEmail", "");
+//
+//        Checkout checkout = new Checkout();
+//        checkout.setImage(R.drawable.logo__1_);
+//        final Activity activity = this;
+//        try {
+//            JSONObject options = new JSONObject();
+//            options.put("name", "Daily Bites");
+//            options.put("description", "For "+planName+" Plan of "+messName);
+//            options.put("send_sms_hash", true);
+//            options.put("allow_rotation", false);
+//            options.put("currency", "INR");
+//            options.put("amount", planPrize);
+//
+//            JSONObject preFill = new JSONObject();
+//            preFill.put("email", email);
+//            preFill.put("contact", mobileNo);
+//
+//            options.put("prefill", preFill);
+//
+//            checkout.open(activity, options);
+//
+//        } catch (JSONException e) {
+//            Toast.makeText(activity, e+"", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//
+//    @Override
+//    public void onPaymentSuccess(String s) {
+////        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
+//
+//        GetDateTime getDateTime = new GetDateTime(this);
+//        getDateTime.getDateTime((date, time) -> {
+//            SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+//            SharedPreferences.Editor preferences = sharedPreferences.edit();
+//
+//            Map<String, Object> userInfo = new HashMap<>();
+//            userInfo.put(KEY_MESSNAME, messName);
+//            userInfo.put(KEY_MESSNO, mobileNo);
+//            userInfo.put(KEY_PLANNAME, planName + " Plan");
+//            userInfo.put(KEY_FROMDATE, date);
+//            userInfo.put(KEY_MESSTOKEN, messToken);
+//            userInfo.put(KEY_FREEDISH, "1");
+//            userInfo.put(KEY_RATING, "1");
+//
+//            preferences.putString("messName", messName);
+//            preferences.putString("MessNo", mobileNo);
+//            preferences.putString("planName", planName + " Plan");
+//            preferences.putString("fromDate", date);
+//            preferences.putString("freeDish", "1");
+//            preferences.putString("isRating", "1");
+//            preferences.putString("messToken", messToken);
+//
+//            String nextMonthDateString = getNextMonthDate(date);
+//
+//            userInfo.put(KEY_TODATE, nextMonthDateString);
+//            preferences.putString("toDate", nextMonthDateString);
+//            preferences.apply();
+//
+//            db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
+//                    .update(userInfo)
+//                    .addOnSuccessListener(unused -> {
+//                        // Move to the home screen
+//                        Toast.makeText(PlanInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
+//                    })
+//                    .addOnFailureListener(e -> showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours."));
+//
+//            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//            DatabaseReference dataRef = ref.child("mess").child(mobileNo).child(planName + "plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
+//
+//            Map<String, Object> data = new HashMap<>();
+//            data.put("name", sharedPreferences.getString("UserName", ""));
+//            data.put("email", sharedPreferences.getString("UserEmail", ""));
+//            data.put("plan", planName + " Plan");
+//            data.put("fromDate", date);
+//            data.put("orderId", s);
+//            data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
+//            data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
+//            data.put("address", sharedPreferences.getString("UserAddress", ""));
+//            data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
+//            data.put("toDate", nextMonthDateString);
+//            data.put("token", sharedPreferences.getString("UserToken", ""));
+//
+//
+//            dataRef.updateChildren(data)
+//                    .addOnSuccessListener(aVoid -> {
+//                        // Data saved successfully
+//                        DatabaseReference dataRef2 = ref.child("mess").child(mobileNo).child("wallet");
+//                        double finalAmount = Double.parseDouble(walletAmount) + prizeInRupee;
+//                        dataRef2.setValue(new DecimalFormat("#####.##").format(finalAmount));
+//                        sendNotificationToMess();
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        // Error occurred while saving data
+//                        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
+//                    });
+//        });
+//    }
+//
+//
+//    @Override
+//    public void onPaymentError(int i, String s) {
+//        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
+//        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
 //
 //    }
-
-    public void startPayment() { //Payment gateway opener method
-
-        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-        String mobileNo = sharedPreferences.getString("UserMobileNo", "");
-        String email = sharedPreferences.getString("UserEmail", "");
-
-        Checkout checkout = new Checkout();
-        checkout.setImage(R.drawable.logo__1_);
-        final Activity activity = this;
-        try {
-            JSONObject options = new JSONObject();
-            options.put("name", "Daily Bites");
-            options.put("description", "For "+planName+" Plan of "+messName);
-            options.put("send_sms_hash", true);
-            options.put("allow_rotation", false);
-            options.put("currency", "INR");
-            options.put("amount", planPrize);
-
-            JSONObject preFill = new JSONObject();
-            preFill.put("email", email);
-            preFill.put("contact", mobileNo);
-
-            options.put("prefill", preFill);
-
-            checkout.open(activity, options);
-
-        } catch (JSONException e) {
-            Toast.makeText(activity, e+"", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    @Override
-    public void onPaymentSuccess(String s) {
-//        Toast.makeText(this, "Payment successful " + s, Toast.LENGTH_SHORT).show();
-
-        GetDateTime getDateTime = new GetDateTime(this);
-        getDateTime.getDateTime(new GetDateTime.VolleyCallBack() {
-            @Override
-            public void onGetDateTime(String date, String time) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
-                SharedPreferences.Editor preferences = sharedPreferences.edit();
-
-                Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put(KEY_MESSNAME, messName);
-                userInfo.put(KEY_MESSNO, mobileNo);
-                userInfo.put(KEY_PLANNAME, planName + " Plan");
-                userInfo.put(KEY_FROMDATE, date);
-                userInfo.put(KEY_MESSTOKEN, token);
-                userInfo.put(KEY_FREEDISH, "1");
-                userInfo.put(KEY_RATING, "1");
-
-                preferences.putString("messName", messName);
-                preferences.putString("MessNo", mobileNo);
-                preferences.putString("planName", planName + " Plan");
-                preferences.putString("fromDate", date);
-                preferences.putString("freeDish", "1");
-                preferences.putString("isRating", "1");
-                preferences.putString("messToken", token);
-
-                String nextMonthDateString = getNextMonthDate(date);
-
-                userInfo.put(KEY_TODATE, nextMonthDateString);
-                preferences.putString("toDate", nextMonthDateString);
-                preferences.apply();
-
-                db.collection("User").document(sharedPreferences.getString("UserEmail", ""))
-                        .update(userInfo)
-                        .addOnSuccessListener(unused -> {
-                            // Move to the home screen
-                            Toast.makeText(PlanInfo.this, "Plan added successfully", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
-                            }
-                        });
-
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference dataRef = ref.child("mess").child(mobileNo).child(planName + "plan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
-
-                Map<String, Object> data = new HashMap<>();
-                data.put("name", sharedPreferences.getString("UserName", ""));
-                data.put("email", sharedPreferences.getString("UserEmail", ""));
-                data.put("plan", planName + " Plan");
-                data.put("fromDate", date);
-                data.put("orderId", s);
-                data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
-                data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
-                data.put("address", sharedPreferences.getString("UserAddress", ""));
-                data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
-                data.put("toDate", nextMonthDateString);
-                data.put("token", sharedPreferences.getString("UserToken", ""));
-
-
-                dataRef.updateChildren(data)
-                        .addOnSuccessListener(aVoid -> {
-                            // Data saved successfully
-                            DatabaseReference dataRef2 = ref.child("mess").child(mobileNo).child("wallet");
-                            double finalAmount = Double.parseDouble(walletAmount) + prizeInRupee;
-                            dataRef2.setValue(new DecimalFormat("#####.##").format(finalAmount));
-                            sendNotificationToMess();
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Error occurred while saving data
-                                showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
-                            }
-                        });
-            }
-        });
-    }
-
-
-    @Override
-    public void onPaymentError(int i, String s) {
-//        Toast.makeText(this, "Payment failed "+s, Toast.LENGTH_SHORT).show();
-        showInstructionDialogBox("Payment failed", "If transition done by your bank, you will get money back within 48 hours.");
-
-    }
 
 
     private String getNextMonthDate(String currentDate) {
@@ -342,7 +320,7 @@ public class PlanInfo extends AppCompatActivity implements PaymentResultListener
     }
 
     private void sendNotificationToMess(){
-        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(token,
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(messToken,
                 "📢New Customer Alert!",
                 "Congratulations!🥳🥳🥳 \nYou've just acquired a new customer for "+planName + " Plan"+". Take a moment to celebrate this achievement and get ready to provide exceptional service.",
                 getApplicationContext(),

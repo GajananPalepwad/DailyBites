@@ -31,7 +31,7 @@ public class WalletDepositeAdapter extends RecyclerView.Adapter<WalletDepositeAd
 
 
     static class MyRecentViewHolder extends RecyclerView.ViewHolder {
-        TextView time, status, amount;
+        TextView time, status, amount, title;
         ImageView StatusImg;
         CardView cardView;
 
@@ -42,7 +42,7 @@ public class WalletDepositeAdapter extends RecyclerView.Adapter<WalletDepositeAd
             amount = itemView.findViewById(R.id.amount);
             StatusImg = itemView.findViewById(R.id.coverImg);
             cardView = itemView.findViewById(R.id.cardViewWallet);
-
+            title = itemView.findViewById(R.id.userName);
         }
 
     }
@@ -76,7 +76,18 @@ public class WalletDepositeAdapter extends RecyclerView.Adapter<WalletDepositeAd
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentRed));
         }
 
+        if(messList.get(position).getStatus().equals("Plan Subscribed")){
+            holder.title.setText("INR Deducted");
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.FentBlue));
+        }
 
+
+
+    }
+
+    public void updateData(List<WalletMess> newData) {
+        this.messList = newData;
+        notifyDataSetChanged();
     }
 
     @Override

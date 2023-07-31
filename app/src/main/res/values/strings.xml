@@ -13,8 +13,8 @@
     <string name="or">OR</string>
     <string name="mess_name">Mess Name</string>
     <string name="options">Options</string>
-    <string name="with_delivery">With delivery</string>
-    <string name="without_delivery">Without delivery</string>
+    <string name="with_delivery">Get delivery to home</string>
+    <string name="without_delivery">Takeaway  or eat on spot</string>
     <string name="check_the_mess_location_here">Check the Mess location here</string>
     <string name="one_time_pass">One Time Pass</string>
     <string name="daily_menu">Daily Menu</string>

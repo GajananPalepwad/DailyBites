@@ -39,6 +39,8 @@ public class WalletForUser extends AppCompatActivity {
     RecyclerView recyclerView;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor preferences;
+    WalletDepositeAdapter WalletAdapter;
+    WalletForMessDao messDao;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String KEY_WALLET_BALANCE = "WalletBalance";
     private static final String KEY_PENDING_BALANCE = "PendingDeposit";
@@ -79,14 +81,16 @@ public class WalletForUser extends AppCompatActivity {
             super.run();
 
             WalletDatabase messdb = Room.databaseBuilder(WalletForUser.this, WalletDatabase.class, "WalletView_DB").build();
-            WalletForMessDao messDao = messdb.walletDao();
+            messDao = messdb.walletDao();
             List<WalletMess> mess = messDao.getAllMess();
             Collections.reverse(mess);
 
             WalletForUser.this.runOnUiThread(() -> {
                 recyclerView.setLayoutManager(new LinearLayoutManager(WalletForUser.this));
-                WalletDepositeAdapter WalletAdapter = new WalletDepositeAdapter(WalletForUser.this,mess);
+                WalletAdapter = new WalletDepositeAdapter(WalletForUser.this,mess);
                 recyclerView.setAdapter(WalletAdapter);
+
+                WalletAdapter.updateData(mess);
             });
         }
     }
@@ -98,26 +102,34 @@ public class WalletForUser extends AppCompatActivity {
             WalletDatabase messdb = Room.databaseBuilder(getApplicationContext(),
                     WalletDatabase.class, "WalletView_DB").build();
 
-            WalletForMessDao messDao = messdb.walletDao();
+            messDao = messdb.walletDao();
 
             long lastUid = messDao.getLastMessUid();
 
             if (lastUid == 0) {
                 // Database is empty, set initial uid to 1
                 int initialUid = 1;
-                messDao.insert(new WalletMess(initialUid,status, date, "₹"+ prevTotalPending));
+                messDao.insert(new WalletMess(initialUid,status, date, "+₹"+ prevTotalPending));
             } else {
                 long nextUid = lastUid + 1;
 
                 if (messDao.isExistByMessNo(date)) {
                     WalletMess existingDate = messDao.getMessByUid(date);
                     messDao.delete(existingDate);
-                    messDao.insert(new WalletMess(nextUid, status, date, "₹"+ prevTotalPending));
+                    messDao.insert(new WalletMess(nextUid, status, date, "+₹"+ prevTotalPending));
                 } else {
-                    messDao.insert(new WalletMess(nextUid, status, date, "₹"+ prevTotalPending));
+                    messDao.insert(new WalletMess(nextUid, status, date, "+₹"+ prevTotalPending));
                 }
 
             }
+
+
+            // Update the adapter's data with the updated data
+            List<WalletMess> updatedData = messDao.getAllMess();
+            Collections.reverse(updatedData);
+            WalletForUser.this.runOnUiThread(() -> {
+                WalletAdapter.updateData(updatedData);
+            });
         }
     }
 
@@ -190,8 +202,6 @@ public class WalletForUser extends AppCompatActivity {
 
                     gettime();
                 }
-
-
 
             }
         });

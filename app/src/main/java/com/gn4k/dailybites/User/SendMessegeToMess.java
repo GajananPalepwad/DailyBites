@@ -180,7 +180,7 @@ public class SendMessegeToMess extends AppCompatActivity {
                     }
                 });
             }else{
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ID not matching", Toast.LENGTH_SHORT).show();
             }
         }
     });

@@ -10,8 +10,8 @@
     <string name="or">या</string>
     <string name="mess_name">मेस का नाम</string>
     <string name="options">विकल्प</string>
-    <string name="with_delivery">डिलीवरी के साथ</string>
-    <string name="without_delivery">बिना डिलीवरी के</string>
+    <string name="with_delivery">घर पर डिलीवरी प्राप्त करें</string>
+    <string name="without_delivery">घेऊन जा किंवा जागेवरच खा</string>
     <string name="check_the_mess_location_here">यहां मेस का स्थान जांचें</string>
     <string name="one_time_pass">वन टाइम पास</string>
     <string name="daily_menu">दैनिक मेनू</string>

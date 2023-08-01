@@ -75,12 +75,13 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
             setRegistration(v);
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        login.setOnClickListener(v -> {
+            if(!mobile_No.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
                 loadingDialog.startLoading();
                 getToken();
                 checkValidationToLogin();
+            }else{
+                Toast.makeText(MessOnwnerLoginPage.this, "Please enter mobile number and password", Toast.LENGTH_SHORT).show();
             }
         });
 

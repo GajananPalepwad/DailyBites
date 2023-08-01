@@ -49,10 +49,12 @@ public class DishInfo extends AppCompatActivity {
     Bundle bundle;
     RadioButton withDeliveryRadioButton;
     RadioButton withoutDeliveryRadioButton;
-    int planPriceInPaise = 0, priceInRupee;
+    int planPriceInPaise = 0, priceInRupee, amountOfOneDish;
     String messToken ="", delivery="no", walletAmount;
 
     LoadingDialog loadingDialog;
+    ImageView btnSub, btnAdd;
+    TextView count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,9 @@ public class DishInfo extends AppCompatActivity {
 
 
         bundle = getIntent().getExtras();
+
+        amountOfOneDish = Integer.parseInt(bundle.getString("messDishPrize"));
+
         TextView MessName = findViewById(R.id.MessName);
         MessName.setText(bundle.getString("messName"));
 
@@ -82,6 +87,32 @@ public class DishInfo extends AppCompatActivity {
         CardView backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(v -> onBackPressed());
 
+        TextView priceWO = findViewById(R.id.Tv_prizeWO);
+        TextView priceW = findViewById(R.id.Tv_prizeW);
+
+
+        btnSub = findViewById(R.id.btnSub);
+        btnAdd = findViewById(R.id.btnAdd);
+        count = findViewById(R.id.tvCount);
+
+        btnAdd.setOnClickListener(v -> {
+            int i = Integer.parseInt(count.getText().toString());
+            i++;
+            count.setText(i+"");
+            priceWO.setText("₹"+(i*amountOfOneDish));
+            priceW.setText("₹"+(i*amountOfOneDish+40));
+        });
+
+        btnSub.setOnClickListener(v -> {
+            int i = Integer.parseInt(count.getText().toString());
+            if (i>1) {
+                i--;
+                count.setText(i+"");
+                priceWO.setText("₹"+(i*amountOfOneDish));
+                priceW.setText("₹"+(i*amountOfOneDish+40));
+            }
+        });
+
         notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(DishInfo.this, SendMessegeToMess.class);
             startActivity(intent);
@@ -92,18 +123,17 @@ public class DishInfo extends AppCompatActivity {
             startActivity(intent);
         });
 
-        TextView priceW = findViewById(R.id.Tv_prizeW);
         if (bundle.getString("messIsDelivery").equals("no")){
             priceW.setText("Not Available");
             withDeliveryRadioButton.setEnabled(false);
             withoutDeliveryRadioButton.setChecked(true);
             planPriceInPaise = Integer.parseInt(bundle.getString("messDishPrize"))*100;
-            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"));
+            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"))*Integer.parseInt(count.getText().toString());
         }else {
             priceW.setText("₹"+(Integer.parseInt(bundle.getString("messDishPrize"))+40)+"");
         }
 
-        TextView priceWO = findViewById(R.id.Tv_prizeWO);
+
         priceWO.setText("₹"+bundle.getString("messDishPrize"));
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -128,8 +158,8 @@ public class DishInfo extends AppCompatActivity {
         });
 
         withDeliveryRadioButton.setOnClickListener(v -> {
-            planPriceInPaise = (Integer.parseInt(bundle.getString("messDishPrize"))+40)*100;
-            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"))+40;
+            planPriceInPaise = ((Integer.parseInt(bundle.getString("messDishPrize"))*Integer.parseInt(count.getText().toString()))+40)*100;
+            priceInRupee = (Integer.parseInt(bundle.getString("messDishPrize"))*Integer.parseInt(count.getText().toString()))+40;
             delivery = "yes";
             // Set 'With Delivery' radio button as checked
             withDeliveryRadioButton.setChecked(true);
@@ -138,8 +168,8 @@ public class DishInfo extends AppCompatActivity {
         });
 
         withoutDeliveryRadioButton.setOnClickListener(v -> {
-            planPriceInPaise = Integer.parseInt(bundle.getString("messDishPrize"))*100;
-            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"));
+            planPriceInPaise = Integer.parseInt(bundle.getString("messDishPrize"))*Integer.parseInt(count.getText().toString())*100;
+            priceInRupee = Integer.parseInt(bundle.getString("messDishPrize"))*Integer.parseInt(count.getText().toString());
             delivery = "no";
             // Set 'Without Delivery' radio button as checked
             withoutDeliveryRadioButton.setChecked(true);
@@ -149,34 +179,39 @@ public class DishInfo extends AppCompatActivity {
 
         Button gotomap = findViewById(R.id.location);
 
-        gotomap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DishInfo.this, MessInfo.class);
-                intent.putExtra("messMobile", bundle.getString("messMobile"));
-                intent.putExtra("messName", bundle.getString("messName"));
-                intent.putExtra("messLatitude", bundle.getString("messLatitude"));
-                intent.putExtra("messLongitude", bundle.getString("messLongitude"));
-                startActivity(intent);
-            }
+        gotomap.setOnClickListener(v -> {
+            Intent intent = new Intent(DishInfo.this, MessInfo.class);
+            intent.putExtra("messMobile", bundle.getString("messMobile"));
+            intent.putExtra("messName", bundle.getString("messName"));
+            intent.putExtra("messLatitude", bundle.getString("messLatitude"));
+            intent.putExtra("messLongitude", bundle.getString("messLongitude"));
+            startActivity(intent);
         });
 
         Button buy = findViewById(R.id.buy);
 
         buy.setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+            int finalAmount = 0;
+            int numberOfDish = Integer.parseInt(count.getText().toString());
+            if(withDeliveryRadioButton.isChecked()){
+                finalAmount = amountOfOneDish*numberOfDish+40;
+            }else if (withoutDeliveryRadioButton.isChecked()){
+                finalAmount = amountOfOneDish*numberOfDish;
+            }
 
             if(sharedPreferences.getString("OneDayMessName", "").equals("")){
 
                 if (withDeliveryRadioButton.isChecked() || withoutDeliveryRadioButton.isChecked()) {
                     Intent intent = new Intent(DishInfo.this, PaymentOptions.class);
-                    intent.putExtra("price", priceInRupee+"");
+                    intent.putExtra("price", finalAmount+"");
                     intent.putExtra("planName","OneDay");
                     intent.putExtra("messMobileNo", bundle.getString("messMobile"));
                     intent.putExtra("messToken", messToken);
                     intent.putExtra("messWalletAmount",walletAmount);
                     intent.putExtra("delivery",delivery);
                     intent.putExtra("messName",bundle.getString("messName"));
+                    intent.putExtra("plateCount",count.getText().toString());
                     startActivity(intent);
                 } else {
                     showInstructionDialogBox("Choose a option", "with delivery or without delivery");

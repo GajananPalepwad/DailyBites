@@ -35,6 +35,9 @@
         android:theme="@style/Theme.DailyBites"
         tools:targetApi="31">
         <activity
+            android:name=".SupportOptions"
+            android:exported="false" />
+        <activity
             android:name=".User.PaymentVerificationPage"
             android:exported="false" />
         <activity

@@ -36,7 +36,7 @@ public class PaymentOptions extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     private static final String KEY_WALLET_BALANCE = "WalletBalance";
-    String price, walletBalance, messWalletAmount, messName, messMobileNo, planName, messToken, delivery, OrderId, date;
+    String price, walletBalance, messWalletAmount, messName, messMobileNo, planName, messToken, delivery, OrderId, date, numberOfPlate;
     int newWalletBalance=0;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView tvplanPrice, tvWalletAmount;
@@ -79,6 +79,7 @@ public class PaymentOptions extends AppCompatActivity {
         planName = extras.getString("planName");
         messToken = extras.getString("messToken");
         delivery = extras.getString("delivery");
+        numberOfPlate = extras.getString("plateCount");
         OrderId = generateOrderId();
 
         setAllValues();
@@ -151,18 +152,21 @@ public class PaymentOptions extends AppCompatActivity {
             DatabaseReference dataRef = ref.child("mess").child(messMobileNo).child("OneDayPlan").child("Users").child(sharedPreferences.getString("UserMobileNo", ""));
 
             Map<String, Object> data = new HashMap<>();
-            data.put("name", sharedPreferences.getString("UserName", ""));
-            data.put("email", sharedPreferences.getString("UserEmail", ""));
             data.put("plan", "One Day Plan");
-            data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
             data.put("forDate", date);
             data.put("time", time);
             data.put("orderId", OrderId);
             data.put("delivery", delivery);
-            data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
-            data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
-            data.put("address", sharedPreferences.getString("UserAddress", ""));
+            data.put("numberOfPlate", numberOfPlate);
+            data.put("name", sharedPreferences.getString("UserName", ""));
+            data.put("email", sharedPreferences.getString("UserEmail", ""));
             data.put("token", sharedPreferences.getString("UserToken", ""));
+            data.put("address", sharedPreferences.getString("UserAddress", ""));
+            data.put("latitude", sharedPreferences.getString("UserLatitude", ""));
+            data.put("mobileNo", sharedPreferences.getString("UserMobileNo", ""));
+            data.put("longitude", sharedPreferences.getString("UserLongitude", ""));
+
+
 
 
 

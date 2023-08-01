@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Daily Bites</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="pref_previously_started" translatable="false">false</string>
     <string name="update_today_s_menu">Update today\'s Menu</string>
@@ -128,6 +127,11 @@
     <string name="upi" translatable="false">dailybites.pay@ibl</string>
     <string name="rupee" translatable="false">₹</string>
     <string name="wallet_balance">Wallet Balance</string>
+    <string name="number_of_plate">Number of Plate</string>
+    <string name="chat_with_us">Chat with us</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="registrations">Registrations</string>
+    <string name="send_feedback">Send feedback</string>
 
 
 </resources>

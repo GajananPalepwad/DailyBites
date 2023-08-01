@@ -25,6 +25,7 @@ import com.gn4k.dailybites.LanguageChooser;
 import com.gn4k.dailybites.Mess.OneDayPlanClasses.OneDayUserList;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.ConsumersList;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.SupportOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -85,19 +86,20 @@ public class HomeForMessOwner extends AppCompatActivity {
         checkForAppUpdate();
         getAllDataFromFirebase();
 
-        oneDayUsers. setOnClickListener(v -> {
+        oneDayUsers.setOnClickListener(v -> {
             Intent intent = new Intent(HomeForMessOwner.this, OneDayUserList.class);
             startActivity(intent);
         });
 
-        qr. setOnClickListener(v -> {
+        qr.setOnClickListener(v -> {
             Intent intent = new Intent(HomeForMessOwner.this, QrCodeGenerator.class);
             intent.putExtra("qr_data", "offer");
             startActivity(intent);
         });
 
         support.setOnClickListener(v -> {
-            
+            Intent intent = new Intent(HomeForMessOwner.this, SupportOptions.class);
+            startActivity(intent);
         });
 
         sendMsg.setOnClickListener(v -> {

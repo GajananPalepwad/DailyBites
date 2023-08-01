@@ -150,12 +150,9 @@ public class MessInfo extends AppCompatActivity {
 
         back.setOnClickListener(v -> onBackPressed());
 
-        addToWishList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new BgThreadWishlist().start();
-                Toast.makeText(MessInfo.this, "Added in wishlist", Toast.LENGTH_SHORT).show();
-            }
+        addToWishList.setOnClickListener(v -> {
+            new BgThreadWishlist().start();
+            Toast.makeText(MessInfo.this, "Added in wishlist", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -29,7 +29,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         app:cardCornerRadius="35dp"
-        app:cardElevation="18dp"
+        app:cardElevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -65,7 +65,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_planName">
@@ -115,7 +115,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintStart_toStartOf="@+id/textView22"
         app:layout_constraintTop_toBottomOf="@+id/textView22">
 
@@ -155,7 +155,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView4"
         app:layout_constraintStart_toEndOf="@+id/cardView4"
         app:layout_constraintTop_toBottomOf="@+id/textView22"
@@ -194,7 +194,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintStart_toStartOf="@+id/cardView4"
         app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
@@ -231,7 +231,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
         app:layout_constraintStart_toEndOf="@+id/cardView3"
         app:layout_constraintTop_toTopOf="@+id/cardView3">
@@ -271,7 +271,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/cardView3">
 

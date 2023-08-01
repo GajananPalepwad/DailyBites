@@ -8,7 +8,17 @@ public class OneDayUserModel {
     String longitude;
     String mobileNo;
 
-    public OneDayUserModel(String address, String email, String latitude, String longitude, String mobileNo, String delivery, String name, String orderId, String time) {
+    public String getNumberOfPlate() {
+        return numberOfPlate;
+    }
+
+    public void setNumberOfPlate(String numberOfPlate) {
+        this.numberOfPlate = numberOfPlate;
+    }
+
+    String numberOfPlate;
+
+    public OneDayUserModel(String address, String email, String latitude, String longitude, String mobileNo, String delivery, String name, String orderId, String time, String numberOfPlate) {
         this.address = address;
         this.email = email;
         this.latitude = latitude;
@@ -18,6 +28,7 @@ public class OneDayUserModel {
         this.name = name;
         this.orderId = orderId;
         this.time = time;
+        this.numberOfPlate = numberOfPlate;
     }
 
     public OneDayUserModel(){}

@@ -54,10 +54,17 @@ public class OneDayUserAdapter extends RecyclerView.Adapter<OneDayUserAdapter.My
         holder.userName.setText(model.name);
         holder.time.setText(model.time);
         holder.mobileNo.setText(model.mobileNo);
+        holder.qty.setText(model.numberOfPlate + " Plate");
 
         if(model.delivery.equals("no")){
             holder.map.setVisibility(View.GONE);
         }
+
+        holder.mobileNo.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + model.mobileNo));
+            context.startActivity(intent);
+        });
 
         holder.qr.setOnClickListener(v -> {
             Intent intent = new Intent(context, QrCodeGenerator.class);
@@ -92,7 +99,7 @@ public class OneDayUserAdapter extends RecyclerView.Adapter<OneDayUserAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView userName, mobileNo, time;
+        TextView userName, mobileNo, time, qty;
         ImageView qr, map;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +109,7 @@ public class OneDayUserAdapter extends RecyclerView.Adapter<OneDayUserAdapter.My
             time = itemView.findViewById(R.id.time);
             qr = itemView.findViewById(R.id.show_qr);
             map = itemView.findViewById(R.id.show_map);
+            qty = itemView.findViewById(R.id.numberOfPlate);
 
 
         }

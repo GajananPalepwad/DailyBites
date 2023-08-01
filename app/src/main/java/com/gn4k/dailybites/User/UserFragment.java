@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.gn4k.dailybites.GetDateTime;
 import com.gn4k.dailybites.LanguageChooser;
 import com.gn4k.dailybites.R;
+import com.gn4k.dailybites.SupportOptions;
 import com.gn4k.dailybites.User.ProfileForUsers;
 import com.gn4k.dailybites.User.SendMessegeToMess;
 import com.gn4k.dailybites.User.WalletForUser;
@@ -57,6 +58,7 @@ public class UserFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_user, container, false);
         Button logout = view.findViewById(R.id.LogOut);
         Button setting = view.findViewById(R.id.Settings);
+        Button suppurt = view.findViewById(R.id.support);
         Button persnolInfo = view.findViewById(R.id.persnolI);
         TextView name = view.findViewById(R.id.name);
         TextView address = view.findViewById(R.id.address);
@@ -120,7 +122,11 @@ public class UserFragment extends Fragment {
         persnolInfo.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ProfileForUsers.class);
             startActivity(intent);
-            getActivity();
+        });
+
+        suppurt.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SupportOptions.class);
+            startActivity(intent);
         });
 
         setting.setOnClickListener(v -> showSettingsBottomSheetDialog());
@@ -166,27 +172,39 @@ public class UserFragment extends Fragment {
         CardView notifi = bottomSheetView.findViewById(R.id.notificationSettings);
         CardView cache = bottomSheetView.findViewById(R.id.clearCache);
         CardView lan = bottomSheetView.findViewById(R.id.lan);
+
+        ImageView imgN = bottomSheetView.findViewById(R.id.imgN);
+        ImageView imgC = bottomSheetView.findViewById(R.id.imgC);
+        ImageView imgL = bottomSheetView.findViewById(R.id.imgL);
+
+
+        TextView textN = bottomSheetView.findViewById(R.id.textN);
+        TextView textC = bottomSheetView.findViewById(R.id.textC);
+        TextView textL = bottomSheetView.findViewById(R.id.textL);
+
+
+        ImageView nextN = bottomSheetView.findViewById(R.id.nextN);
+        ImageView nextC = bottomSheetView.findViewById(R.id.nextC);
+        ImageView nextL = bottomSheetView.findViewById(R.id.nextL);
         // Set click listener for the button inside the BottomSheetDialog
 
-        notifi.setOnClickListener(v -> {
-            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
-            startActivity(intent);
-        });
+        notifi.setOnClickListener(this::notifi);
+        imgN.setOnClickListener(this::notifi);
+        textN.setOnClickListener(this::notifi);
+        nextN.setOnClickListener(this::notifi);
 
 
-        cache.setOnClickListener(v -> {
-            // Handle button click inside the BottomSheetDialog
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + requireActivity().getPackageName()));
-            startActivity(intent);
-        });
+        cache.setOnClickListener(this::cashe);
+        imgC.setOnClickListener(this::cashe);
+        textC.setOnClickListener(this::cashe);
+        nextC.setOnClickListener(this::cashe);
 
-        lan.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LanguageChooser.class);
-            intent.putExtra("data", "settings");
-            startActivity(intent);
-        });
+
+        lan.setOnClickListener(this::lan);
+        imgL.setOnClickListener(this::lan);
+        textL.setOnClickListener(this::lan);
+        nextL.setOnClickListener(this::lan);
+
 
         // Create the BottomSheetDialog
         bottomSheetDialog = new BottomSheetDialog(getActivity(),R.style.AppBottomSheetDialogTheme);
@@ -195,6 +213,25 @@ public class UserFragment extends Fragment {
     }
 
 
+    public void cashe (View v){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + requireActivity().getPackageName()));
+        startActivity(intent);
+    }
+
+
+    public void notifi (View v){
+        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
+        startActivity(intent);
+    }
+
+
+    public void lan (View v){
+        Intent intent = new Intent(getActivity(), LanguageChooser.class);
+        intent.putExtra("data", "settings");
+        startActivity(intent);
+    }
 
     private void Logout(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", MODE_PRIVATE);

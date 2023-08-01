@@ -108,4 +108,9 @@
     <string name="order_now">"आता Order करा "</string>
     <string name="please_choose_your_upi_app_and_accept_the_request_to_complete_payment">कृपया पेमेंट पूर्ण करण्यासाठी तुमचे UPI अॅप निवडा</string>
     <string name="wallet_balance">वॉलेट शिल्लक</string>
+    <string name="number_of_plate">प्लेटची संख्या</string>
+    <string name="chat_with_us">आमच्याशी चाट करा</string>
+    <string name="terms_of_service">सेवा अटी</string>
+    <string name="registrations">नोंदणी</string>
+    <string name="send_feedback">अभिप्राय पाठवा</string>
 </resources>

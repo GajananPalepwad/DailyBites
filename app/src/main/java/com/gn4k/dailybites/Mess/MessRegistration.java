@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.TermAndConditions;
 import com.gn4k.dailybites.User.UserRegistration;
@@ -39,10 +40,14 @@ public class MessRegistration extends AppCompatActivity {
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
+    LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mess_registration);
+
+        loadingDialog = new LoadingDialog(this);
 
         name = findViewById(R.id.name);
         mobileNo = findViewById(R.id.phoneNo);
@@ -66,9 +71,13 @@ public class MessRegistration extends AppCompatActivity {
             email.setClickable(false);
         }
 
+        getToken();
+
         BTNregistor.setOnClickListener(v -> {
-            getToken();
+
+            loadingDialog.startLoading();
             getRegister();
+
         });
 
         tos.setOnClickListener(v -> {
@@ -90,7 +99,8 @@ public class MessRegistration extends AppCompatActivity {
                 if (!snapshot.exists()) {
                     checkAllParametersToRegistration();
                 } else {
-                    Toast.makeText(MessRegistration.this, "Account already exist", Toast.LENGTH_LONG).show();
+                    loadingDialog.stopLoading();
+                    Toast.makeText(MessRegistration.this, "Account already exist with this Mobile no.", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -163,6 +173,7 @@ public class MessRegistration extends AppCompatActivity {
                         dataRef.setValue(data)
                                 .addOnSuccessListener(aVoid -> {
                                     // Data saved successfully
+                                    loadingDialog.stopLoading();
                                     Toast.makeText(MessRegistration.this, "REGISTRATION SUCCESSFUL", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MessRegistration.this, MapToLocateMess.class);
                                     startActivity(intent);
@@ -170,6 +181,7 @@ public class MessRegistration extends AppCompatActivity {
                                 })
                                 .addOnFailureListener(e -> {
                                     // Error occurred while saving data
+                                    loadingDialog.stopLoading();
                                     Toast.makeText(MessRegistration.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                                 });
 

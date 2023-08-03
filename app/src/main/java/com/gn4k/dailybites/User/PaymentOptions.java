@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animation.PaymentLoadingDialog;
 import com.gn4k.dailybites.GetDateTime;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletDatabase;
@@ -85,11 +86,41 @@ public class PaymentOptions extends AppCompatActivity {
         setAllValues();
 
         btnPay.setOnClickListener(v -> {
+            PaymentLoadingDialog paymentLoadingDialog = new PaymentLoadingDialog(this);
+
             if(Integer.parseInt(price)<=Integer.parseInt(walletBalance)) {
                 if(planName.equals("OneDay")){
-                    oneDayPayment();
+
+                    paymentLoadingDialog.startLoading();
+                    Thread thread = new Thread() {
+
+                        public void run() {
+                            try {
+                                sleep(4000);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                oneDayPayment();
+                            }
+                        }
+                    };thread.start();
                 }else {
-                    monthlyPayment();
+
+                    paymentLoadingDialog.startLoading();
+                    Thread thread = new Thread() {
+
+                        public void run() {
+                            try {
+                                sleep(4000);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                monthlyPayment();
+                            }
+                        }
+                    };thread.start();
                 }
             }else{
                 showInstructionDialogBox("Low Balance", "Insufficient wallet balance. Add "+getString(R.string.rupee)+(Integer.parseInt(price)-Integer.parseInt(walletBalance))+" to complete this payment");

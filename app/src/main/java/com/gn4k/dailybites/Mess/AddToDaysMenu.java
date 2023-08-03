@@ -91,7 +91,11 @@ public class AddToDaysMenu extends AppCompatActivity {
     String menu="";
     private void sendAllDataToUpdateInFirebase(){
         int price = Integer.parseInt(evprise.getText().toString());
-        menu = "Lunch: "+evmenuL.getText().toString()+"\nDinner: "+evmenuD.getText().toString();
+        if( evmenuL.getText().toString().isEmpty() && evmenuD.getText().toString().isEmpty()){
+            menu ="";
+        }else {
+            menu = "Lunch: " + evmenuL.getText().toString() + "\nDinner: " + evmenuD.getText().toString();
+        }
 
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);
         // Update user information in Firebase database
@@ -104,21 +108,15 @@ public class AddToDaysMenu extends AppCompatActivity {
         data.put("menu", menu);
 
         dataRef.updateChildren(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Move to the home screen
-                        Intent intent = new Intent(AddToDaysMenu.this, HomeForMessOwner.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    // Move to the home screen
+                    Intent intent = new Intent(AddToDaysMenu.this, HomeForMessOwner.class);
+                    startActivity(intent);
+                    finish();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Error occurred while saving data
-                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                    }
+                .addOnFailureListener(e -> {
+                    // Error occurred while saving data
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                 });
     }
 

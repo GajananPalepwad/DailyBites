@@ -212,7 +212,7 @@ public class MonthlyPlanEditor extends AppCompatActivity {
         }
         else if (planName.equals("Gold")) {
 
-            TVplanName.setTextColor(Color.parseColor("#FDD500"));
+            TVplanName.setTextColor(Color.parseColor("#EBBF5C"));
             Drawable drawable  = getResources().getDrawable(R.drawable.gold);
             planImage.setImageDrawable(drawable);
         }

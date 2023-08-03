@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.UserListAdapter;
 import com.gn4k.dailybites.Mess.consumersUserlistFragment.UserModelForMess;
 import com.gn4k.dailybites.R;
@@ -23,11 +24,15 @@ import java.util.ArrayList;
 
 public class OneDayUserList extends AppCompatActivity {
 
+    LoadingDialog loadingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_day_user_list);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoading();
 
 
         CardView backBtn = findViewById(R.id.back);
@@ -58,6 +63,7 @@ public class OneDayUserList extends AppCompatActivity {
                     list.add(user);
                 }
                 adapter.notifyDataSetChanged();
+                loadingDialog.stopLoading();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

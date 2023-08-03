@@ -236,6 +236,23 @@ public class PaymentVerificationPage extends AppCompatActivity {
 
         dataRef.setValue(data)
                 .addOnSuccessListener(aVoid -> {
+                    notifyAdmin();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference docRef = db.collection("User").document(sharedPreferencesUser.getString("UserEmail",""));
+
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("PendingDeposit", amount+"");
+
+                    docRef.update(updates);
+
+                    if(totalPending.equals("0")){
+                        gettime();
+                    }
+
+                    preferences.putString("previousPendingDeposit", amount);
+                    preferences.putString("previousBalance", preBalance);
+                    preferences.apply();
+
                     showInstructionDialogBox("Payment "+status,"You will receive amount in wallet within 30 Minute\n\nClick on OK to Confirm");
                 })
                 .addOnFailureListener(e -> {
@@ -251,23 +268,6 @@ public class PaymentVerificationPage extends AppCompatActivity {
         builder.setMessage(mbody);
         builder.setPositiveButton("OK", (dialog, which) -> {
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference docRef = db.collection("User").document(sharedPreferencesUser.getString("UserEmail",""));
-
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("PendingDeposit", amount+"");
-
-            docRef.update(updates);
-
-            if(totalPending.equals("0")){
-                gettime();
-            }
-
-            preferences.putString("previousPendingDeposit", amount);
-            preferences.putString("previousBalance", preBalance);
-            preferences.apply();
-
-            notifyAdmin();
             onBackPressed();
             finish();
         });

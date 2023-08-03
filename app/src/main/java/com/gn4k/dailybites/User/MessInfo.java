@@ -43,15 +43,14 @@ import java.util.Locale;
 
 public class MessInfo extends AppCompatActivity {
 
-    private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList;
-    TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS, mobileNo, email;
+    private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList, oneDayCard;
+    TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS, mobileNo, email, tvMenu, tvPrice;
     boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true;
-    ImageView cover, isVeg;
+    ImageView cover, isVeg, oneDayImg;
     String messName, address, token ,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
-    private long num;
-    private GoogleMap googleMap;
+
     private double mlatitude;  // Your latitude value
     private double mlongitude; // Your longitude value
     LoadingDialog loadingDialog;
@@ -64,6 +63,10 @@ public class MessInfo extends AppCompatActivity {
 
         loadingDialog  = new LoadingDialog(this);
         loadingDialog.startLoading();
+        oneDayCard = findViewById(R.id.oneDayCard);
+        oneDayImg = findViewById(R.id.coverImg);
+        tvMenu = findViewById(R.id.menu);
+        tvPrice = findViewById(R.id.price);
         showMap = findViewById(R.id.openMap);
         mobileNo = findViewById(R.id.mobileNo);
         email = findViewById(R.id.email);
@@ -252,9 +255,8 @@ public class MessInfo extends AppCompatActivity {
 
                             if (urlCover != null) {
                                 Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.indian_food_art).into(cover);
-
+                                Glide.with(MessInfo.this).load(urlCover).centerCrop().placeholder(R.drawable.indian_food_art).into(oneDayImg);
                                 //sending data to room database for recent
-                                num = Long.parseLong(messMobile);
                                 new Bgthread().start();
                             }
                         }
@@ -262,6 +264,8 @@ public class MessInfo extends AppCompatActivity {
                         tvRatings.setText((String) data.get("ratings"));
                         mobileNo.setText("Mobile no: +91 "+(String) data.get("mobileNo"));
                         email.setText("Email: "+(String) data.get("email"));
+                        tvMenu.setText((String) data.get("menu"));
+                        tvPrice.setText("₹"+(String) data.get("dishPrize"));
                         token=(String) data.get("token");
 
                         if(((String) data.get("isVerified")).equals("yes")){

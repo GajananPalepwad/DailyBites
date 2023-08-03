@@ -31,6 +31,8 @@ import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletWithdrawAdapter;
 import com.gn4k.dailybites.RoomForTransitionHistoryMess.WalletMess;
 
 
+import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
+import com.gn4k.dailybites.User.PaymentVerificationPage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -58,6 +60,7 @@ public class WalletForMess extends AppCompatActivity {
     String balanceString, pendingString;
     RecyclerView recyclerView;
     LoadingDialog loadingDialog;
+    double balanceDouble, pendingDouble;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -287,7 +290,7 @@ public class WalletForMess extends AppCompatActivity {
 
     private void setWithdraw(){
 
-        double balanceDouble, pendingDouble;
+
 
         balanceDouble = Double.parseDouble(balanceString);
         pendingDouble = Double.parseDouble(pendingString);
@@ -310,25 +313,70 @@ public class WalletForMess extends AppCompatActivity {
         data.put("wallet", balanceDouble+"");
 
         dataRef.updateChildren(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Move to the home screen
-                        showInstructionDialogBox("Payment Under Process", "You will receive amount in bank account within 48 Hours");
-                        updateAccordingtofirebase();
-                        gettime();
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    // Move to the home screen
+//                    showInstructionDialogBox("Payment Under Process", "You will receive amount in bank account within 48 Hours");
+                    updateAccordingtofirebase();
+                    sendRequestToAdmin();
+                    gettime();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Error occurred while saving data
-                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                    }
+                .addOnFailureListener(e -> {
+                    // Error occurred while saving data
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                 });
 
     }
 
+
+    private void sendRequestToAdmin() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dataRef = ref.child("WithdrawRequest").child(sharedPreferences.getString("MessOwnerMobileNo",""));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", sharedPreferences.getString("MessOwnerEmail",""));
+        data.put("mobileNo", sharedPreferences.getString("MessOwnerMobileNo",""));
+        data.put("amount", pendingDouble+"");
+        dataRef.setValue(data)
+                .addOnSuccessListener(aVoid -> {
+                    notifyAdmin();
+                    showInstructionDialogBox("Payment Under Review","You will receive amount in you account within 48 Hours\n\nClick on OK to Confirm");
+                })
+                .addOnFailureListener(e -> {
+                    // Error occurred while saving data
+                    Toast.makeText(WalletForMess.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void notifyAdmin(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dbpath = db.child("Admin");
+        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                    String token = (String) data.get("token");
+
+                    FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                            token,
+                            sharedPreferences.getString("MessOwnerMobileNo",""),
+                            "Requested to withdraw "+pendingDouble+" rupee",
+                            getApplicationContext(),
+                            WalletForMess.this);
+
+                    notificationsSender.SendNotifications();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
 
     private void showPasswordBottomSheetDialog() {
@@ -342,18 +390,15 @@ public class WalletForMess extends AppCompatActivity {
         EditText pass = bottomSheetView.findViewById(R.id.tvPassword);
         // Set click listener for the button inside the BottomSheetDialog
 
-        withdraw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        withdraw.setOnClickListener(v -> {
 
-                if(pass.getText().toString().equals(passwordFromFB)){
-                    setWithdraw();
-                    bottomSheetDialog.dismiss();
-                }else{
-                    Toast.makeText(WalletForMess.this, "Invalid Password", Toast.LENGTH_SHORT).show();
-                }
-
+            if(pass.getText().toString().equals(passwordFromFB)){
+                setWithdraw();
+                bottomSheetDialog.dismiss();
+            }else{
+                Toast.makeText(WalletForMess.this, "Invalid Password", Toast.LENGTH_SHORT).show();
             }
+
         });
 
 

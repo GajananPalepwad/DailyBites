@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
+import com.gn4k.dailybites.Animation.PaymentLoadingDialog;
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.SendNotificationClasses.FcmNotificationsSender;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,7 @@ public class PlanInfo extends AppCompatActivity {
         loadingDialog = new LoadingDialog(PlanInfo.this);
         loadingDialog.startLoading();
 
+
         TVplanName = findViewById(R.id.tv_planName);
         planImage = findViewById(R.id.planImage);
         isVeg = findViewById(R.id.isVeg);
@@ -85,6 +87,8 @@ public class PlanInfo extends AppCompatActivity {
             intent.putExtra("messToken", messToken);
             intent.putExtra("messWalletAmount",walletAmount);
             intent.putExtra("messName",messName);
+
+
             startActivity(intent);
 
             }else {
@@ -119,7 +123,7 @@ public class PlanInfo extends AppCompatActivity {
 
         } else if (planName.equals("Gold")) {
 
-            TVplanName.setTextColor(Color.parseColor("#FDD500"));
+            TVplanName.setTextColor(Color.parseColor("#EBBF5C"));
             Drawable drawable = getResources().getDrawable(R.drawable.gold);
             planImage.setImageDrawable(drawable);
         } else if (planName.equals("Silver")) {

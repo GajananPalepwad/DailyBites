@@ -139,6 +139,15 @@ public class  Home extends AppCompatActivity {
         }
 
 
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 
     class CalenderBgthread extends Thread { // to add a mess in recent list in room database

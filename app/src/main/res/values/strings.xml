@@ -32,7 +32,7 @@
     <string name="select_your_location">Select your location</string>
     <string name="your_address">Your Address</string>
     <string name="confirm_location">Confirm Location</string>
-    <string name="monthly_plans"><![CDATA[Monthly Plans  ->]]></string>
+    <string name="monthly_plans"><![CDATA[Monthly Plans]]></string>
     <string name="contact_info"><![CDATA[Contact Info  ->]]></string>
     <string name="location"><![CDATA[Location  ->]]></string>
     <string name="show_path_in_map">Show Path in Map</string>

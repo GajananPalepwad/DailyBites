@@ -100,7 +100,6 @@ public class OfferCodeScanner extends AppCompatActivity {
         if (result.getContents() != null) {
 
             String messNo = result.getContents();
-            if(sharedPreferences.getString("UserEmail", "").equals("MessNo")) {
                 Toast.makeText(this, messNo, Toast.LENGTH_SHORT).show();
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference dbpath = db.child("mess").child(messNo).child("freeDish");
@@ -147,9 +146,7 @@ public class OfferCodeScanner extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-            }else {
-                showInstructionDialogBox("Not available", "You can't use this token in this mess");
-            }
+
         }
     });
 

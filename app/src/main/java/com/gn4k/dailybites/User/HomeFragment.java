@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -109,6 +110,14 @@ public class HomeFragment extends Fragment {
 
                 RatingsDialog ratingsDialog = new RatingsDialog(getActivity());
                 ratingsDialog.showDialog(sharedPreferences.getString("MessNo", ""), sharedPreferences);
+//                Dialog dialog;
+//                dialog = new Dialog(getContext(), R.style.AppBottomSheetDialogTheme);
+//                dialog.setContentView(R.layout.subscribed_plan_details);
+//                dialog.setCancelable(true);
+//
+//
+//                dialog.show();
+
 
             }
         });
@@ -204,6 +213,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                list.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
 
                     MessModel user = dataSnapshot.getValue(MessModel.class);
@@ -243,7 +254,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                listDish.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
 
                     MessModel user = dataSnapshot.getValue(MessModel.class);
@@ -462,12 +473,7 @@ public class HomeFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title);
         builder.setMessage(mbody);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();

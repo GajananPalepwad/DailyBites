@@ -27,7 +27,7 @@
     <string name="select_your_location">अपना स्थान चुनें</string>
     <string name="your_address">तुम्हारा पता</string>
     <string name="confirm_location">स्थान की पुष्टि करें</string>
-    <string name="monthly_plans"><![CDATA[मासिक योजनाएँ  ->]]></string>
+    <string name="monthly_plans"><![CDATA[मासिक योजनाएँ]]></string>
     <string name="contact_info"><![CDATA[संपर्क सूचना ->]]></string>
     <string name="location"><![CDATA[जगह ->]]></string>
     <string name="show_path_in_map">"मेस का रास्ता मॅप मे देखे "</string>

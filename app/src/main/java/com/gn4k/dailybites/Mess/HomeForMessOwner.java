@@ -173,6 +173,11 @@ public class HomeForMessOwner extends AppCompatActivity {
         getCountOfUsers();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 
     private void getAllDataFromFirebase(){
         SharedPreferences sharedPreferences = getSharedPreferences("MessOwnerData",MODE_PRIVATE);

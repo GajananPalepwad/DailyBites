@@ -52,42 +52,49 @@ public class DishAdapterForHome extends RecyclerView.Adapter<DishAdapterForHome.
 
         MessModel messmodel = list.get(position);
         if(messmodel.getMenu().equals("") || messmodel.getMenu()==null) {
-            ViewGroup.LayoutParams layoutParams = holder.card.getLayoutParams();
-            layoutParams.height = 0;
-            holder.card.setLayoutParams(layoutParams);
-        }
 
-        holder.menu.setText(messmodel.getMenu());
-        holder.dishprice.setText("₹"+messmodel.getDishPrize());
-        holder.ratings.setText(messmodel.getRatings());
-        holder.myRating.setRating(Float. parseFloat(messmodel.getRatings()));
-        Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.indian_food_art).into(holder.coverImg);
-        if(messmodel.getIsVerified().equals("yes")) {
-            holder.ver.setText("Verified");
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.card.getLayoutParams();
+            params.topMargin=0;
+            params.bottomMargin =0;
+            params.height = 0;
+            holder.card.setLayoutParams(params);
+
         }else{
-            holder.ver.setText("Not Verified");
+
+
+            holder.menu.setText(messmodel.getMenu());
+            holder.dishprice.setText("₹"+messmodel.getDishPrize());
+            holder.ratings.setText(messmodel.getRatings());
+            holder.myRating.setRating(Float. parseFloat(messmodel.getRatings()));
+            Glide.with(context).load(messmodel.getCoverImage()).centerCrop().placeholder(R.drawable.indian_food_art).into(holder.coverImg);
+
+            if(messmodel.getIsVerified().equals("yes")) {
+                holder.ver.setText("Verified");
+            }else{
+                holder.ver.setText("Not Verified");
+            }
+            holder.itemView.setOnClickListener(v -> {
+
+                String latitude = String.valueOf(messmodel.getLatitude());
+                String longitude = String.valueOf(messmodel.getLongitude());
+
+                Intent intent = new Intent(context, DishInfo.class);
+                intent.putExtra("messMobile", messmodel.getMobileNo());
+                intent.putExtra("messName", messmodel.getMessName());
+                intent.putExtra("messIsDelivery", messmodel.getIsDelivery());
+                intent.putExtra("messCoverImage", messmodel.getCoverImage());
+                intent.putExtra("messRatings", messmodel.getRatings());
+                intent.putExtra("messDishPrize", messmodel.getDishPrize());
+                intent.putExtra("messToDayDish", messmodel.getMenu());
+                intent.putExtra("messLatitude", latitude);
+                intent.putExtra("messLongitude", longitude);
+
+                context.startActivity(intent);
+
+            });
         }
-        holder.itemView.setOnClickListener(v -> {
 
-            String latitude = String.valueOf(messmodel.getLatitude());
-            String longitude = String.valueOf(messmodel.getLongitude());
-
-            Intent intent = new Intent(context, DishInfo.class);
-            intent.putExtra("messMobile", messmodel.getMobileNo());
-            intent.putExtra("messName", messmodel.getMessName());
-            intent.putExtra("messIsDelivery", messmodel.getIsDelivery());
-            intent.putExtra("messCoverImage", messmodel.getCoverImage());
-            intent.putExtra("messRatings", messmodel.getRatings());
-            intent.putExtra("messDishPrize", messmodel.getDishPrize());
-            intent.putExtra("messToDayDish", messmodel.getMenu());
-            intent.putExtra("messLatitude", latitude);
-            intent.putExtra("messLongitude", longitude);
-
-            context.startActivity(intent);
-
-        });
     }
-
 
 
     @Override

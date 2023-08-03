@@ -94,33 +94,38 @@ public class SendMessegeToMess extends AppCompatActivity {
 
         send.setOnClickListener(v -> {
 
+            if(!title.getText().toString().isEmpty() && !body.getText().toString().isEmpty()) {
 
-            DatabaseReference dbpath = db.child("mess")
-                    .child((sharedPreferences.getString("MessNo", "")));
+                DatabaseReference dbpath = db.child("mess")
+                        .child((sharedPreferences.getString("MessNo", "")));
 
-                        dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
-                                    String token = (String) data.get("token");
+                dbpath.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            HashMap<String, Object> data = (HashMap<String, Object>) snapshot.getValue();
+                            String token = (String) data.get("token");
 
-                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
-                                token,
-                                title.getText().toString(),
-                                body.getText().toString(),
-                                getApplicationContext(),
-                                SendMessegeToMess.this);
+                            FcmNotificationsSender notificationsSender = new FcmNotificationsSender(
+                                    token,
+                                    title.getText().toString(),
+                                    body.getText().toString(),
+                                    getApplicationContext(),
+                                    SendMessegeToMess.this);
 
-                        notificationsSender.SendNotifications();
+                            notificationsSender.SendNotifications();
                         } else {
                             Toast.makeText(SendMessegeToMess.this, "Something went wrong!!!!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            }else {
+                Toast.makeText(this, "Please fill the all details", Toast.LENGTH_SHORT).show();
+            }
 
         });
 

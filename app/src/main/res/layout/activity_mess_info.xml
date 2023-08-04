@@ -493,11 +493,10 @@
                 android:id="@+id/oneDayCard"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:backgroundTint="#F8F8FF"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="10dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="1dp">
+                app:cardElevation="2dp">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout

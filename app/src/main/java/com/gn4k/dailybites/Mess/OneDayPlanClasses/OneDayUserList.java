@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 public class OneDayUserList extends AppCompatActivity {
 
     LoadingDialog loadingDialog;
+    LinearLayout text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,7 @@ public class OneDayUserList extends AppCompatActivity {
 
         loadingDialog = new LoadingDialog(this);
         loadingDialog.startLoading();
-
+        text = findViewById(R.id.text);
 
         CardView backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(v -> onBackPressed());
@@ -64,6 +67,9 @@ public class OneDayUserList extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
                 loadingDialog.stopLoading();
+                if(adapter.getItemCount()!=0){
+                    text.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}

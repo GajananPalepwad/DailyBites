@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,17 +44,18 @@ import java.util.Locale;
 
 public class MessInfo extends AppCompatActivity {
 
-    private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList, oneDayCard;
+    private CardView back, infoCard,  diamondCard, goldCard, silverCard, addToWishList, oneDayCard, shared;
     TextView tvMessName, tvAddress, tvRatings, tvIsNonVegAvailable, tvIsVerified, priseD, priseG, priseS, mobileNo, email, tvMenu, tvPrice;
     boolean isSPlanPresent = true, isGPlanPresent = true, isDPlanPresent = true;
     ImageView cover, isVeg, oneDayImg;
-    String messName, address, token ,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified";
+    String messName, address, token ,messLatitude, messLongitude, messMobile, urlCover, verifyString = "Not Verified", menu, oneDayPrice, rating, isDelivery;
     NestedScrollView nestedScrollView;
     private int previousScrollY = 0;
 
     private double mlatitude;  // Your latitude value
     private double mlongitude; // Your longitude value
     LoadingDialog loadingDialog;
+    LinearLayout onedayLayout;
 
     Button showMap;
     @Override
@@ -63,6 +65,8 @@ public class MessInfo extends AppCompatActivity {
 
         loadingDialog  = new LoadingDialog(this);
         loadingDialog.startLoading();
+
+        onedayLayout = findViewById(R.id.onedayLayout);
         oneDayCard = findViewById(R.id.oneDayCard);
         oneDayImg = findViewById(R.id.coverImg);
         tvMenu = findViewById(R.id.menu);
@@ -71,6 +75,7 @@ public class MessInfo extends AppCompatActivity {
         mobileNo = findViewById(R.id.mobileNo);
         email = findViewById(R.id.email);
         back = findViewById(R.id.back);
+        shared = findViewById(R.id.share);
         addToWishList = findViewById(R.id.like);
         diamondCard = findViewById(R.id.diamond);
         goldCard = findViewById(R.id.gold);
@@ -108,6 +113,14 @@ public class MessInfo extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + messMobile));
             startActivity(intent);
+        });
+
+        shared.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.gn4k.dailybites");
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
+
         });
 
         showMap.setOnClickListener(v -> {
@@ -149,6 +162,22 @@ public class MessInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        oneDayCard.setOnClickListener(v -> {
+            Intent intent = new Intent(MessInfo.this, DishInfo.class);
+            intent.putExtra("messMobile", messMobile);
+            intent.putExtra("messName", messName);
+            intent.putExtra("messIsDelivery", isDelivery);
+            intent.putExtra("messCoverImage", urlCover);
+            intent.putExtra("messRatings", rating);
+            intent.putExtra("messDishPrize", oneDayPrice);
+            intent.putExtra("messToDayDish", menu);
+            intent.putExtra("messLatitude", messLatitude);
+            intent.putExtra("messLongitude", messLongitude);
+
+            startActivity(intent);
+        });
+
 
 
         back.setOnClickListener(v -> onBackPressed());
@@ -266,7 +295,16 @@ public class MessInfo extends AppCompatActivity {
                         email.setText("Email: "+(String) data.get("email"));
                         tvMenu.setText((String) data.get("menu"));
                         tvPrice.setText("₹"+(String) data.get("dishPrize"));
-                        token=(String) data.get("token");
+
+                        token = (String) data.get("token");
+                        menu = (String) data.get("menu");
+                        oneDayPrice = (String) data.get("dishPrize");
+                        rating = (String) data.get("ratings");
+                        isDelivery = (String) data.get("isDelivery");
+
+                        if(((String) data.get("menu")).equals("")){
+                            onedayLayout.setVisibility(View.GONE);
+                        }
 
                         if(((String) data.get("isVerified")).equals("yes")){
                             verifyString = "Verified";

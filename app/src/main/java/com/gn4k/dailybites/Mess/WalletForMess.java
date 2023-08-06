@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ public class WalletForMess extends AppCompatActivity {
     String balanceString, pendingString;
     RecyclerView recyclerView;
     LoadingDialog loadingDialog;
+    ImageView btnInfo;
     double balanceDouble, pendingDouble;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class WalletForMess extends AppCompatActivity {
         loadingDialog = new LoadingDialog(WalletForMess.this);
         loadingDialog.startLoading();
 
+        btnInfo = findViewById(R.id.btnInfo);
         balance = findViewById(R.id.balance);
         pending = findViewById(R.id.pending);
         withdrawbtn = findViewById(R.id.withdrawBtn);
@@ -81,6 +84,9 @@ public class WalletForMess extends AppCompatActivity {
         backBtn.setOnClickListener(v -> onBackPressed());
 
 
+        btnInfo.setOnClickListener(v -> {
+            showInstructionDialogBox("", "Your Daily Bites wallet balance available for online payment, in app subscription only");
+        });
 
         withdrawbtn.setOnClickListener(v -> {
             if(Double.parseDouble(balanceString)>1.0){

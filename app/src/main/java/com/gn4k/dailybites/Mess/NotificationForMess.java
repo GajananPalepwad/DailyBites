@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForNotification.NotificationAdapter;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public class NotificationForMess extends AppCompatActivity {
 
+    LinearLayout text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,8 @@ public class NotificationForMess extends AppCompatActivity {
         CardView backBtn = findViewById(R.id.back);
 
         backBtn.setOnClickListener(v -> onBackPressed());
+
+        text = findViewById(R.id.text);
 
         RecyclerView recentRecyclerView = findViewById(R.id.recyclerView);
         new Bgthread(recentRecyclerView).start();
@@ -48,12 +53,13 @@ public class NotificationForMess extends AppCompatActivity {
             List<NotificationData> notification = messDao.getAllNotification();
             Collections.reverse(notification);
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setLayoutManager(new LinearLayoutManager(NotificationForMess.this));
-                    NotificationAdapter notificationAdapter = new NotificationAdapter(NotificationForMess.this,notification);
-                    recyclerView.setAdapter(notificationAdapter);
+            runOnUiThread(() -> {
+                recyclerView.setLayoutManager(new LinearLayoutManager(NotificationForMess.this));
+                NotificationAdapter notificationAdapter = new NotificationAdapter(NotificationForMess.this,notification);
+                recyclerView.setAdapter(notificationAdapter);
+
+                if(notificationAdapter.getItemCount()!=0){
+                    text.setVisibility(View.GONE);
                 }
             });
         }

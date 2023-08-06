@@ -89,6 +89,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Messlist" />
 
+                <LinearLayout
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/recyclerViewRecent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/recyclerViewRecent"
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewRecent">
+
+                    <ImageView
+                        android:layout_width="180dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/nothing_here_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/recent_visited_mess_will_show_here"
+                        android:textColor="@color/wallet_holo_blue_light"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+
                 <TextView
                     android:id="@+id/WishList"
                     android:layout_width="0dp"
@@ -124,6 +151,32 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/WishList" />
+
+                <LinearLayout
+                    android:id="@+id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/recyclerViewWishlist"
+                    app:layout_constraintStart_toStartOf="@+id/recyclerViewWishlist"
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewWishlist">
+
+                    <ImageView
+                        android:layout_width="180dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/nothing_here_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/liked_mess_will_show_here"
+                        android:textColor="@color/wallet_holo_blue_light"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imageView17"

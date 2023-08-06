@@ -132,6 +132,11 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="registrations">Registrations</string>
     <string name="send_feedback">Send feedback</string>
+    <string name="notification_will_show_here">Notification will show here</string>
+    <string name="one_day_user_will_show_here">One Day user will show here</string>
+    <string name="click_on_done_button_after_payment_only">Click on Done button after payment only</string>
+    <string name="recent_visited_mess_will_show_here">Recent visited mess will show here</string>
+    <string name="liked_mess_will_show_here">Liked mess will show here</string>
 
 
 </resources>

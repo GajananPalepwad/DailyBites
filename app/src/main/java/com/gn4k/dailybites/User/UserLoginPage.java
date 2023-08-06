@@ -60,6 +60,8 @@ public class UserLoginPage extends AppCompatActivity {
     private static final String KEY_RATING = "isRating";
     private static final String KEY_ONE_DAY_MESS_TOKEN = "OneDayToken";
     private static final String KEY_ONE_DAY_ORDER_ID = "OneDayOrderId";
+    private static final String KEY_WALLET_BALANCE = "WalletBalance";//0
+    private static final String KEY_PENDING_BALANCE = "PendingDeposit";//0
 
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -191,6 +193,8 @@ public class UserLoginPage extends AppCompatActivity {
                         preferences.putString("OneDayOrderId", documentSnapshot.getString(KEY_ONE_DAY_ORDER_ID));
                         preferences.putString("isRating", documentSnapshot.getString(KEY_RATING));
                         preferences.putString("UserToken", tokenString);
+                        preferences.putString("previousPendingDeposit", documentSnapshot.getString(KEY_PENDING_BALANCE));
+                        preferences.putString("previousBalance", documentSnapshot.getString(KEY_WALLET_BALANCE));
                         preferences.apply();
 
                         if(documentSnapshot.getDouble(KEY_LATITUDE)== null ){

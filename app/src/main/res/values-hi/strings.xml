@@ -113,4 +113,9 @@
     <string name="terms_of_service">सेवा की शर्तें</string>
     <string name="registrations">पंजीकरण</string>
     <string name="send_feedback">प्रतिक्रिया भेजें</string>
+    <string name="notification_will_show_here">नोटिफिकेशन यहां दिखेगा</string>
+    <string name="one_day_user_will_show_here">एक दिवसीय उपयोगकर्ता यहां दिखाएगा</string>
+    <string name="click_on_done_button_after_payment_only">भुगतान के बाद ही Done बटन पर क्लिक करें</string>
+    <string name="recent_visited_mess_will_show_here">हाल ही में देखी गई mess यहां दिखाई जाएगी</string>
+    <string name="liked_mess_will_show_here">पसंद की गई mess यहां दिखाई देगी</string>
 </resources>

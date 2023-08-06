@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.gn4k.dailybites.Animation.LoadingDialog;
 import com.gn4k.dailybites.R;
@@ -36,6 +37,7 @@ public class GoldUserList extends Fragment {
     }
 
     LoadingDialog loadingDialog;
+    LinearLayout text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +45,7 @@ public class GoldUserList extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gold_user_list, container, false);
         loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.startLoading();
+        text = view.findViewById(R.id.text);
         // Inflate the layout for this fragment
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().
@@ -70,6 +73,12 @@ public class GoldUserList extends Fragment {
                     list.add(user);
                 }
                 adapter.notifyDataSetChanged();
+
+                if(adapter.getItemCount()!=0){
+                    text.setVisibility(View.GONE);
+                }
+
+
                 loadingDialog.stopLoading();
             }
 

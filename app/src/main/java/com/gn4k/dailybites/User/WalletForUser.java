@@ -1,5 +1,6 @@
 package com.gn4k.dailybites.User;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +55,7 @@ public class WalletForUser extends AppCompatActivity {
         backBtn.setOnClickListener(v -> onBackPressed());
 
         Button deposit = findViewById(R.id.deposite);
-
+        ImageView btnInfo = findViewById(R.id.btnInfo);
         tvBalance = findViewById(R.id.tvBalance);
 
         tvTotalPending = findViewById(R.id.tvTotalPending);
@@ -62,6 +64,10 @@ public class WalletForUser extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("UserData",MODE_PRIVATE);
         preferences = sharedPreferences.edit();
+
+        btnInfo.setOnClickListener(v -> {
+            showInstructionDialogBox("", "Your Daily Bites wallet balance available for online payment, in app subscription only");
+        });
 
         deposit.setOnClickListener(v -> addAmountPopUp());
 
@@ -254,6 +260,16 @@ public class WalletForUser extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+    }
+
+    private void showInstructionDialogBox(String title, String mbody) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(mbody);
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

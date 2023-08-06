@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.airbnb.lottie.L;
 
@@ -85,8 +86,28 @@ public class LanguageChooser extends AppCompatActivity {
         });
 
         kannada.setOnClickListener(v ->{
-            Intent intent = new Intent(LanguageChooser.this, OpenSourceLibraries.class);
-            startActivity(intent);
+
+            Toast.makeText(this, "ಈ ಭಾಷೆಯನ್ನು ಶೀಘ್ರದಲ್ಲೇ ಸೇರಿಸಲಾಗುವುದು", Toast.LENGTH_SHORT).show();
+        });
+
+        telugu.setOnClickListener(v ->{
+
+            Toast.makeText(this, "ఈ భాష త్వరలో జోడించబడుతుంది", Toast.LENGTH_SHORT).show();
+        });
+
+        tamil.setOnClickListener(v ->{
+
+            Toast.makeText(this, "இந்த மொழி விரைவில் சேர்க்கப்படும்", Toast.LENGTH_SHORT).show();
+        });
+
+        punjabi.setOnClickListener(v ->{
+
+            Toast.makeText(this, "ਇਹ ਭਾਸ਼ਾ ਜਲਦੀ ਹੀ ਸ਼ਾਮਲ ਹੋਵੇਗੀ", Toast.LENGTH_SHORT).show();
+        });
+
+        bengali.setOnClickListener(v ->{
+
+            Toast.makeText(this, "এই ভাষা শীঘ্রই যোগ হবে", Toast.LENGTH_SHORT).show();
         });
 
 

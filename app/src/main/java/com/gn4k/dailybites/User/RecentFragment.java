@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.gn4k.dailybites.R;
 import com.gn4k.dailybites.RoomForRecent.Mess;
@@ -45,13 +46,17 @@ public class RecentFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private int previousScrollY = 0;
 
+    LinearLayout text, text1;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView wallet = view.findViewById(R.id.wallet);
+        text = view.findViewById(R.id.text);
+        text1 = view.findViewById(R.id.text1);
 
+        ImageView wallet = view.findViewById(R.id.wallet);
         ImageView notification = view.findViewById(R.id.notification);
         wallet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +138,9 @@ public class RecentFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                 RecentAdapter recentAdapter = new RecentAdapter(getActivity(),mess);
                 recyclerView.setAdapter(recentAdapter);
+                if(recentAdapter.getItemCount()!=0){
+                    text.setVisibility(View.GONE);
+                }
             });
         }
     }
@@ -158,6 +166,9 @@ public class RecentFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 WishlistAdapter wishlistAdapter = new WishlistAdapter(getActivity(),mess);
                 recyclerView.setAdapter(wishlistAdapter);
+                if(wishlistAdapter.getItemCount()!=0){
+                    text1.setVisibility(View.GONE);
+                }
             });
         }
     }

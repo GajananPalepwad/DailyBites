@@ -113,4 +113,9 @@
     <string name="terms_of_service">सेवा अटी</string>
     <string name="registrations">नोंदणी</string>
     <string name="send_feedback">अभिप्राय पाठवा</string>
+    <string name="notification_will_show_here">सूचना येथे दर्शविली जाईल</string>
+    <string name="one_day_user_will_show_here">एक दिवस वापरकर्ता येथे दर्शवेल</string>
+    <string name="click_on_done_button_after_payment_only">पेमेंट केल्यानंतरच Done बटणावर क्लिक करा</string>
+    <string name="recent_visited_mess_will_show_here">अलीकडील भेट दिलेला मेस येथे दर्शविला जाईल</string>
+    <string name="liked_mess_will_show_here">आवडले mess इथे दाखवला जाईल</string>
 </resources>

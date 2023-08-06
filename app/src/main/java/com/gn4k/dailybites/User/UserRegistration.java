@@ -182,6 +182,8 @@ public class UserRegistration extends AppCompatActivity {
                             preferences.putString("OneDayMessNo", "");
                             preferences.putString("OneDayForDate", "");
                             preferences.putString("OneDayToken", "");
+                            preferences.putString("previousPendingDeposit", "0");
+                            preferences.putString("previousBalance", "0");
                             preferences.apply();
 
                             db.collection("User").document(getEmail).set(userInfo).

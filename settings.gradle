@@ -11,9 +11,20 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         //scanner code
-        maven { url 'https://jitpack.io' }
+        maven {url 'https://jitpack.io'}
+
         maven { url "https://gitlab.com/api/v4/projects/25847308/packages/maven" }
+
+        maven {
+            url "https://jitpack.io"
+            credentials {
+                username authToken
+            }
+        }
     }
+
 }
+
+
 rootProject.name = "Daily Bites"
 include ':app'

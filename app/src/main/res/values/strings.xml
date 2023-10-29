@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Daily Bites</string>
+    <string name="notifi_token" translatable="false">AAAA6NM39YA:APA91bHd7UWFVwNri7HBiDc0ZA5rXPBpUFyWL1gcxl4OL6-PGanVBK_4GenmtreQd4lp0ohOXpEtUebBPhBF719epS5-H2udlVaC8GZuURtkhOJX3MAxDBR9rpcSzzOPKte32ONKKJjT</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="pref_previously_started" translatable="false">false</string>
     <string name="update_today_s_menu">Update today\'s Menu</string>

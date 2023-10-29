@@ -178,18 +178,15 @@ public class MessOnwnerLoginPage extends AppCompatActivity {
                             // Toast.makeText(MessOnwnerLoginPage.this, getAddressFromLatLng(latLng)+"", Toast.LENGTH_SHORT).show();
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                            DatabaseReference dataRef = ref.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", ""));
+                            DatabaseReference dataRef = ref.child("mess").child(mobile_No.getText().toString());
 
 
                             Map<String, Object> dataAdd = new HashMap<>();
                             dataAdd.put("token", tokenString);
-                            dataRef.updateChildren(dataAdd).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Error occurred while saving data
-                                    loadingDialog.stopLoading();
-                                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
+                            dataRef.updateChildren(dataAdd).addOnFailureListener(e -> {
+                                // Error occurred while saving data
+                                loadingDialog.stopLoading();
+                                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             });
 
                             loadingDialog.stopLoading();

@@ -88,52 +88,28 @@ public class ProfilePageForMess extends AppCompatActivity {
         CardView walletBtn = findViewById(R.id.wallet);
 
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        backBtn.setOnClickListener(v -> onBackPressed());
+
+        notificationBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfilePageForMess.this, NotificationForMess.class);
+            startActivity(intent);
         });
 
-        notificationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfilePageForMess.this, NotificationForMess.class);
-                startActivity(intent);
-            }
-        });
-
-        walletBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfilePageForMess.this, WalletForMess.class);
-                startActivity(intent);
-            }
+        walletBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfilePageForMess.this, WalletForMess.class);
+            startActivity(intent);
         });
 
 
 
-        uploadDoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPasswordBottomSheetDialog();
-            }
+        uploadDoc.setOnClickListener(v -> showPasswordBottomSheetDialog());
+
+        updateLocation.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfilePageForMess.this, MapToLocateMess.class);
+            startActivity(intent);
         });
 
-        updateLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfilePageForMess.this, MapToLocateMess.class);
-                startActivity(intent);
-            }
-        });
-
-        updatePDbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePD();
-            }
-        });
+        updatePDbtn.setOnClickListener(v -> updatePD());
 
 
 
@@ -141,28 +117,22 @@ public class ProfilePageForMess extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("MessOwnerData", MODE_PRIVATE);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            filepath = data.getData();
-                        } else {
-                            Toast.makeText(ProfilePageForMess.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-                        }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        filepath = data.getData();
+                    } else {
+                        Toast.makeText(ProfilePageForMess.this, "No Image Selected", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
 
-        imagePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open the image picker
-                Intent photoPicker = new Intent();
-                photoPicker.setAction(Intent.ACTION_GET_CONTENT);
-                photoPicker.setType("image/*");
-                activityResultLauncher.launch(photoPicker);
-            }
+        imagePicker.setOnClickListener(v -> {
+            // Open the image picker
+            Intent photoPicker = new Intent();
+            photoPicker.setAction(Intent.ACTION_GET_CONTENT);
+            photoPicker.setType("image/*");
+            activityResultLauncher.launch(photoPicker);
         });
 
         updateAccordingtofirebase();
@@ -255,37 +225,28 @@ public class ProfilePageForMess extends AppCompatActivity {
             UploadTask uploadTask = imageRef.putFile(filepath);
 
             // Add an OnSuccessListener to get the download URL after the upload completes
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // Get the download URL of the uploaded image
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                // Get the download URL of the uploaded image
 
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
 
-                            // Save the download URL to the Realtime Database
-                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-                            databaseRef.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", "")).child("coverImage").setValue(uri.toString());
+                        // Save the download URL to the Realtime Database
+                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+                        databaseRef.child("mess").child(sharedPreferences.getString("MessOwnerMobileNo", "")).child("coverImage").setValue(uri.toString());
 
-                            progressDialog.dismiss();
-//                            Toast.makeText(ProfilePageForMess.this, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                            ImageView sign = findViewById(R.id.sign);
-                            sign.setImageResource(R.drawable.correct);
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProfilePageForMess.this, "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        progressDialog.dismiss();
 
-                }
+                        ImageView sign = findViewById(R.id.sign);
+                        sign.setImageResource(R.drawable.correct);
+                    }
+                });
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(ProfilePageForMess.this, "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }).addOnProgressListener(snapshot -> {
+
             });
         }
     }

@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.room.Room;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobikwik.mobikwikpglib.PaymentCheckout;
+import com.mobikwik.mobikwikpglib.lib.transactional.TransactionData;
+import com.mobikwik.mobikwikpglib.lib.transactional.TransactionDataBuilder;
+import com.mobikwik.mobikwikpglib.lib.transactional.TransactionResponse;
+import com.mobikwik.mobikwikpglib.utils.Enums;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -33,7 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PaymentOptions extends AppCompatActivity {
+public class PaymentOptions extends AppCompatActivity implements PaymentCheckout.ZaakPayPaymentListener{
 
     SharedPreferences sharedPreferences;
     private static final String KEY_WALLET_BALANCE = "WalletBalance";
@@ -127,7 +138,97 @@ public class PaymentOptions extends AppCompatActivity {
             }
         });
 
+        WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        String ipAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        String date = sdf.format(new Date());
+
+        Toast.makeText(this, date+"\n"+ipAddress, Toast.LENGTH_SHORT).show();
+
+        TransactionData transactionDataInstance = getTransactionDataInstance(ipAddress, date);
+        PaymentCheckout paymentCheckout = new PaymentCheckout(this);
+        paymentCheckout.startPayment(transactionDataInstance);
     }
+
+    private TransactionData getTransactionDataInstance(String ipAddress, String date) {
+        TransactionDataBuilder transactionDataBuilder = new TransactionDataBuilder()
+                .withAmount(BigInteger.valueOf(1000)) // BigInteger
+                .withChecksum("'b19e8f103bce406cbd3476431b6b7973''87757636385858''0''INR''1000''"+ipAddress+"''"+date+"'") // String
+                .withChecksumPO("merchantIdentifier=b19e8f103bce406cbd3476431b6b7973&email=abc@xyz.com") // String
+                .withCurrency("INR") // String
+                .withOrderId("87757636385858") // String
+                .withUserEmail("cyes1212@gmail.com") // String
+                .withReturnUrl("https://beta.zaakpay.com/testmerchant/sdkresponse") // Url on which the txn response will be posted (String)
+                .withMerchantIconUrl("https://firebasestorage.googleapis.com/v0/b/aicte2-2a28b.appspot.com/o/Component%201%20(1).png?alt=media&token=3d2540f1-45b9-4da1-86ef-2f8b3fd8dd8f33") // Merchant Icon to be displayed in the SDK (String)
+                .withMerchantName("Daily Bites") // String
+                .withMerchantId("b19e8f103bce406cbd3476431b6b7973") // String
+                .withUserPhoneNumber("7757085531") //String
+                .withEnvironment(Enums.Environment.TESTING); // Enum to configure the server environment
+        return transactionDataBuilder.build();
+    }
+
+
+
+    @Override
+    public void onPaymentSuccess(TransactionResponse response) {
+// extract the checksum from the response using response.getChecksum() and verify it on your server before further processing the success response
+        Toast.makeText(this, response.getOrderId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPaymentFailure(String responseCode, String responseDescription) {
+        //handle payment failure
+        Toast.makeText(this, responseCode+"\n"+responseDescription, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void setAllValues(){
         tvplanPrice.setText(getString(R.string.rupee)+price);

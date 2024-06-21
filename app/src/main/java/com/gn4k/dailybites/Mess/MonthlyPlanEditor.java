@@ -36,8 +36,6 @@ public class MonthlyPlanEditor extends AppCompatActivity {
     private EditText evprice, evdescription;
     private ImageView planImage;
     private CardView back;
-
-
     private String isNonVegInclude = "no";
     private String isHomeDeliveryAvailable = "no";
     private String isBreakFastAvailable = "no";
